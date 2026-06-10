@@ -9,8 +9,8 @@
    Project URL and anon/public key here (Settings → API).
    ============================================================ */
 
-const SUPABASE_URL = "YOUR-PROJECT-URL";        // e.g. "https://abcdefgh.supabase.co"
-const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";      // the long "anon public" key
+const SUPABASE_URL = "https://nxtumyutsfhvrhbrozzu.supabase.co";        // e.g. "https://abcdefgh.supabase.co"
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54dHVteXV0c2ZodnJoYnJvenp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwOTMyNzYsImV4cCI6MjA5NjY2OTI3Nn0.uHTj73iEhE2hx9leJ8HtT3x_iwFh44TlM8ihQWoLWrQ";      // the long "anon public" key
 
 /* Community — paste your Discord invite link here (one place, used site-wide) */
-const DISCORD_INVITE = "https://discord.gg/YOUR-INVITE";
+const DISCORD_INVITE = "https://discord.gg/NYdRP7d69p";
