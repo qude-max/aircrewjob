@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform Admin — AirCrew Jobs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .admin-grid { display: grid; grid-template-columns: 400px 1fr; gap: 22px; align-items: start; }
+    @media (max-width: 960px) { .admin-grid { grid-template-columns: 1fr; } }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 0.76rem; color: var(--text-faint); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .save-msg { font-size: 0.88rem; min-height: 1.3em; margin-top: 10px; }
+    .save-msg.ok { color: var(--green); } .save-msg.err { color: var(--red); }
+    .admin-row {
+      display: flex; justify-content: space-between; align-items: center; gap: 14px;
+      padding: 14px 18px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: rgba(10,16,32,0.5); margin-bottom: 10px;
+    }
+    .admin-row .t { font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; }
+    .admin-row .s { font-size: 0.82rem; color: var(--text-faint); }
+    .row-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .icon-btn {
+      width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center;
+      background: var(--surface); border: 1px solid var(--border); cursor: pointer;
+      color: var(--text-dim); font-size: 0.9rem; transition: all 0.15s;
+    }
+    .icon-btn:hover { border-color: var(--border-bright); color: var(--text); }
+    .icon-btn.danger:hover { border-color: rgba(255,107,129,0.6); color: var(--red); }
+    .gate { text-align: center; padding: 90px 20px; }
+    label.check { display: inline-flex; gap: 8px; align-items: center; font-size: 0.9rem; color: var(--text-dim); cursor: pointer; }
+    label.check input { accent-color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="eyebrow" id="adminMode">Platform Admin</span>
+      <h1 style="margin-top:20px">Approvals & <span class="gradient-text">moderation</span></h1>
+      <p>Approve recruiters, curate verified listings, and moderate everything on the board.</p>
+    </div>
+  </header>
+
+  <section style="padding-top:10px">
+    <div class="container">
+      <div id="gate" class="gate" style="display:none">
+        <h2 style="margin-bottom:14px">🔒 Recruiter access required</h2>
+        <p id="gateMsg" style="max-width:440px; margin:0 auto 24px"></p>
+        <a href="auth.html" class="btn btn-primary">Sign in →</a>
+      </div>
+
+      <div class="card" id="approvalsCard" style="display:none; margin-bottom:22px">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px">
+          <h3>🛂 Recruiter approvals</h3>
+          <span class="badge" id="pendingCount"></span>
+        </div>
+        <p style="font-size:0.88rem; margin-bottom:16px">New recruiter accounts can't post until approved. Approve only companies you can identify.</p>
+        <div id="pendingList"></div>
+      </div>
+
+      <div class="admin-grid" id="adminUI" style="display:none">
+        <!-- Form -->
+        <div class="card">
+          <h3 id="formTitle" style="margin-bottom:20px">➕ New vacancy</h3>
+          <form id="jobForm">
+            <input type="hidden" id="jId">
+            <div class="field"><label>Airline</label><input class="input" id="jAirline" required placeholder="e.g. Emirates"></div>
+            <div class="field-row">
+              <div class="field"><label>Role</label>
+                <select class="input" id="jRole"><option>Captain</option><option selected>First Officer</option><option>Second Officer</option><option>Cadet Pilot</option></select>
+              </div>
+              <div class="field"><label>Aircraft</label><input class="input" id="jAircraft" required placeholder="e.g. A320"></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label>Region</label>
+                <select class="input" id="jRegion"><option>Europe</option><option>Middle East</option><option>Americas</option><option>Asia-Pacific</option></select>
+              </div>
+              <div class="field"><label>Entry type</label>
+                <select class="input" id="jType"><option>Direct Entry</option><option>Rated</option><option>Cadet</option></select>
+              </div>
+            </div>
+            <div class="field"><label>Base / location</label><input class="input" id="jLocation" required placeholder="e.g. Dubai (DXB)"></div>
+            <div class="field-row">
+              <div class="field"><label>Min hours</label><input class="input" id="jHours" type="number" min="0" value="0"></div>
+              <div class="field" style="display:flex; align-items:flex-end; padding-bottom:4px">
+                <label class="check"><input type="checkbox" id="jRated"> Type rating required</label>
+              </div>
+            </div>
+            <div class="field"><label>Salary / package</label><input class="input" id="jSalary" required placeholder="e.g. €78,000–€110,000"></div>
+            <div style="display:flex; gap:10px">
+              <button class="btn btn-primary btn-sm" type="submit" id="jSubmit">Publish vacancy</button>
+              <button class="btn btn-ghost btn-sm" type="button" id="jReset" style="display:none">Cancel edit</button>
+            </div>
+            <div class="save-msg" id="jMsg"></div>
+          </form>
+        </div>
+
+        <!-- Listings -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px">
+            <h3>📋 Live listings</h3>
+            <span class="badge" id="listCount"></span>
+          </div>
+          <div id="adminList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/config.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/backend.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    let editing = null;
+
+    async function boot() {
+      await Backend.ready;
+      const user = Backend.auth.user();
+      const profile = Backend.auth.profile();
+
+      if (Backend.mode === "supabase" && (!user || !profile?.is_admin)) {
+        document.getElementById("gate").style.display = "block";
+        document.getElementById("gateMsg").textContent = user
+          ? "Your account doesn't have recruiter rights yet. An existing admin can grant them (see DEPLOY.md for the one-line SQL)."
+          : "Sign in with a recruiter account to post vacancies.";
+        return;
+      }
+      if (Backend.mode === "demo") {
+        document.getElementById("adminMode").textContent = "Platform Admin · demo mode (open to everyone)";
+      }
+      document.getElementById("adminUI").style.display = "grid";
+      document.getElementById("approvalsCard").style.display = "block";
+      renderList();
+      renderPending();
+    }
+
+    async function renderPending() {
+      const pending = await Backend.admin.pendingRecruiters();
+      document.getElementById("pendingCount").textContent = `${pending.length} waiting`;
+      document.getElementById("pendingList").innerHTML = pending.length ? pending.map(r => `
+        <div class="admin-row">
+          <div>
+            <div class="t">${r.company || "—"}</div>
+            <div class="s">${r.full_name || "—"} · ${r.email}</div>
+          </div>
+          <div class="row-actions">
+            <button class="btn btn-primary btn-sm" onclick='approveRec(${JSON.stringify(r.id || r.email)}, true)'>Approve</button>
+          </div>
+        </div>`).join("")
+        : `<p style="color:var(--text-faint); font-size:0.9rem">No recruiters waiting for approval.</p>`;
+    }
+
+    async function approveRec(idOrEmail, ok) {
+      const res = await Backend.admin.setRecruiterApproval(idOrEmail, ok);
+      if (res.error) alert(res.error);
+      renderPending();
+    }
+
+    async function renderList() {
+      const jobs = await Backend.jobs.list();
+      document.getElementById("listCount").textContent = `${jobs.length} live`;
+      document.getElementById("adminList").innerHTML = jobs.map(j => `
+        <div class="admin-row">
+          <div>
+            <div class="t">${j.role} — ${j.aircraft}</div>
+            <div class="s">${j.airline} · ${j.location} · ${j.salary}</div>
+          </div>
+          <div class="row-actions">
+            <button class="icon-btn" title="Edit" onclick='startEdit(${JSON.stringify(j.id)})'>✏️</button>
+            <button class="icon-btn danger" title="Delete" onclick='removeJob(${JSON.stringify(j.id)})'>🗑</button>
+          </div>
+        </div>`).join("") || `<p style="color:var(--text-faint)">No listings yet — publish your first vacancy.</p>`;
+    }
+
+    async function startEdit(id) {
+      const jobs = await Backend.jobs.list();
+      const j = jobs.find(x => x.id === id);
+      if (!j) return;
+      editing = id;
+      document.getElementById("formTitle").textContent = "✏️ Edit vacancy";
+      document.getElementById("jSubmit").textContent = "Save changes";
+      document.getElementById("jReset").style.display = "inline-flex";
+      jAirline.value = j.airline; jRole.value = j.role; jAircraft.value = j.aircraft;
+      jRegion.value = j.region; jType.value = j.type; jLocation.value = j.location;
+      jHours.value = j.minHours; jRated.checked = j.rated; jSalary.value = j.salary;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function resetForm() {
+      editing = null;
+      document.getElementById("jobForm").reset();
+      document.getElementById("formTitle").textContent = "➕ New vacancy";
+      document.getElementById("jSubmit").textContent = "Publish vacancy";
+      document.getElementById("jReset").style.display = "none";
+    }
+
+    async function removeJob(id) {
+      if (!confirm("Delete this vacancy?")) return;
+      await Backend.jobs.remove(id);
+      if (editing === id) resetForm();
+      renderList();
+    }
+
+    document.getElementById("jReset").addEventListener("click", resetForm);
+
+    document.getElementById("jobForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const msg = document.getElementById("jMsg");
+      const job = {
+        airline: jAirline.value.trim(), role: jRole.value, aircraft: jAircraft.value.trim(),
+        region: jRegion.value, type: jType.value, location: jLocation.value.trim(),
+        minHours: parseInt(jHours.value, 10) || 0, rated: jRated.checked, salary: jSalary.value.trim()
+      };
+      const res = editing !== null
+        ? await Backend.jobs.update(editing, job)
+        : await Backend.jobs.create(job);
+      msg.className = "save-msg " + (res.error ? "err" : "ok");
+      msg.textContent = res.error ? "⚠ " + res.error : (editing !== null ? "✓ Changes saved" : "✓ Vacancy published");
+      if (!res.error) { resetForm(); renderList(); }
+      setTimeout(() => msg.textContent = "", 2500);
+    });
+
+    document.addEventListener("DOMContentLoaded", boot);
+  </script>
+</body>
+</html>

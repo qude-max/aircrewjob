@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilot Career Guides — AirCrew Jobs</title>
+  <meta name="description" content="From zero hours to the left seat: training routes, costs, medicals and interview prep written for aspiring and current pilots.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .toolbar { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+    .chip {
+      font-family: var(--font-display); font-size: 0.84rem; font-weight: 500;
+      padding: 9px 18px; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text-dim);
+      transition: all 0.2s;
+    }
+    .chip:hover { border-color: var(--border-bright); color: var(--text); }
+    .chip.active { background: rgba(56,224,255,0.12); border-color: var(--border-bright); color: var(--accent); }
+    .guide-card { display: flex; flex-direction: column; cursor: pointer; animation: fadeIn 0.35s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } }
+    .guide-icon { font-size: 2rem; margin-bottom: 14px; }
+    .guide-meta { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+    .guide-card h3 { margin-bottom: 10px; }
+    .guide-card p { font-size: 0.92rem; flex: 1; }
+    .read-time { font-size: 0.78rem; color: var(--text-faint); }
+
+    /* Roadmap */
+    .roadmap { position: relative; margin-top: 24px; }
+    .roadmap::before {
+      content: ""; position: absolute; left: 27px; top: 10px; bottom: 10px; width: 2px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2), var(--accent-3));
+      opacity: 0.5;
+    }
+    .roadmap-step { display: flex; gap: 26px; padding: 22px 0; position: relative; }
+    .roadmap-num {
+      width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+      display: grid; place-items: center; z-index: 1;
+      font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--accent);
+      background: var(--bg-2); border: 1px solid var(--border-bright);
+      box-shadow: 0 0 16px rgba(56,224,255,0.2);
+    }
+    .roadmap-step h3 { margin-bottom: 6px; }
+    .roadmap-step .cost { font-family: var(--font-display); font-size: 0.82rem; color: var(--amber); margin-top: 8px; display: inline-block; }
+  </style>
+</head>
+<body>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Career Guides · Written by pilots</span>
+      <h1 style="margin-top:20px">Zero hours to <span class="gradient-text">left seat</span></h1>
+      <p>Training routes, real costs, medicals, interviews and career strategy — the knowledge base for every stage of your flying career.</p>
+    </div>
+  </header>
+
+  <!-- ROADMAP -->
+  <section style="padding-top:10px">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2>The route at a glance</h2>
+        <p>Five milestones between you and an airline flight deck.</p>
+      </div>
+      <div class="roadmap">
+        <div class="roadmap-step reveal">
+          <div class="roadmap-num">01</div>
+          <div>
+            <h3>Class 1 Medical</h3>
+            <p>Get this before spending a penny on training. An initial Class 1 at an approved aeromedical centre confirms you're physically eligible for a commercial licence.</p>
+            <span class="cost">≈ €600–€800 · 1 day</span>
+          </div>
+        </div>
+        <div class="roadmap-step reveal">
+          <div class="roadmap-num">02</div>
+          <div>
+            <h3>Flight Training — PPL to CPL/IR</h3>
+            <p>Integrated (18–24 months, one school) or modular (2–4 years, pay as you go). Both end in the same licence: a CPL with multi-engine instrument rating and ATPL theory credits.</p>
+            <span class="cost">≈ €60,000–€130,000 · 18–48 months</span>
+          </div>
+        </div>
+        <div class="roadmap-step reveal">
+          <div class="roadmap-num">03</div>
+          <div>
+            <h3>ATPL Theory — 13 Exams</h3>
+            <p>From air law to flight planning. Done full-time in 6–8 months or distance learning alongside flying. Airlines look at first-series pass rates and averages.</p>
+            <span class="cost">≈ €3,000–€6,000 · 6–12 months</span>
+          </div>
+        </div>
+        <div class="roadmap-step reveal">
+          <div class="roadmap-num">04</div>
+          <div>
+            <h3>MCC / APS & First Airline Job</h3>
+            <p>A multi-crew cooperation or airline pilot standards course bridges single-pilot training to the jet flight deck — then it's CV, assessment day, sim check.</p>
+            <span class="cost">≈ €4,000–€12,000 · 1–2 months</span>
+          </div>
+        </div>
+        <div class="roadmap-step reveal">
+          <div class="roadmap-num">05</div>
+          <div>
+            <h3>Type Rating & Line Training</h3>
+            <p>Your first jet type rating — often bonded by the airline — followed by base training and supervised line flying until you're released to the line.</p>
+            <span class="cost">≈ €0–€35,000 (often airline-funded) · 3–6 months</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUIDES -->
+  <section style="padding-top:20px">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2>The guide library</h2>
+      </div>
+      <div class="toolbar" id="tagChips">
+        <button class="chip active" data-tag="">All</button>
+        <button class="chip" data-tag="Getting Started">Getting Started</button>
+        <button class="chip" data-tag="Training">Training</button>
+        <button class="chip" data-tag="Interviews">Interviews</button>
+        <button class="chip" data-tag="Career">Career</button>
+      </div>
+      <div class="grid-3" id="guideGrid"></div>
+    </div>
+  </section>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    let tagFilter = "";
+    function render() {
+      const list = GUIDES.filter(g => !tagFilter || g.tag === tagFilter);
+      document.getElementById("guideGrid").innerHTML = list.map((g, i) => `
+        <div class="card guide-card" style="animation-delay:${Math.min(i * 40, 320)}ms" onclick="location.href='guide.html?slug=${g.slug}'">
+          <div class="guide-icon">${g.icon}</div>
+          <div class="guide-meta">
+            <span class="badge type">${g.tag}</span>
+            <span class="read-time">${g.time} read</span>
+          </div>
+          <h3>${g.title}</h3>
+          <p>${g.blurb}</p>
+          <span style="color:var(--accent); font-family:var(--font-display); font-weight:600; font-size:0.9rem; margin-top:16px">Read guide →</span>
+        </div>`).join("");
+    }
+    document.querySelectorAll("#tagChips .chip").forEach(ch => ch.addEventListener("click", () => {
+      document.querySelectorAll("#tagChips .chip").forEach(c => c.classList.remove("active"));
+      ch.classList.add("active");
+      tagFilter = ch.dataset.tag;
+      render();
+    }));
+    document.addEventListener("DOMContentLoaded", render);
+  </script>
+</body>
+</html>

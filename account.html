@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account — AirCrew Jobs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; }
+    @media (max-width: 860px) { .account-grid { grid-template-columns: 1fr; } }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 0.78rem; color: var(--text-faint); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .save-msg { font-size: 0.88rem; color: var(--green); min-height: 1.3em; margin-top: 10px; }
+    .mini-job {
+      display: flex; justify-content: space-between; align-items: center; gap: 14px;
+      padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: rgba(10,16,32,0.5); margin-bottom: 10px;
+    }
+    .mini-job .t { font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; }
+    .mini-job .s { font-size: 0.82rem; color: var(--text-faint); }
+    .empty { color: var(--text-faint); font-size: 0.9rem; padding: 18px 0; }
+    .checks { display: flex; flex-wrap: wrap; gap: 10px; }
+    .check-chip { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px; cursor: pointer; font-size: 0.85rem; color: var(--text-dim); background: var(--surface); transition: all 0.15s; user-select: none; }
+    .check-chip input { accent-color: var(--accent); }
+    .check-chip:has(input:checked) { border-color: var(--border-bright); color: var(--accent); background: rgba(56,224,255,0.08); }
+    .status-pill { font-size: 0.74rem; padding: 3px 10px; border-radius: 999px; font-weight: 600; }
+    .status-pill.submitted   { color: var(--accent);   background: rgba(56,224,255,0.1); }
+    .status-pill.shortlisted { color: var(--accent-2); background: rgba(124,140,255,0.12); }
+    .status-pill.interview   { color: var(--amber);    background: rgba(255,197,85,0.12); }
+    .status-pill.hired       { color: var(--green);    background: rgba(52,232,160,0.12); }
+    .status-pill.rejected    { color: var(--red);      background: rgba(255,107,129,0.1); }
+  </style>
+</head>
+<body>
+
+  <header class="page-hero">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:18px">
+      <div>
+        <span class="eyebrow" id="acctMode">My Account</span>
+        <h1 style="margin-top:20px" id="acctTitle">Pilot <span class="gradient-text">profile</span></h1>
+        <p id="acctEmail"></p>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="signOutBtn">Sign out</button>
+    </div>
+  </header>
+
+  <section style="padding-top:10px">
+    <div class="container account-grid">
+
+      <!-- Profile -->
+      <div class="card">
+        <h3 style="margin-bottom:20px">✈️ Flight experience</h3>
+        <form id="profileForm">
+          <div class="field">
+            <label>Full name</label>
+            <input class="input" id="pName" type="text" placeholder="Your name">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Licence</label>
+              <select class="input" id="pLicence">
+                <option value="">None yet</option>
+                <option>Student / PPL</option><option>CPL (frozen ATPL)</option>
+                <option>ATPL</option><option>MPL</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Total hours</label>
+              <input class="input" id="pHours" type="number" min="0" placeholder="0">
+            </div>
+          </div>
+          <div class="field">
+            <label>Type ratings (comma separated)</label>
+            <input class="input" id="pRatings" type="text" placeholder="e.g. A320, B737">
+          </div>
+          <button class="btn btn-primary btn-sm" type="submit">Save profile</button>
+          <div class="save-msg" id="profileMsg"></div>
+        </form>
+      </div>
+
+      <!-- Alerts -->
+      <div class="card">
+        <h3 style="margin-bottom:8px">🔔 Job alerts</h3>
+        <p style="font-size:0.9rem; margin-bottom:18px">We'll match new vacancies against these preferences.</p>
+        <div class="field">
+          <label>Regions</label>
+          <div class="checks" id="alertRegions"></div>
+        </div>
+        <div class="field">
+          <label>Roles</label>
+          <div class="checks" id="alertRoles"></div>
+        </div>
+        <label class="check-chip" style="margin-bottom:16px">
+          <input type="checkbox" id="alertWeekly"> Weekly briefing email
+        </label>
+        <br>
+        <button class="btn btn-primary btn-sm" id="saveAlerts">Save alerts</button>
+        <div class="save-msg" id="alertMsg"></div>
+      </div>
+
+      <!-- Saved jobs -->
+      <div class="card">
+        <h3 style="margin-bottom:18px">❤️ Saved jobs</h3>
+        <div id="savedList"><div class="empty">Loading…</div></div>
+      </div>
+
+      <!-- Applications -->
+      <div class="card">
+        <h3 style="margin-bottom:18px">📨 My applications</h3>
+        <div id="appsList"><div class="empty">Loading…</div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/config.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/backend.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const REGIONS = ["Europe", "Middle East", "Americas", "Asia-Pacific"];
+    const ROLES = ["Cadet Pilot", "Second Officer", "First Officer", "Captain"];
+
+    function chip(group, value, checked) {
+      return `<label class="check-chip"><input type="checkbox" data-group="${group}" value="${value}" ${checked ? "checked" : ""}> ${value}</label>`;
+    }
+
+    async function load() {
+      await Backend.ready;
+      const user = Backend.auth.user();
+      if (!user) { location.href = "auth.html"; return; }
+
+      const p = Backend.auth.profile() || {};
+      document.getElementById("acctEmail").textContent = user.email;
+      document.getElementById("acctMode").textContent =
+        Backend.mode === "demo" ? "My Account · demo mode (this browser only)" : "My Account";
+
+      // Profile form
+      document.getElementById("pName").value = p.full_name || "";
+      document.getElementById("pLicence").value = p.licence || "";
+      document.getElementById("pHours").value = p.total_hours || "";
+      document.getElementById("pRatings").value = p.ratings || "";
+
+      // Alerts
+      const prefs = p.alert_prefs || { regions: [], roles: [], email_weekly: true };
+      document.getElementById("alertRegions").innerHTML = REGIONS.map(r => chip("regions", r, prefs.regions?.includes(r))).join("");
+      document.getElementById("alertRoles").innerHTML = ROLES.map(r => chip("roles", r, prefs.roles?.includes(r))).join("");
+      document.getElementById("alertWeekly").checked = prefs.email_weekly !== false;
+
+      renderSaved();
+      renderApps();
+    }
+
+    async function renderSaved() {
+      const [ids, jobs] = await Promise.all([Backend.saved.ids(), Backend.jobs.list()]);
+      const saved = jobs.filter(j => ids.has(j.id));
+      document.getElementById("savedList").innerHTML = saved.length
+        ? saved.map(j => `
+            <div class="mini-job">
+              <div>
+                <div class="t">${j.role} — ${j.aircraft}</div>
+                <div class="s">${j.airline} · ${j.location}</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="unsave(${JSON.stringify(j.id)})">Remove</button>
+            </div>`).join("")
+        : `<div class="empty">No saved jobs yet. Tap the ♡ on any vacancy on the <a href="jobs.html" style="color:var(--accent)">job board</a>.</div>`;
+    }
+
+    async function unsave(id) { await Backend.saved.toggle(id); renderSaved(); }
+
+    async function renderApps() {
+      const apps = await Backend.apps.list();
+      document.getElementById("appsList").innerHTML = apps.length
+        ? apps.map(a => `
+            <div class="mini-job">
+              <div>
+                <div class="t">${a.job?.role || "Position"} — ${a.job?.aircraft || ""}</div>
+                <div class="s">${a.job?.airline || ""} · applied ${new Date(a.created).toLocaleDateString()}</div>
+              </div>
+              <span class="status-pill ${a.status}">${a.status}</span>
+            </div>`).join("")
+        : `<div class="empty">No applications yet — your submitted applications will appear here.</div>`;
+    }
+
+    document.getElementById("profileForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const res = await Backend.profile.update({
+        full_name: document.getElementById("pName").value.trim(),
+        licence: document.getElementById("pLicence").value,
+        total_hours: parseInt(document.getElementById("pHours").value, 10) || 0,
+        ratings: document.getElementById("pRatings").value.trim()
+      });
+      document.getElementById("profileMsg").textContent = res.error ? "⚠ " + res.error : "✓ Profile saved";
+      setTimeout(() => document.getElementById("profileMsg").textContent = "", 2500);
+    });
+
+    document.getElementById("saveAlerts").addEventListener("click", async () => {
+      const get = g => [...document.querySelectorAll(`input[data-group="${g}"]:checked`)].map(i => i.value);
+      const res = await Backend.profile.update({
+        alert_prefs: { regions: get("regions"), roles: get("roles"), email_weekly: document.getElementById("alertWeekly").checked }
+      });
+      document.getElementById("alertMsg").textContent = res.error ? "⚠ " + res.error : "✓ Alert preferences saved";
+      setTimeout(() => document.getElementById("alertMsg").textContent = "", 2500);
+    });
+
+    document.getElementById("signOutBtn").addEventListener("click", async () => {
+      await Backend.auth.signOut();
+      location.href = "index.html";
+    });
+
+    document.addEventListener("DOMContentLoaded", load);
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide — AirCrew Jobs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .article { max-width: 760px; margin: 0 auto; }
+    .article-head { padding: 150px 0 40px; }
+    .article-head .meta { display: flex; gap: 12px; align-items: center; margin-bottom: 22px; flex-wrap: wrap; }
+    .article-head h1 { font-size: clamp(2rem, 4.5vw, 3.2rem); }
+    .article-body section { padding: 0 0 14px; }
+    .article-body h2 {
+      font-size: 1.45rem; margin: 38px 0 14px; padding-top: 26px;
+      border-top: 1px solid var(--border);
+    }
+    .article-body h2::before { content: "// "; color: var(--accent); font-weight: 700; }
+    .article-body p { margin-bottom: 16px; font-size: 1.02rem; line-height: 1.75; }
+    .article-body b { color: var(--text); }
+    .article-body i { color: var(--text); }
+    .toc { padding: 22px 26px; margin: 30px 0 10px; }
+    .toc h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 12px; }
+    .toc a { display: block; color: var(--text-dim); text-decoration: none; padding: 5px 0; font-size: 0.95rem; transition: color 0.15s; }
+    .toc a:hover { color: var(--accent); }
+    .next-guides { margin-top: 60px; padding-top: 36px; border-top: 1px solid var(--border); }
+    .next-card { text-decoration: none; color: inherit; display: block; }
+    .back-link { color: var(--accent); text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+  <div class="container article">
+    <div class="article-head">
+      <a class="back-link" href="guides.html">← All guides</a>
+      <div class="meta" style="margin-top:20px" id="gMeta"></div>
+      <h1 id="gTitle">Loading…</h1>
+      <p id="gBlurb" style="margin-top:16px; font-size:1.1rem"></p>
+    </div>
+
+    <div class="card toc" id="gToc" style="display:none">
+      <h4>In this guide</h4>
+      <div id="tocLinks"></div>
+    </div>
+
+    <div class="article-body" id="gBody"></div>
+
+    <div class="next-guides" id="gNext"></div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/guides-content.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const slug = new URLSearchParams(location.search).get("slug");
+    const meta = GUIDES.find(g => g.slug === slug);
+    const content = GUIDE_CONTENT[slug];
+
+    if (!meta || !content) {
+      document.getElementById("gTitle").textContent = "Guide not found";
+      document.getElementById("gBlurb").innerHTML = `That article doesn't exist (yet). <a href="guides.html" style="color:var(--accent)">Back to the library →</a>`;
+    } else {
+      document.title = meta.title + " — AirCrew Jobs";
+      document.getElementById("gTitle").textContent = meta.title;
+      document.getElementById("gBlurb").textContent = meta.blurb;
+      document.getElementById("gMeta").innerHTML =
+        `<span style="font-size:1.6rem">${meta.icon}</span>
+         <span class="badge type">${meta.tag}</span>
+         <span class="badge">${meta.time} read</span>`;
+
+      document.getElementById("gToc").style.display = "block";
+      document.getElementById("tocLinks").innerHTML = content.sections
+        .map((s, i) => `<a href="#s${i}">${s.h}</a>`).join("");
+
+      document.getElementById("gBody").innerHTML = content.sections
+        .map((s, i) => `<section id="s${i}"><h2>${s.h}</h2>${s.html}</section>`).join("");
+
+      // Related guides: same tag first, then others
+      const others = GUIDES.filter(g => g.slug !== slug)
+        .sort((a, b) => (b.tag === meta.tag) - (a.tag === meta.tag)).slice(0, 2);
+      document.getElementById("gNext").innerHTML = `
+        <h3 style="margin-bottom:18px">Keep reading</h3>
+        <div class="grid-2">
+          ${others.map(g => `
+            <a class="card next-card" href="guide.html?slug=${g.slug}">
+              <div style="font-size:1.6rem; margin-bottom:10px">${g.icon}</div>
+              <h3 style="font-size:1.05rem; margin-bottom:8px">${g.title}</h3>
+              <span style="font-size:0.8rem; color:var(--text-faint)">${g.time} read · ${g.tag}</span>
+            </a>`).join("")}
+        </div>`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilot Salary Explorer — AirCrew Jobs</title>
+  <meta name="description" content="Compare pilot pay across airlines and regions, from first-year FO to senior captain.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .toolbar { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+    .chip {
+      font-family: var(--font-display); font-size: 0.84rem; font-weight: 500;
+      padding: 9px 18px; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text-dim);
+      transition: all 0.2s;
+    }
+    .chip:hover { border-color: var(--border-bright); color: var(--text); }
+    .chip.active { background: rgba(56,224,255,0.12); border-color: var(--border-bright); color: var(--accent); }
+    .table-card { padding: 8px 0; overflow-x: auto; }
+    .bar-cell { min-width: 180px; }
+    .bar-track { background: rgba(255,255,255,0.05); border-radius: 6px; height: 10px; overflow: hidden; margin-top: 6px; }
+    .bar-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #18b8d8, #7c8cff); transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); width: 0; }
+    .sortable { cursor: pointer; user-select: none; }
+    .sortable:hover { color: #7fe9ff; }
+    .sortable .arrow { opacity: 0.5; font-size: 0.7em; }
+    .note-strip { font-size: 0.84rem; color: var(--text-faint); margin-top: 18px; }
+    .insight-cards { margin-top: 56px; }
+  </style>
+</head>
+<body>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Salary Explorer · 2026 scales</span>
+      <h1 style="margin-top:20px">What pilots <span class="gradient-text">actually earn</span></h1>
+      <p>Annual base pay by airline and seniority. Figures are indicative scales in each carrier's payroll currency.</p>
+    </div>
+  </header>
+
+  <section style="padding-top:10px">
+    <div class="container">
+      <div class="toolbar" id="regionChips">
+        <button class="chip active" data-region="">All regions</button>
+        <button class="chip" data-region="Americas">Americas</button>
+        <button class="chip" data-region="Europe">Europe</button>
+        <button class="chip" data-region="Middle East">Middle East</button>
+        <button class="chip" data-region="Asia-Pacific">Asia-Pacific</button>
+      </div>
+
+      <div class="card table-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Airline</th>
+              <th>Region</th>
+              <th class="sortable" data-key="foYear1">FO Year 1 <span class="arrow">▼</span></th>
+              <th class="sortable" data-key="foYear5">FO Year 5 <span class="arrow">▼</span></th>
+              <th class="sortable" data-key="captain">Senior Captain <span class="arrow">▼</span></th>
+              <th class="bar-cell">Captain pay vs top payer</th>
+            </tr>
+          </thead>
+          <tbody id="salaryBody"></tbody>
+        </table>
+      </div>
+      <p class="note-strip">⚠ Demo data, indicative only. Real-world pay varies with sector pay, per diems, allowances, profit share and tax treatment — always verify against the airline's current published scales or union agreement.</p>
+
+      <div class="grid-3 insight-cards">
+        <div class="card reveal">
+          <h3>💵 Highest first-year pay</h3>
+          <p style="margin-top:8px">US majors lead on raw numbers post-2023 contracts — but factor in training pace, commute and cost of living before comparing.</p>
+        </div>
+        <div class="card reveal">
+          <h3>🏝️ Tax-free isn't free</h3>
+          <p style="margin-top:8px">Gulf packages look smaller on paper but include housing, schooling allowances and zero income tax — often beating European take-home.</p>
+        </div>
+        <div class="card reveal">
+          <h3>📈 Command is the multiplier</h3>
+          <p style="margin-top:8px">The FO-to-captain jump is the single biggest pay event of your career. Airlines with fast upgrades (Wizz, Ryanair) can out-earn slower legacy paths.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    let regionFilter = "", sortKey = "captain";
+    const maxCaptain = Math.max(...SALARIES.map(s => s.captain));
+    const fmt = n => n.toLocaleString();
+
+    function render() {
+      const rows = SALARIES
+        .filter(s => !regionFilter || s.region === regionFilter)
+        .sort((a, b) => b[sortKey] - a[sortKey]);
+
+      document.getElementById("salaryBody").innerHTML = rows.map(s => `
+        <tr>
+          <td>${s.airline}<br><span style="font-size:0.78rem; color:var(--text-faint)">${s.currency}</span></td>
+          <td>${s.region}</td>
+          <td>${fmt(s.foYear1)}</td>
+          <td>${fmt(s.foYear5)}</td>
+          <td style="color:var(--green); font-weight:600">${fmt(s.captain)}</td>
+          <td class="bar-cell">
+            <div class="bar-track"><div class="bar-fill" data-w="${Math.round(s.captain / maxCaptain * 100)}"></div></div>
+          </td>
+        </tr>`).join("");
+
+      requestAnimationFrame(() =>
+        document.querySelectorAll(".bar-fill").forEach(b => b.style.width = b.dataset.w + "%"));
+    }
+
+    document.querySelectorAll("#regionChips .chip").forEach(ch => ch.addEventListener("click", () => {
+      document.querySelectorAll("#regionChips .chip").forEach(c => c.classList.remove("active"));
+      ch.classList.add("active");
+      regionFilter = ch.dataset.region;
+      render();
+    }));
+
+    document.querySelectorAll(".sortable").forEach(th => th.addEventListener("click", () => {
+      sortKey = th.dataset.key;
+      render();
+    }));
+
+    document.addEventListener("DOMContentLoaded", render);
+  </script>
+</body>
+</html>

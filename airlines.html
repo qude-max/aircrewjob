@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airline Directory & Hiring Status — AirCrew Jobs</title>
+  <meta name="description" content="Hiring status, fleets, bases and recruitment intel for the world's major airlines.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .toolbar { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; align-items: center; }
+    .toolbar .input { max-width: 340px; }
+    .chip {
+      font-family: var(--font-display); font-size: 0.84rem; font-weight: 500;
+      padding: 9px 18px; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text-dim);
+      transition: all 0.2s;
+    }
+    .chip:hover { border-color: var(--border-bright); color: var(--text); }
+    .chip.active { background: rgba(56,224,255,0.12); border-color: var(--border-bright); color: var(--accent); }
+    .airline-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    @media (max-width: 760px) { .airline-grid { grid-template-columns: 1fr; } }
+    .airline-card { animation: fadeIn 0.35s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } }
+    .airline-head { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .airline-code {
+      width: 54px; height: 54px; border-radius: 14px; display: grid; place-items: center;
+      font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--accent);
+      background: rgba(56,224,255,0.08); border: 1px solid var(--border); flex-shrink: 0;
+    }
+    .airline-head h3 { margin: 0; }
+    .airline-head .country { font-size: 0.84rem; color: var(--text-faint); }
+    .airline-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; margin: 14px 0; font-size: 0.88rem; }
+    .airline-facts dt { color: var(--text-faint); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .airline-facts dd { color: var(--text-dim); margin: 2px 0 0; }
+    .airline-note { font-size: 0.9rem; color: var(--text-dim); border-left: 2px solid var(--border-bright); padding-left: 14px; margin-top: 14px; }
+    .status-summary { display: flex; gap: 28px; margin-bottom: 32px; flex-wrap: wrap; }
+    .status-summary .item { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; color: var(--text-dim); }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.g { background: var(--green); box-shadow: 0 0 10px var(--green); }
+    .dot.a { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+    .dot.r { background: var(--red); box-shadow: 0 0 10px var(--red); }
+  </style>
+</head>
+<body>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Airline Intelligence</span>
+      <h1 style="margin-top:20px">Who's <span class="gradient-text">hiring</span> right now</h1>
+      <p>Fleets, bases, pilot numbers and live recruitment status for the world's major carriers.</p>
+    </div>
+  </header>
+
+  <section style="padding-top:10px">
+    <div class="container">
+      <div class="status-summary" id="statusSummary"></div>
+
+      <div class="toolbar">
+        <input class="input" id="aSearch" type="search" placeholder="🔍  Search airline, country, fleet…">
+        <button class="chip active" data-status="">All</button>
+        <button class="chip" data-status="hiring">Hiring</button>
+        <button class="chip" data-status="paused">Paused</button>
+        <button class="chip" data-status="closed">Closed</button>
+      </div>
+
+      <div class="airline-grid" id="airlineGrid"></div>
+    </div>
+  </section>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const search = document.getElementById("aSearch");
+    const grid = document.getElementById("airlineGrid");
+    const chips = document.querySelectorAll(".chip");
+    let statusFilter = "";
+
+    const STATUS_LABEL = { hiring: "Actively hiring", paused: "Hiring paused", closed: "Not hiring" };
+
+    function render() {
+      const q = search.value.toLowerCase().trim();
+      const list = AIRLINES.filter(a =>
+        (!q || `${a.name} ${a.country} ${a.fleet} ${a.bases}`.toLowerCase().includes(q)) &&
+        (!statusFilter || a.status === statusFilter));
+
+      grid.innerHTML = list.map((a, i) => `
+        <div class="card airline-card" style="animation-delay:${Math.min(i * 35, 350)}ms">
+          <div class="airline-head">
+            ${logoHTML(a.name, "airline-code")}
+            <div>
+              <h3>${a.name}</h3>
+              <span class="country">${a.country}</span>
+            </div>
+            <span class="badge ${a.status}" style="margin-left:auto">${STATUS_LABEL[a.status]}</span>
+          </div>
+          <dl class="airline-facts">
+            <div><dt>Fleet</dt><dd>${a.fleet}</dd></div>
+            <div><dt>Bases</dt><dd>${a.bases}</dd></div>
+            <div><dt>Pilots</dt><dd>≈ ${a.pilots.toLocaleString()}</dd></div>
+            <div><dt>IATA</dt><dd>${a.code}</dd></div>
+          </dl>
+          <p class="airline-note">${a.note}</p>
+        </div>`).join("") ||
+        `<p style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-faint)">No airlines match that search.</p>`;
+    }
+
+    function renderSummary() {
+      const c = s => AIRLINES.filter(a => a.status === s).length;
+      document.getElementById("statusSummary").innerHTML = `
+        <div class="item"><span class="dot g"></span> <b style="color:var(--text)">${c("hiring")}</b>&nbsp;actively hiring</div>
+        <div class="item"><span class="dot a"></span> <b style="color:var(--text)">${c("paused")}</b>&nbsp;paused</div>
+        <div class="item"><span class="dot r"></span> <b style="color:var(--text)">${c("closed")}</b>&nbsp;closed</div>`;
+    }
+
+    chips.forEach(ch => ch.addEventListener("click", () => {
+      chips.forEach(c => c.classList.remove("active"));
+      ch.classList.add("active");
+      statusFilter = ch.dataset.status;
+      render();
+    }));
+    search.addEventListener("input", render);
+    document.addEventListener("DOMContentLoaded", () => { renderSummary(); render(); });
+  </script>
+</body>
+</html>

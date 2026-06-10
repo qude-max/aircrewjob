@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilot Aptitude Prep Games — AirCrew Jobs</title>
+  <meta name="description" content="Free practice for airline psychometric assessments: reaction & vigilance, memory span, and multitasking — the skills cut-e and CAE-style tests measure.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 900px) { .game-grid { grid-template-columns: 1fr; } }
+    .game-card { display: flex; flex-direction: column; }
+    .game-card .icon { font-size: 2rem; margin-bottom: 12px; }
+    .game-card p { font-size: 0.92rem; flex: 1; margin: 10px 0 16px; }
+    .best { font-size: 0.8rem; color: var(--accent); font-family: var(--font-display); margin-bottom: 14px; min-height: 1.2em; }
+
+    /* ---- Game modal ---- */
+    .gm-overlay {
+      position: fixed; inset: 0; z-index: 200; display: none;
+      background: rgba(3,5,10,0.85); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; padding: 16px;
+    }
+    .gm-overlay.open { display: flex; }
+    .gm {
+      width: min(680px, 100%); background: var(--bg-2);
+      border: 1px solid var(--border-bright); border-radius: 20px;
+      padding: 30px; box-shadow: 0 0 60px rgba(56,224,255,0.15);
+    }
+    .gm-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .gm-head h3 { margin: 0; }
+    .gm-close { background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--text-dim); cursor: pointer; padding: 6px 12px; font-size: 1rem; }
+    .gm-stage {
+      min-height: 320px; border: 1px solid var(--border); border-radius: 14px;
+      background: rgba(5,8,15,0.7); position: relative; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 24px; user-select: none;
+    }
+    .gm-stats { display: flex; gap: 24px; margin-top: 16px; font-family: var(--font-display); font-size: 0.9rem; color: var(--text-dim); flex-wrap: wrap; }
+    .gm-stats b { color: var(--accent); }
+    .big-target {
+      width: 150px; height: 150px; border-radius: 50%; cursor: pointer;
+      display: grid; place-items: center; font-family: var(--font-display); font-weight: 700;
+      transition: background 0.1s; border: 2px solid var(--border);
+    }
+    .digit-display { font-family: var(--font-display); font-size: 3.4rem; font-weight: 700; letter-spacing: 0.2em; color: var(--accent); min-height: 1.2em; }
+    .digit-input { font-size: 1.6rem; text-align: center; letter-spacing: 0.25em; max-width: 320px; }
+    .mt-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; }
+    @media (max-width: 560px) { .mt-wrap { grid-template-columns: 1fr; } }
+    .mt-panel { border: 1px solid var(--border); border-radius: 12px; padding: 16px; background: rgba(255,255,255,0.02); }
+    .mt-panel h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-faint); margin-bottom: 12px; }
+    .gauges { display: flex; gap: 10px; justify-content: center; }
+    .gauge {
+      width: 54px; height: 54px; border-radius: 50%; cursor: pointer;
+      border: 2px solid var(--border); display: grid; place-items: center;
+      font-family: var(--font-display); font-size: 0.7rem; color: var(--text-dim);
+      transition: all 0.15s; background: rgba(56,224,255,0.05);
+    }
+    .gauge.alert { border-color: var(--red); background: rgba(255,107,129,0.2); color: var(--red); box-shadow: 0 0 16px rgba(255,107,129,0.4); }
+    .math-q { font-family: var(--font-display); font-size: 1.5rem; color: var(--text); margin-bottom: 12px; min-height: 1.3em; }
+    .math-opts { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .math-opts button { min-width: 64px; }
+    .note-strip { font-size: 0.84rem; color: var(--text-faint); margin-top: 30px; max-width: 760px; }
+  </style>
+</head>
+<body>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Aptitude Prep · Free during beta</span>
+      <h1 style="margin-top:20px">Train like it's <span class="gradient-text">assessment day</span></h1>
+      <p>Airline screening (cut-e/AON, CAE, COMPASS) measures reaction, memory and divided attention. These trainers exercise exactly those muscles — scores stay on your device.</p>
+    </div>
+  </header>
+
+  <section style="padding-top:10px">
+    <div class="container">
+      <div class="game-grid">
+        <div class="card game-card">
+          <div class="icon">⚡</div>
+          <h3>Reaction & Vigilance</h3>
+          <p>Wait for the disc to turn cyan, then hit it — 8 rounds with random delays. Jump early and you're penalised, exactly like a vigilance task.</p>
+          <div class="best" id="best-reaction"></div>
+          <button class="btn btn-primary btn-sm" onclick="openGame('reaction')">Start →</button>
+        </div>
+        <div class="card game-card">
+          <div class="icon">🧠</div>
+          <h3>Memory Span</h3>
+          <p>A digit sequence flashes once, then you type it back. Each pass adds a digit. Airlines test forwards and backwards recall — this trains both.</p>
+          <div class="best" id="best-memory"></div>
+          <button class="btn btn-primary btn-sm" onclick="openGame('memory')">Start →</button>
+        </div>
+        <div class="card game-card">
+          <div class="icon">🎛️</div>
+          <h3>Multitask Monitor</h3>
+          <p>Keep answering mental-arithmetic questions while monitoring six gauges — when one goes red, silence it fast. Divided attention under time pressure.</p>
+          <div class="best" id="best-multitask"></div>
+          <button class="btn btn-primary btn-sm" onclick="openGame('multitask')">Start →</button>
+        </div>
+      </div>
+
+      <p class="note-strip">These trainers build the underlying skills but are not replicas of any provider's copyrighted tests. For airline-specific formats, practise the official familiarisation material the airline sends you — and read our <a href="guide.html?slug=interview-prep" style="color:var(--accent)">assessment prep guide</a>.</p>
+    </div>
+  </section>
+
+  <!-- Game modal -->
+  <div class="gm-overlay" id="gmOverlay">
+    <div class="gm">
+      <div class="gm-head">
+        <h3 id="gmTitle"></h3>
+        <button class="gm-close" onclick="closeGame()">✕</button>
+      </div>
+      <div class="gm-stage" id="gmStage"></div>
+      <div class="gm-stats" id="gmStats"></div>
+    </div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    /* ---------- shared ---------- */
+    const $ = id => document.getElementById(id);
+    const stage = () => $("gmStage");
+    let activeGame = null, cleanupFns = [];
+
+    const SCORES_KEY = "acj_game_scores";
+    const getScores = () => { try { return JSON.parse(localStorage.getItem(SCORES_KEY)) || {}; } catch { return {}; } };
+    const setBest = (game, value, better) => {
+      const s = getScores();
+      if (s[game] === undefined || better(value, s[game])) { s[game] = value; localStorage.setItem(SCORES_KEY, JSON.stringify(s)); }
+      renderBests();
+    };
+    function renderBests() {
+      const s = getScores();
+      $("best-reaction").textContent  = s.reaction  !== undefined ? `Personal best: ${s.reaction} ms avg` : "No score yet — set your baseline";
+      $("best-memory").textContent    = s.memory    !== undefined ? `Personal best: ${s.memory} digits` : "No score yet — set your baseline";
+      $("best-multitask").textContent = s.multitask !== undefined ? `Personal best: ${s.multitask} pts` : "No score yet — set your baseline";
+    }
+
+    function openGame(name) {
+      activeGame = name;
+      $("gmOverlay").classList.add("open");
+      $("gmTitle").textContent = { reaction: "⚡ Reaction & Vigilance", memory: "🧠 Memory Span", multitask: "🎛️ Multitask Monitor" }[name];
+      ({ reaction: startReaction, memory: startMemory, multitask: startMultitask })[name]();
+    }
+    function closeGame() {
+      cleanupFns.forEach(f => f()); cleanupFns = [];
+      $("gmOverlay").classList.remove("open");
+      stage().innerHTML = ""; $("gmStats").innerHTML = "";
+      activeGame = null;
+    }
+    $("gmOverlay").addEventListener("click", e => { if (e.target === $("gmOverlay")) closeGame(); });
+
+    const timer = (fn, ms) => { const t = setTimeout(fn, ms); cleanupFns.push(() => clearTimeout(t)); return t; };
+    const ticker = (fn, ms) => { const t = setInterval(fn, ms); cleanupFns.push(() => clearInterval(t)); return t; };
+
+    /* ---------- 1. Reaction & Vigilance ---------- */
+    function startReaction() {
+      const ROUNDS = 8;
+      let round = 0, times = [], falseStarts = 0, waiting = false, goTime = 0;
+
+      function stats() {
+        const avg = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : "—";
+        $("gmStats").innerHTML = `<span>Round <b>${Math.min(round + 1, ROUNDS)}/${ROUNDS}</b></span>
+          <span>Last <b>${times.length ? times[times.length - 1] + " ms" : "—"}</b></span>
+          <span>Average <b>${avg}${times.length ? " ms" : ""}</b></span>
+          <span>False starts <b>${falseStarts}</b></span>`;
+      }
+
+      function nextRound() {
+        if (round >= ROUNDS) return finish();
+        waiting = true;
+        stage().innerHTML = `<div class="big-target" id="disc" style="background:rgba(255,255,255,0.04); color:var(--text-faint)">WAIT…</div>
+          <p style="margin-top:18px; font-size:0.85rem; color:var(--text-faint)">Click the instant it turns cyan</p>`;
+        $("disc").onclick = () => {
+          if (waiting) { falseStarts++; times.push(800); waiting = false; round++; stats();
+            stage().querySelector("p").textContent = "Too early! +800 ms penalty."; timer(nextRound, 900); }
+        };
+        timer(() => {
+          if (!$("disc")) return;
+          waiting = false; goTime = performance.now();
+          const d = $("disc");
+          d.style.background = "var(--accent)"; d.style.color = "#03121a"; d.style.boxShadow = "0 0 40px rgba(56,224,255,0.6)";
+          d.textContent = "GO!";
+          d.onclick = () => {
+            times.push(Math.round(performance.now() - goTime));
+            round++; stats(); nextRound();
+          };
+        }, 1200 + Math.random() * 2600);
+        stats();
+      }
+
+      function finish() {
+        const avg = Math.round(times.reduce((a, b) => a + b, 0) / times.length);
+        setBest("reaction", avg, (a, b) => a < b);
+        const verdict = avg < 300 ? "Sharp — airline assessment territory." : avg < 400 ? "Solid. Keep drilling to push under 300 ms." : "Keep practising — consistency beats speed.";
+        stage().innerHTML = `<div class="digit-display">${avg} ms</div>
+          <p style="margin:12px 0 6px">Average over ${times.length} rounds · ${falseStarts} false start${falseStarts === 1 ? "" : "s"}</p>
+          <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+          <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startReaction()">Run it again →</button>`;
+      }
+      nextRound();
+    }
+
+    /* ---------- 2. Memory Span ---------- */
+    function startMemory() {
+      let len = 3, lives = 2, best = 0;
+
+      function show() {
+        const seq = Array.from({ length: len }, () => Math.floor(Math.random() * 10)).join("");
+        stage().innerHTML = `<p style="font-size:0.8rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.12em">Memorise</p>
+          <div class="digit-display" id="seq"></div>`;
+        $("gmStats").innerHTML = `<span>Sequence <b>${len} digits</b></span><span>Best this run <b>${best}</b></span><span>Lives <b>${"❤".repeat(lives) || "—"}</b></span>`;
+        // reveal then hide (display time scales with length)
+        $("seq").textContent = seq;
+        timer(() => ask(seq), 600 + len * 420);
+      }
+
+      function ask(seq) {
+        stage().innerHTML = `<p style="font-size:0.8rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.12em">Type it back</p>
+          <input class="input digit-input" id="ans" inputmode="numeric" autocomplete="off" maxlength="${seq.length}">
+          <p id="fb" style="margin-top:12px; min-height:1.3em; font-size:0.9rem"></p>`;
+        const input = $("ans");
+        input.focus();
+        input.addEventListener("input", () => {
+          if (input.value.length !== seq.length) return;
+          if (input.value === seq) {
+            best = Math.max(best, len); len++;
+            $("fb").innerHTML = `<span style="color:var(--green)">✓ Correct</span>`;
+            timer(show, 700);
+          } else {
+            lives--;
+            $("fb").innerHTML = `<span style="color:var(--red)">✗ It was ${seq}</span>`;
+            if (lives <= 0) timer(() => finish(), 1100);
+            else timer(show, 1100);
+          }
+        });
+      }
+
+      function finish() {
+        setBest("memory", best, (a, b) => a > b);
+        const verdict = best >= 8 ? "Excellent — above the typical assessment band." : best >= 6 ? "Good. Most candidates plateau at 6–7; push for 8+." : "Train daily for a week — span improves fast.";
+        stage().innerHTML = `<div class="digit-display">${best} digits</div>
+          <p style="margin:12px 0 6px">Longest sequence recalled this run</p>
+          <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+          <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startMemory()">Run it again →</button>`;
+      }
+      show();
+    }
+
+    /* ---------- 3. Multitask Monitor ---------- */
+    function startMultitask() {
+      const DURATION = 60;
+      let score = 0, missed = 0, mathRight = 0, mathWrong = 0, timeLeft = DURATION;
+      let alertIdx = -1, alertAt = 0, answer = null;
+
+      stage().innerHTML = `
+        <div class="mt-wrap">
+          <div class="mt-panel">
+            <h4>Systems — click the red gauge</h4>
+            <div class="gauges" id="gauges">${[0,1,2,3,4,5].map(i => `<div class="gauge" data-i="${i}">SYS ${i + 1}</div>`).join("")}</div>
+            <p id="gFb" style="font-size:0.78rem; color:var(--text-faint); margin-top:10px; min-height:1.2em"></p>
+          </div>
+          <div class="mt-panel">
+            <h4>Mental arithmetic</h4>
+            <div class="math-q" id="mathQ"></div>
+            <div class="math-opts" id="mathOpts"></div>
+          </div>
+        </div>`;
+
+      function stats() {
+        $("gmStats").innerHTML = `<span>Time <b>${timeLeft}s</b></span><span>Score <b>${score}</b></span>
+          <span>Maths <b>${mathRight}✓ ${mathWrong}✗</b></span><span>Gauges missed <b>${missed}</b></span>`;
+      }
+
+      // gauges
+      document.querySelectorAll(".gauge").forEach(g => g.onclick = () => {
+        const i = parseInt(g.dataset.i, 10);
+        if (i === alertIdx) {
+          const ms = Math.round(performance.now() - alertAt);
+          score += Math.max(10, 60 - Math.floor(ms / 100));
+          $("gFb").textContent = `Silenced in ${ms} ms`;
+          g.classList.remove("alert"); alertIdx = -1;
+        } else { score = Math.max(0, score - 5); $("gFb").textContent = "Wrong gauge −5"; }
+        stats();
+      });
+      function fireAlert() {
+        if (alertIdx >= 0) { // previous one missed
+          document.querySelectorAll(".gauge")[alertIdx].classList.remove("alert");
+          missed++; score = Math.max(0, score - 15);
+        }
+        alertIdx = Math.floor(Math.random() * 6);
+        alertAt = performance.now();
+        document.querySelectorAll(".gauge")[alertIdx].classList.add("alert");
+        timer(fireAlert, 2200 + Math.random() * 2800);
+        stats();
+      }
+
+      // maths
+      function newMath() {
+        const a = 12 + Math.floor(Math.random() * 78), b = 3 + Math.floor(Math.random() * 16);
+        const ops = [["+", a + b], ["−", a - b], ["×", Math.floor(a / 10) * b]];
+        const [sym, val] = ops[Math.floor(Math.random() * ops.length)];
+        const shown = sym === "×" ? `${Math.floor(a / 10)} × ${b}` : `${a} ${sym} ${b}`;
+        answer = val;
+        const opts = new Set([val]);
+        while (opts.size < 4) opts.add(val + [-12, -10, -3, -2, -1, 1, 2, 3, 10, 12][Math.floor(Math.random() * 10)]);
+        $("mathQ").textContent = shown + " = ?";
+        $("mathOpts").innerHTML = [...opts].sort(() => Math.random() - 0.5)
+          .map(v => `<button class="btn btn-ghost btn-sm" onclick="window.__mtAnswer(${v})">${v}</button>`).join("");
+      }
+      window.__mtAnswer = v => {
+        if (v === answer) { mathRight++; score += 8; } else { mathWrong++; score = Math.max(0, score - 4); }
+        stats(); newMath();
+      };
+      cleanupFns.push(() => delete window.__mtAnswer);
+
+      // clock
+      ticker(() => {
+        timeLeft--;
+        stats();
+        if (timeLeft <= 0) finish();
+      }, 1000);
+
+      function finish() {
+        cleanupFns.forEach(f => f()); cleanupFns = [];
+        setBest("multitask", score, (a, b) => a > b);
+        const verdict = score >= 350 ? "Strong divided attention — assessors look for exactly this." : score >= 200 ? "Decent balance. Don't let the gauges starve the maths." : "Focus on rhythm: scan gauges between every answer.";
+        stage().innerHTML = `<div class="digit-display">${score} pts</div>
+          <p style="margin:12px 0 6px">${mathRight} correct sums · ${missed} gauge${missed === 1 ? "" : "s"} missed</p>
+          <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+          <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startMultitask()">Run it again →</button>`;
+      }
+
+      stats(); fireAlert(); newMath();
+    }
+
+    document.addEventListener("DOMContentLoaded", renderBests);
+  </script>
+</body>
+</html>

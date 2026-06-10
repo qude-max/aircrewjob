@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilot Job Board — AirCrew Jobs</title>
+  <meta name="description" content="Live pilot vacancies worldwide. Filter by region, role, type and minimum hours.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .filter-bar {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 12px;
+      padding: 18px; border: 1px solid var(--border); border-radius: var(--radius);
+      background: rgba(10,16,32,0.6); backdrop-filter: blur(12px);
+      position: sticky; top: 80px; z-index: 50; margin-bottom: 28px;
+    }
+    @media (max-width: 900px) { .filter-bar { grid-template-columns: 1fr 1fr; position: static; } .filter-bar .input:first-child { grid-column: 1 / -1; } }
+    .results-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; color: var(--text-faint); font-size: 0.9rem; }
+    .job-card {
+      display: grid; grid-template-columns: 56px 1fr auto; gap: 20px;
+      padding: 24px; border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); margin-bottom: 14px; transition: all 0.22s;
+      animation: fadeIn 0.4s ease both;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } }
+    .job-card:hover { border-color: var(--border-bright); box-shadow: var(--glow); transform: translateY(-2px); }
+    .job-logo {
+      width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center;
+      font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; color: var(--accent);
+      background: rgba(56,224,255,0.08); border: 1px solid var(--border);
+    }
+    .job-title { font-family: var(--font-display); font-weight: 600; font-size: 1.12rem; color: var(--text); }
+    .job-sub { color: var(--text-dim); font-size: 0.92rem; margin-top: 2px; }
+    .job-tags { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .job-right { text-align: right; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; gap: 10px; }
+    .job-salary { font-family: var(--font-display); font-weight: 600; color: var(--green); font-size: 0.95rem; }
+    .job-posted { font-size: 0.8rem; color: var(--text-faint); }
+    .job-actions { display: flex; gap: 8px; align-items: center; }
+    .save-btn {
+      width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center;
+      background: var(--surface); border: 1px solid var(--border); cursor: pointer;
+      font-size: 1.05rem; color: var(--text-dim); transition: all 0.18s;
+    }
+    .save-btn:hover { border-color: var(--border-bright); transform: scale(1.08); }
+    .save-btn.saved { color: var(--accent-3); border-color: rgba(255,122,217,0.5); background: rgba(255,122,217,0.08); }
+    @media (max-width: 680px) { .job-card { grid-template-columns: 1fr; } .job-right { text-align: left; align-items: flex-start; } .job-logo { display: none; } }
+    .empty-state { text-align: center; padding: 80px 20px; color: var(--text-faint); }
+    .empty-state .icon { font-size: 3rem; margin-bottom: 16px; }
+
+    /* ---- Apply modal ---- */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200; display: none;
+      background: rgba(3,5,10,0.75); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      width: min(540px, 100%); max-height: 88vh; overflow-y: auto;
+      background: var(--bg-2); border: 1px solid var(--border-bright);
+      border-radius: 20px; padding: 34px; box-shadow: 0 0 60px rgba(56,224,255,0.15);
+      animation: modalIn 0.25s ease;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } }
+    .modal h3 { margin-bottom: 4px; }
+    .modal .sub { font-size: 0.9rem; color: var(--text-faint); margin-bottom: 22px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 0.76rem; color: var(--text-faint); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    textarea.input { resize: vertical; min-height: 90px; font-family: var(--font-body); }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+    .modal-msg { font-size: 0.88rem; min-height: 1.3em; margin-top: 12px; }
+    .modal-msg.err { color: var(--red); }
+    .modal-msg.ok { color: var(--green); }
+  </style>
+</head>
+<body>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Job Board · Updated daily</span>
+      <h1 style="margin-top:20px">Flight deck <span class="gradient-text">vacancies</span></h1>
+      <p>From zero-hour cadetships to widebody commands. Filter, save, apply.</p>
+    </div>
+  </header>
+
+  <section style="padding-top:10px">
+    <div class="container">
+      <div class="filter-bar">
+        <input class="input" id="fSearch" type="search" placeholder="🔍  Search airline, aircraft, base…">
+        <select class="input" id="fRegion">
+          <option value="">All regions</option>
+          <option>Europe</option><option>Middle East</option><option>Americas</option><option>Asia-Pacific</option><option>Africa</option>
+        </select>
+        <select class="input" id="fRole">
+          <option value="">All roles</option>
+          <option>Captain</option><option>First Officer</option><option>Second Officer</option><option>Cadet Pilot</option>
+        </select>
+        <select class="input" id="fType">
+          <option value="">All entry types</option>
+          <option>Cadet</option><option>Rated</option><option>Direct Entry</option>
+        </select>
+        <select class="input" id="fHours">
+          <option value="">Any min hours</option>
+          <option value="0">0 (ab initio)</option>
+          <option value="500">≤ 500 hrs</option>
+          <option value="1500">≤ 1,500 hrs</option>
+          <option value="3000">≤ 3,000 hrs</option>
+        </select>
+      </div>
+
+      <div class="results-meta">
+        <span id="resultCount">Loading…</span>
+        <span>Sorted by: <b style="color:var(--text-dim)">Most recent</b></span>
+      </div>
+
+      <div id="jobList"></div>
+
+      <p style="font-size:0.82rem; color:var(--text-faint); margin-top:26px">
+        ✓ All listings are sourced from the official careers portals of 13 airlines across 5 continents
+        (Emirates, Etihad, Qatar Airways, flydubai, Ryanair, easyJet, Wizz Air, Cathay Pacific, Singapore Airlines,
+        United, Ethiopian, Virgin Australia, Air New Zealand) — last checked 10 Jun 2026.
+        Requirements are summarised; always confirm full criteria on the airline's site before applying.
+      </p>
+    </div>
+  </section>
+
+  <!-- Apply modal -->
+  <div class="modal-overlay" id="applyOverlay">
+    <div class="modal">
+      <h3 id="applyTitle">Apply</h3>
+      <div class="sub" id="applySub"></div>
+      <form id="applyForm">
+        <div class="field-row">
+          <div class="field">
+            <label>Full name</label>
+            <input class="input" id="aName" type="text" required>
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input class="input" id="aEmail" type="email" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Licence</label>
+            <select class="input" id="aLicence">
+              <option value="">None yet</option>
+              <option>Student / PPL</option><option>CPL (frozen ATPL)</option>
+              <option>ATPL</option><option>MPL</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Total hours</label>
+            <input class="input" id="aHours" type="number" min="0">
+          </div>
+        </div>
+        <div class="field">
+          <label>Type ratings</label>
+          <input class="input" id="aRatings" type="text" placeholder="e.g. A320, B737">
+        </div>
+        <div class="field">
+          <label>Cover note</label>
+          <textarea class="input" id="aNote" placeholder="Why you, why this airline — keep it tight."></textarea>
+        </div>
+        <div class="modal-msg" id="applyMsg"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost btn-sm" id="applyCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Submit application →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/config.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/backend.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const els = {};
+    ["fSearch","fRegion","fRole","fType","fHours","jobList","resultCount","applyOverlay","applyTitle","applySub","applyForm","applyMsg"]
+      .forEach(id => els[id] = document.getElementById(id));
+
+    let allJobs = [], savedIds = new Set(), appliedIds = new Set(), applyJob = null;
+
+    const initials = name => name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+
+    async function loadData() {
+      await Backend.ready;
+      allJobs = await Backend.jobs.list();
+      if (Backend.auth.user()) {
+        savedIds = await Backend.saved.ids();
+        appliedIds = new Set((await Backend.apps.list()).map(a => a.jobId));
+      }
+      render();
+    }
+
+    function render() {
+      const q = els.fSearch.value.toLowerCase().trim();
+      const region = els.fRegion.value, role = els.fRole.value, type = els.fType.value;
+      const maxH = els.fHours.value === "" ? null : parseInt(els.fHours.value, 10);
+
+      const filtered = [...allJobs]
+        .filter(j =>
+          (!q || `${j.airline} ${j.aircraft} ${j.location} ${j.role}`.toLowerCase().includes(q)) &&
+          (!region || j.region === region) &&
+          (!role || j.role === role) &&
+          (!type || j.type === type) &&
+          (maxH === null || j.minHours <= maxH))
+        .sort((a, b) => a.posted - b.posted);
+
+      els.resultCount.textContent = `${filtered.length} position${filtered.length === 1 ? "" : "s"} found`;
+
+      if (!filtered.length) {
+        els.jobList.innerHTML = `<div class="empty-state"><div class="icon">🛩️</div><p>No vacancies match those filters.<br>Try widening your search — or set a job alert in <a href="account.html" style="color:var(--accent)">your account</a>.</p></div>`;
+        return;
+      }
+
+      els.jobList.innerHTML = filtered.map((j, i) => {
+        const applied = appliedIds.has(j.id);
+        const applyBtn = j.applyUrl
+          ? `<a class="btn btn-primary btn-sm" href="${j.applyUrl}" target="_blank" rel="noopener">Apply on airline site ↗</a>`
+          : `<button class="btn btn-primary btn-sm" ${applied ? "disabled style='opacity:0.55'" : ""} onclick="openApply(${JSON.stringify(j.id)})">${applied ? "✓ Applied" : "Apply →"}</button>`;
+        return `
+        <div class="job-card" style="animation-delay:${Math.min(i * 40, 400)}ms">
+          ${logoHTML(j.airline)}
+          <div>
+            <div class="job-title">${j.role} — ${j.aircraft}</div>
+            <div class="job-sub">${j.airline} · ${j.location}</div>
+            <div class="job-tags">
+              ${j.verified ? `<span class="badge hiring" title="Sourced from the airline's official careers portal, ${typeof VERIFIED_DATE !== "undefined" ? VERIFIED_DATE : ""}">✓ Verified · official</span>` : `<span class="badge">Recruiter post</span>`}
+              <span class="badge type">${j.type}</span>
+              <span class="badge">${j.region}</span>
+              <span class="badge">${j.minHours === 0 ? "No hours required" : `Min ${j.minHours.toLocaleString()} hrs`}</span>
+              ${j.rated ? `<span class="badge new">Type rated</span>` : ""}
+            </div>
+            ${j.reqs ? `<div style="font-size:0.84rem; color:var(--text-faint); margin-top:10px">${j.reqs}</div>` : ""}
+          </div>
+          <div class="job-right">
+            <span class="job-posted">${j.posted <= 2 ? "🔥 " : ""}${daysAgo(j.posted)}</span>
+            <span class="job-salary">${j.salary}</span>
+            <div class="job-actions">
+              <button class="save-btn ${savedIds.has(j.id) ? "saved" : ""}" title="Save job" onclick="toggleSave(${JSON.stringify(j.id)}, this)">${savedIds.has(j.id) ? "♥" : "♡"}</button>
+              ${applyBtn}
+            </div>
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    async function toggleSave(id, btn) {
+      if (!Backend.auth.user()) { location.href = "auth.html"; return; }
+      const res = await Backend.saved.toggle(id);
+      if (res.ok) {
+        res.saved ? savedIds.add(id) : savedIds.delete(id);
+        btn.classList.toggle("saved", res.saved);
+        btn.textContent = res.saved ? "♥" : "♡";
+      }
+    }
+
+    function openApply(id) {
+      if (!Backend.auth.user()) { location.href = "auth.html"; return; }
+      applyJob = allJobs.find(j => j.id === id);
+      const p = Backend.auth.profile() || {};
+      els.applyTitle.textContent = `Apply — ${applyJob.role}, ${applyJob.aircraft}`;
+      els.applySub.textContent = `${applyJob.airline} · ${applyJob.location}`;
+      document.getElementById("aName").value = p.full_name || "";
+      document.getElementById("aEmail").value = Backend.auth.user().email || "";
+      document.getElementById("aLicence").value = p.licence || "";
+      document.getElementById("aHours").value = p.total_hours || "";
+      document.getElementById("aRatings").value = p.ratings || "";
+      document.getElementById("aNote").value = "";
+      els.applyMsg.textContent = "";
+      els.applyOverlay.classList.add("open");
+    }
+
+    els.applyForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      els.applyMsg.className = "modal-msg";
+      els.applyMsg.textContent = "Submitting…";
+      const res = await Backend.apps.submit(applyJob, {
+        licence: document.getElementById("aLicence").value,
+        hours: parseInt(document.getElementById("aHours").value, 10) || 0,
+        ratings: document.getElementById("aRatings").value.trim(),
+        note: document.getElementById("aNote").value.trim()
+      });
+      if (res.error) { els.applyMsg.className = "modal-msg err"; els.applyMsg.textContent = res.error; return; }
+      els.applyMsg.className = "modal-msg ok";
+      els.applyMsg.textContent = "✓ Application submitted. Track it in My Account.";
+      appliedIds.add(applyJob.id);
+      setTimeout(() => { els.applyOverlay.classList.remove("open"); render(); }, 1100);
+    });
+
+    document.getElementById("applyCancel").addEventListener("click", () => els.applyOverlay.classList.remove("open"));
+    els.applyOverlay.addEventListener("click", e => { if (e.target === els.applyOverlay) els.applyOverlay.classList.remove("open"); });
+
+    ["fSearch","fRegion","fRole","fType","fHours"].forEach(id => els[id].addEventListener("input", render));
+    document.addEventListener("DOMContentLoaded", loadData);
+  </script>
+</body>
+</html>

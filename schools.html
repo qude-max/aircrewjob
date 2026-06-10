@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Schools & Class 1 Medical Map — AirCrew Jobs</title>
+  <meta name="description" content="Interactive world map of flight training academies and Class 1 aeromedical centres.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .map-shell {
+      border: 1px solid var(--border-bright); border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--glow); position: relative;
+    }
+    #map { height: 560px; width: 100%; background: #05080f; }
+    @media (max-width: 680px) { #map { height: 420px; } }
+    .toolbar { display: flex; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; align-items: center; }
+    .toolbar .input { max-width: 320px; }
+    .chip {
+      font-family: var(--font-display); font-size: 0.84rem; font-weight: 500;
+      padding: 9px 18px; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text-dim); transition: all 0.2s;
+    }
+    .chip:hover { border-color: var(--border-bright); color: var(--text); }
+    .chip.active { background: rgba(56,224,255,0.12); border-color: var(--border-bright); color: var(--accent); }
+    .chip .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; }
+    .legend-count { font-size: 0.85rem; color: var(--text-faint); margin-left: auto; }
+
+    /* Leaflet dark-theme adjustments */
+    .leaflet-popup-content-wrapper {
+      background: var(--bg-2); color: var(--text);
+      border: 1px solid var(--border-bright); border-radius: 12px;
+      box-shadow: 0 0 30px rgba(56,224,255,0.2);
+    }
+    .leaflet-popup-tip { background: var(--bg-2); border: 1px solid var(--border-bright); }
+    .leaflet-popup-content { margin: 14px 16px; font-family: var(--font-body); }
+    .pop-name { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin-bottom: 2px; }
+    .pop-city { font-size: 0.8rem; color: var(--text-faint); margin-bottom: 8px; }
+    .pop-note { font-size: 0.84rem; color: var(--text-dim); margin-bottom: 10px; line-height: 1.5; }
+    .pop-link { color: var(--accent); font-family: var(--font-display); font-weight: 600; font-size: 0.84rem; text-decoration: none; }
+    .leaflet-container a.leaflet-popup-close-button { color: var(--text-faint); }
+    .leaflet-control-attribution { background: rgba(5,8,15,0.7) !important; color: var(--text-faint) !important; }
+    .leaflet-control-attribution a { color: var(--text-dim) !important; }
+    .leaflet-bar a { background: var(--bg-2) !important; color: var(--text) !important; border-color: var(--border) !important; }
+
+    .pin { border-radius: 50%; border: 2px solid; box-shadow: 0 0 12px; }
+    .locator-grid { margin-top: 36px; }
+    .locator-card { text-decoration: none; color: inherit; display: block; }
+    .locator-card h3 { font-size: 1rem; margin-bottom: 8px; }
+    .locator-card p { font-size: 0.86rem; }
+  </style>
+</head>
+<body>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Training Map · Curated directory</span>
+      <h1 style="margin-top:20px">Schools & <span class="gradient-text">Class 1 medicals</span>, mapped</h1>
+      <p>Where to train and where to get your initial Class 1 — the two first steps of every flying career, on one map.</p>
+    </div>
+  </header>
+
+  <section style="padding-top:10px">
+    <div class="container">
+      <div class="toolbar">
+        <button class="chip active" data-f="all">All pins</button>
+        <button class="chip" data-f="school"><span class="dot" style="background:var(--accent)"></span>Flight schools</button>
+        <button class="chip" data-f="medical"><span class="dot" style="background:var(--green)"></span>Class 1 centres</button>
+        <input class="input" id="mapSearch" type="search" placeholder="🔍  Search name, city, country…">
+        <span class="legend-count" id="pinCount"></span>
+      </div>
+
+      <div class="map-shell"><div id="map"></div></div>
+
+      <p style="font-size:0.82rem; color:var(--text-faint); margin-top:18px">
+        Curated starter directory of well-established organisations — pins are city-level, details change:
+        always confirm programmes, prices and approvals with the organisation and your regulator before committing.
+        Know a school we should add? Tell us on the <a href="#" id="discordLink" style="color:var(--accent)">Discord</a>.
+      </p>
+
+      <div class="locator-grid">
+        <div class="section-head" style="margin-bottom:24px">
+          <h2 style="font-size:1.4rem">No pin in your country?</h2>
+          <p style="font-size:0.95rem">These regulators use networks of local examiners instead of central medical centres — use their official locators.</p>
+        </div>
+        <div class="grid-3" id="locators"></div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="assets/config.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/schools-data.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const map = L.map("map", { worldCopyJump: true, minZoom: 2 }).setView([28, 12], 2);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: "abcd", maxZoom: 12
+    }).addTo(map);
+
+    const mkIcon = color => L.divIcon({
+      className: "",
+      html: `<div class="pin" style="width:14px;height:14px;background:${color}33;border-color:${color};box-shadow:0 0 12px ${color}99"></div>`,
+      iconSize: [14, 14], iconAnchor: [7, 7]
+    });
+    const icons = { school: mkIcon("#38e0ff"), medical: mkIcon("#34e8a0") };
+
+    const all = [
+      ...SCHOOLS.map(s => ({ ...s, kind: "school" })),
+      ...MEDICAL.map(m => ({ ...m, kind: "medical" }))
+    ];
+    let markers = [];
+
+    function popup(p) {
+      return `<div class="pop-name">${p.kind === "school" ? "🎓" : "🩺"} ${p.name}</div>
+        <div class="pop-city">${p.city}</div>
+        <div class="pop-note">${p.note}</div>
+        <a class="pop-link" href="${p.url}" target="_blank" rel="noopener">Official site ↗</a>`;
+    }
+
+    function render() {
+      const f = document.querySelector(".chip.active").dataset.f;
+      const q = document.getElementById("mapSearch").value.toLowerCase().trim();
+      markers.forEach(m => map.removeLayer(m));
+      markers = [];
+      const visible = all.filter(p =>
+        (f === "all" || p.kind === f) &&
+        (!q || `${p.name} ${p.city} ${p.region}`.toLowerCase().includes(q)));
+      visible.forEach(p => {
+        const m = L.marker([p.lat, p.lng], { icon: icons[p.kind] }).addTo(map).bindPopup(popup(p));
+        markers.push(m);
+      });
+      document.getElementById("pinCount").textContent =
+        `${visible.filter(v => v.kind === "school").length} schools · ${visible.filter(v => v.kind === "medical").length} medical centres`;
+      if (q && visible.length) {
+        const g = L.featureGroup(markers);
+        map.fitBounds(g.getBounds().pad(0.4), { maxZoom: 6 });
+      }
+    }
+
+    document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
+      document.querySelectorAll(".chip").forEach(x => x.classList.remove("active"));
+      c.classList.add("active");
+      render();
+    }));
+    document.getElementById("mapSearch").addEventListener("input", render);
+
+    // Regulator locator cards
+    document.getElementById("locators").innerHTML = REGULATOR_LOCATORS.map(r => `
+      <a class="card locator-card" href="${r.url}" target="_blank" rel="noopener">
+        <h3>🗺️ ${r.name}</h3>
+        <p>${r.note}</p>
+        <span style="color:var(--accent); font-family:var(--font-display); font-weight:600; font-size:0.85rem">Open official locator ↗</span>
+      </a>`).join("");
+
+    if (typeof DISCORD_INVITE !== "undefined")
+      document.getElementById("discordLink").href = DISCORD_INVITE;
+
+    render();
+  </script>
+</body>
+</html>
