@@ -54,6 +54,13 @@
         <a href="auth.html" class="btn btn-primary">Sign in →</a>
       </div>
 
+      <div class="grid-4" id="statsRow" style="display:none; margin-bottom:22px">
+        <div class="card"><div class="stat-value" id="stUsers">—</div><div class="stat-label">Registered users</div><p style="font-size:0.8rem; margin-top:8px" id="stUsersSub"></p></div>
+        <div class="card"><div class="stat-value" id="stJobs">—</div><div class="stat-label">Live listings</div><p style="font-size:0.8rem; margin-top:8px" id="stJobsSub"></p></div>
+        <div class="card"><div class="stat-value" id="stApps">—</div><div class="stat-label">Applications</div><p style="font-size:0.8rem; margin-top:8px" id="stAppsSub"></p></div>
+        <div class="card"><div class="stat-value" id="stPending">—</div><div class="stat-label">Recruiters waiting</div><p style="font-size:0.8rem; margin-top:8px" id="stPendingSub"></p></div>
+      </div>
+
       <div class="card" id="approvalsCard" style="display:none; margin-bottom:22px">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px">
           <h3>🛂 Recruiter approvals</h3>
@@ -137,8 +144,22 @@
       }
       document.getElementById("adminUI").style.display = "grid";
       document.getElementById("approvalsCard").style.display = "block";
+      document.getElementById("statsRow").style.display = "grid";
       renderList();
       renderPending();
+      renderStats();
+    }
+
+    async function renderStats() {
+      const s = await Backend.admin.stats();
+      document.getElementById("stUsers").textContent = s.pilots + s.crew + s.recruiters;
+      document.getElementById("stUsersSub").textContent = `${s.pilots} pilots · ${s.crew} crew · ${s.recruiters} recruiters`;
+      document.getElementById("stJobs").textContent = s.jobsTotal;
+      document.getElementById("stJobsSub").textContent = `${s.jobsVerified} verified · ${s.jobsRecruiter} recruiter posts`;
+      document.getElementById("stApps").textContent = s.apps;
+      document.getElementById("stAppsSub").textContent = `${s.saved} jobs saved by pilots`;
+      document.getElementById("stPending").textContent = s.pendingRec;
+      document.getElementById("stPendingSub").textContent = s.pendingRec ? "action needed below ↓" : "queue clear ✓";
     }
 
     async function renderPending() {

@@ -117,8 +117,15 @@
     let markers = [];
 
     function popup(p) {
+      const authBadge = p.auth ? `<div style="display:inline-block; font-size:0.72rem; font-weight:600; letter-spacing:0.04em;
+        padding:3px 10px; border-radius:999px; margin-bottom:8px;
+        color:${p.kind === "school" ? "var(--accent)" : "var(--green)"};
+        background:${p.kind === "school" ? "rgba(56,224,255,0.1)" : "rgba(52,232,160,0.1)"};
+        border:1px solid ${p.kind === "school" ? "rgba(56,224,255,0.35)" : "rgba(52,232,160,0.35)"}">
+        ${p.kind === "school" ? "Trains for: " : ""}${p.auth}</div>` : "";
       return `<div class="pop-name">${p.kind === "school" ? "🎓" : "🩺"} ${p.name}</div>
         <div class="pop-city">${p.city}</div>
+        ${authBadge}
         <div class="pop-note">${p.note}</div>
         <a class="pop-link" href="${p.url}" target="_blank" rel="noopener">Official site ↗</a>`;
     }
@@ -130,7 +137,7 @@
       markers = [];
       const visible = all.filter(p =>
         (f === "all" || p.kind === f) &&
-        (!q || `${p.name} ${p.city} ${p.region}`.toLowerCase().includes(q)));
+        (!q || `${p.name} ${p.city} ${p.region} ${p.auth || ""}`.toLowerCase().includes(q)));
       visible.forEach(p => {
         const m = L.marker([p.lat, p.lng], { icon: icons[p.kind] }).addTo(map).bindPopup(popup(p));
         markers.push(m);

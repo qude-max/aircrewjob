@@ -355,6 +355,45 @@ const Backend = (() => {
         .map(u => normalizeDemoProfile(u.profile))
         .filter(p => p.role === "recruiter" && !p.approved);
     },
+    /* site-wide stats for the admin dashboard */
+    async stats() {
+      if (mode === "supabase") {
+        const count = async (table, filter) => {
+          let q = sb.from(table).select("*", { count: "exact", head: true });
+          if (filter) q = filter(q);
+          const { count: c } = await q;
+          return c || 0;
+        };
+        const [pilots, crew, recruiters, pendingRec, jobsTotal, jobsVerified, jobsRecruiter, apps, saved] = await Promise.all([
+          count("profiles", q => q.eq("role", "pilot")),
+          count("profiles", q => q.eq("role", "crew")),
+          count("profiles", q => q.eq("role", "recruiter")),
+          count("profiles", q => q.eq("role", "recruiter").eq("approved", false)),
+          count("jobs"),
+          count("jobs", q => q.eq("verified", true)),
+          count("jobs", q => q.eq("verified", false)),
+          count("applications"),
+          count("saved_jobs")
+        ]);
+        return { pilots, crew, recruiters, pendingRec, jobsTotal, jobsVerified, jobsRecruiter, apps, saved };
+      }
+      const users = Object.values(demoUsers()).map(u => normalizeDemoProfile(u.profile));
+      const jobs = await jobsApi.list();
+      let saved = 0;
+      users.forEach(u => saved += LS.get("saved_" + u.email, []).length);
+      return {
+        pilots: users.filter(u => u.role === "pilot").length,
+        crew: users.filter(u => u.role === "crew").length,
+        recruiters: users.filter(u => u.role === "recruiter").length,
+        pendingRec: users.filter(u => u.role === "recruiter" && !u.approved).length,
+        jobsTotal: jobs.length,
+        jobsVerified: jobs.filter(j => j.verified).length,
+        jobsRecruiter: jobs.filter(j => !j.verified).length,
+        apps: allApps().length,
+        saved
+      };
+    },
+
     async setRecruiterApproval(idOrEmail, approved) {
       if (mode === "supabase") {
         const { error } = await sb.from("profiles").update({ approved }).eq("id", idOrEmail);

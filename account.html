@@ -162,10 +162,10 @@
       document.getElementById("savedList").innerHTML = saved.length
         ? saved.map(j => `
             <div class="mini-job">
-              <div>
-                <div class="t">${j.role} — ${j.aircraft}</div>
+              <a href="jobs.html?job=${encodeURIComponent(j.id)}" style="text-decoration:none; color:inherit; flex:1">
+                <div class="t">${j.role} — ${j.aircraft} <span style="color:var(--accent); font-size:0.8rem">→</span></div>
                 <div class="s">${j.airline} · ${j.location}</div>
-              </div>
+              </a>
               <button class="btn btn-ghost btn-sm" onclick="unsave(${JSON.stringify(j.id)})">Remove</button>
             </div>`).join("")
         : `<div class="empty">No saved jobs yet. Tap the ♡ on any vacancy on the <a href="jobs.html" style="color:var(--accent)">job board</a>.</div>`;

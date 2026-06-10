@@ -46,7 +46,9 @@ function renderNav() {
         const p = Backend.auth.profile();
         const initial = (p?.full_name || user.email)[0].toUpperCase();
         const isRecruiter = p?.role === "recruiter";
-        el.innerHTML = `
+        const adminLink = p?.is_admin && Backend.mode === "supabase"
+          ? `<a href="admin.html" class="btn btn-ghost btn-sm" title="Platform Admin">🛂 Admin</a>` : "";
+        el.innerHTML = `${adminLink}
           <a href="${isRecruiter ? "recruiter.html" : "account.html"}" class="btn btn-ghost btn-sm" title="${user.email}" style="gap:8px">
             <span style="width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;
               background:rgba(56,224,255,0.15);color:var(--accent);font-weight:700;font-size:0.78rem">${initial}</span>

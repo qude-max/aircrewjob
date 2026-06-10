@@ -109,7 +109,18 @@
                 <label class="check"><input type="checkbox" id="jRated"> Type rating required</label>
               </div>
             </div>
-            <div class="field"><label>Salary / package</label><input class="input" id="jSalary" required placeholder="e.g. €78,000–€95,000"></div>
+            <div class="field-row">
+              <div class="field" style="max-width:130px"><label>Currency</label>
+                <select class="input" id="jCurrency">
+                  <option value="€">€ EUR</option><option value="£">£ GBP</option><option value="$">$ USD</option>
+                  <option value="AED ">AED</option><option value="SGD ">SGD</option><option value="AU$">AU$ AUD</option>
+                  <option value="NZ$">NZ$ NZD</option><option value="CA$">CA$ CAD</option><option value="₹">₹ INR</option>
+                  <option value="CHF ">CHF</option><option value="kr ">kr NOK/SEK</option><option value="">Other / in text</option>
+                </select>
+              </div>
+              <div class="field"><label>Salary / package</label><input class="input" id="jSalary" required placeholder="e.g. 78,000–95,000 + per diems"></div>
+            </div>
+            <label class="check" style="margin-bottom:14px"><input type="checkbox" id="jTaxFree"> Tax-free salary</label>
             <div class="field"><label>Key requirements (one line)</label><input class="input" id="jReqs" placeholder="e.g. 1,500 hrs TT · EASA fATPL · EU right to work"></div>
             <button class="btn btn-primary btn-sm" type="submit" id="jSubmit">Publish vacancy</button>
             <div class="save-msg" id="jMsg"></div>
@@ -248,11 +259,12 @@
     document.getElementById("jobForm").addEventListener("submit", async e => {
       e.preventDefault();
       const msg = document.getElementById("jMsg");
+      const salaryText = (jCurrency.value + jSalary.value.trim()).trim() + (jTaxFree.checked ? " (tax-free)" : "");
       const res = await Backend.jobs.create({
         airline: jAirline.value.trim(), role: jRole.value, aircraft: jAircraft.value.trim(),
         region: jRegion.value, type: jType.value, location: jLocation.value.trim(),
         minHours: parseInt(jHours.value, 10) || 0, rated: jRated.checked,
-        salary: jSalary.value.trim(), reqs: jReqs.value.trim() || null
+        salary: salaryText, reqs: jReqs.value.trim() || null
       });
       msg.className = "save-msg " + (res.error ? "err" : "ok");
       msg.textContent = res.error ? "⚠ " + res.error : "✓ Vacancy published — it's live on the job board";

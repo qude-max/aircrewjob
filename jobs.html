@@ -118,10 +118,11 @@
       <div id="jobList"></div>
 
       <p style="font-size:0.82rem; color:var(--text-faint); margin-top:26px">
-        ✓ All listings are sourced from the official careers portals of 13 airlines across 5 continents
-        (Emirates, Etihad, Qatar Airways, flydubai, Ryanair, easyJet, Wizz Air, Cathay Pacific, Singapore Airlines,
-        United, Ethiopian, Virgin Australia, Air New Zealand) — last checked 10 Jun 2026.
-        Requirements are summarised; always confirm full criteria on the airline's site before applying.
+        ✓ Verified listings are sourced from the official careers portals of 17 airlines across 5 continents
+        (Emirates, Etihad, Qatar Airways, flydubai, Ryanair, easyJet, Wizz Air, Vueling, Jet2, Norwegian,
+        Cathay Pacific, Singapore Airlines, IndiGo, United, Ethiopian, Virgin Australia, Air New Zealand)
+        — last checked 10 Jun 2026. Requirements are summarised; always confirm full criteria on the airline's
+        site before applying. Listings marked "Recruiter post" come from approved recruiters, not airline portals.
       </p>
     </div>
   </section>
@@ -195,6 +196,22 @@
         appliedIds = new Set((await Backend.apps.list()).map(a => a.jobId));
       }
       render();
+      focusJobFromUrl();
+    }
+
+    /* Deep link: jobs.html?job=ID scrolls to and highlights that listing */
+    function focusJobFromUrl() {
+      const raw = new URLSearchParams(location.search).get("job");
+      if (!raw) return;
+      const id = isNaN(raw) ? raw : Number(raw);
+      const card = document.getElementById("job-" + id);
+      if (!card) return;
+      setTimeout(() => {
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
+        card.style.borderColor = "var(--accent)";
+        card.style.boxShadow = "0 0 40px rgba(56,224,255,0.45)";
+        setTimeout(() => { card.style.borderColor = ""; card.style.boxShadow = ""; }, 3000);
+      }, 350);
     }
 
     function render() {
@@ -224,7 +241,7 @@
           ? `<a class="btn btn-primary btn-sm" href="${j.applyUrl}" target="_blank" rel="noopener">Apply on airline site ↗</a>`
           : `<button class="btn btn-primary btn-sm" ${applied ? "disabled style='opacity:0.55'" : ""} onclick="openApply(${JSON.stringify(j.id)})">${applied ? "✓ Applied" : "Apply →"}</button>`;
         return `
-        <div class="job-card" style="animation-delay:${Math.min(i * 40, 400)}ms">
+        <div class="job-card" id="job-${j.id}" style="animation-delay:${Math.min(i * 40, 400)}ms">
           ${logoHTML(j.airline)}
           <div>
             <div class="job-title">${j.role} — ${j.aircraft}</div>
