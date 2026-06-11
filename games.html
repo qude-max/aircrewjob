@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pilot Aptitude Prep Games — AirCrew Jobs</title>
-  <meta name="description" content="Free practice for airline psychometric assessments: spatial orientation, instrument scanning, memory, reaction and multitasking — the skills cut-e/AON and CAE-style tests measure.">
+  <title>Pilot Training Centre — Aptitude, Interview & Systems Prep | AirCrew Jobs</title>
+  <meta name="description" content="Free pilot assessment prep: aptitude games with a live skill radar, competency interview questions, group scenario trainers, and A320/B737/ATPL knowledge quizzes.">
   <link rel="canonical" href="https://aircrewjob.com/games.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AirCrew Jobs">
-  <meta property="og:title" content="Free Pilot Aptitude Prep Games | AirCrew Jobs">
-  <meta property="og:description" content="Six trainers for the skills airline assessments measure: spatial orientation, instrument scan, memory grid, reaction, memory span and multitasking. Free.">
+  <meta property="og:title" content="Pilot Training Centre — Aptitude, Interview & Systems Prep | AirCrew Jobs">
+  <meta property="og:description" content="Train like it's assessment day: aptitude games, skill radar, HR interview prep, group scenarios and A320/B737/ATPL quizzes. Free.">
   <meta property="og:url" content="https://aircrewjob.com/games.html">
   <meta property="og:image" content="https://aircrewjob.com/assets/og.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -19,6 +19,26 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <style>
+    /* ---- section nav ---- */
+    .sec-nav { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0 40px; }
+    .sec-chip {
+      font-family: var(--font-display); font-size: 0.88rem; font-weight: 600;
+      padding: 10px 20px; border-radius: 999px; cursor: pointer; text-decoration: none;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text-dim); transition: all 0.2s;
+    }
+    .sec-chip:hover { border-color: var(--border-bright); color: var(--accent); }
+
+    /* ---- skill radar ---- */
+    .radar-panel { display: grid; grid-template-columns: 420px 1fr; gap: 36px; align-items: center; }
+    @media (max-width: 880px) { .radar-panel { grid-template-columns: 1fr; } }
+    .skill-rows { display: grid; gap: 12px; }
+    .skill-row { display: grid; grid-template-columns: 150px 1fr 70px; gap: 14px; align-items: center; font-size: 0.9rem; }
+    .skill-row .nm { color: var(--text-dim); font-family: var(--font-display); }
+    .skill-row .val { text-align: right; color: var(--accent); font-family: var(--font-display); font-weight: 600; }
+    .sbar { height: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); overflow: hidden; }
+    .sbar > div { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #18b8d8, #7c8cff); transition: width 1s cubic-bezier(0.2,0.8,0.2,1); }
+
+    /* ---- game cards ---- */
     .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
     @media (max-width: 900px) { .game-grid { grid-template-columns: 1fr; } }
     .game-card { display: flex; flex-direction: column; }
@@ -26,35 +46,65 @@
     .game-card p { font-size: 0.92rem; flex: 1; margin: 10px 0 16px; }
     .best { font-size: 0.8rem; color: var(--accent); font-family: var(--font-display); margin-bottom: 14px; min-height: 1.2em; }
     .tier-badge { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent-2); }
+    h2.sec-title { margin: 70px 0 8px; scroll-margin-top: 90px; }
+    .sec-sub { margin-bottom: 28px; max-width: 640px; }
 
-    /* ---- Game modal ---- */
-    .gm-overlay {
-      position: fixed; inset: 0; z-index: 200; display: none;
-      background: rgba(3,5,10,0.85); backdrop-filter: blur(8px);
-      align-items: center; justify-content: center; padding: 16px;
+    /* ---- interview flashcards ---- */
+    .hr-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+    .chip {
+      font-family: var(--font-display); font-size: 0.82rem; font-weight: 500;
+      padding: 8px 16px; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text-dim); transition: all 0.2s;
     }
+    .chip.active { background: rgba(56,224,255,0.12); border-color: var(--border-bright); color: var(--accent); }
+    .hr-card { max-width: 760px; padding: 36px; }
+    .hr-q { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--text); line-height: 1.45; min-height: 3.5em; }
+    .hr-hints { margin: 20px 0; display: none; }
+    .hr-hints.open { display: block; }
+    .hr-hints li { font-size: 0.95rem; color: var(--text-dim); margin: 10px 0 10px 4px; padding-left: 26px; position: relative; line-height: 1.6; }
+    .hr-hints li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+    .hr-actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+
+    /* ---- scenarios ---- */
+    .scn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    @media (max-width: 760px) { .scn-grid { grid-template-columns: 1fr; } }
+    .scn-step { max-width: 760px; }
+    .scn-text { font-size: 1.02rem; color: var(--text); line-height: 1.7; margin-bottom: 20px; }
+    .scn-opt {
+      display: block; width: 100%; text-align: left; cursor: pointer; margin-bottom: 12px;
+      padding: 16px 20px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text-dim); font-size: 0.95rem; line-height: 1.55;
+      font-family: var(--font-body); transition: all 0.18s;
+    }
+    .scn-opt:hover { border-color: var(--border-bright); color: var(--text); }
+    .scn-fb { border-left: 3px solid var(--accent); padding: 6px 0 6px 16px; margin: 18px 0; font-size: 0.95rem; color: var(--text-dim); line-height: 1.6; }
+    .scn-fb.good { border-color: var(--green); }
+    .scn-fb.bad { border-color: var(--red); }
+
+    /* ---- MCQ ---- */
+    .mcq-opt {
+      display: block; width: 100%; text-align: left; cursor: pointer; margin-bottom: 10px;
+      padding: 14px 18px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text-dim); font-size: 0.95rem; line-height: 1.5;
+      font-family: var(--font-body); transition: all 0.15s;
+    }
+    .mcq-opt:hover:not(:disabled) { border-color: var(--border-bright); color: var(--text); }
+    .mcq-opt.correct { border-color: var(--green); background: rgba(52,232,160,0.1); color: var(--green); }
+    .mcq-opt.wrong { border-color: var(--red); background: rgba(255,107,129,0.1); color: var(--red); }
+    .mcq-why { border-left: 3px solid var(--accent); padding: 6px 0 6px 16px; margin: 16px 0; font-size: 0.92rem; color: var(--text-dim); line-height: 1.6; display: none; }
+
+    /* ---- modal (games + quizzes + scenarios) ---- */
+    .gm-overlay { position: fixed; inset: 0; z-index: 200; display: none; background: rgba(3,5,10,0.85); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 16px; }
     .gm-overlay.open { display: flex; }
-    .gm {
-      width: min(720px, 100%); max-height: 92vh; overflow-y: auto; background: var(--bg-2);
-      border: 1px solid var(--border-bright); border-radius: 20px;
-      padding: 30px; box-shadow: 0 0 60px rgba(56,224,255,0.15);
-    }
+    .gm { width: min(760px, 100%); max-height: 92vh; overflow-y: auto; background: var(--bg-2); border: 1px solid var(--border-bright); border-radius: 20px; padding: 30px; box-shadow: 0 0 60px rgba(56,224,255,0.15); }
     .gm-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
     .gm-head h3 { margin: 0; }
     .gm-close { background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--text-dim); cursor: pointer; padding: 6px 12px; font-size: 1rem; }
-    .gm-stage {
-      min-height: 340px; border: 1px solid var(--border); border-radius: 14px;
-      background: rgba(5,8,15,0.7); position: relative; overflow: hidden;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 24px; user-select: none;
-    }
+    .gm-stage { min-height: 340px; border: 1px solid var(--border); border-radius: 14px; background: rgba(5,8,15,0.7); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; user-select: none; }
+    .gm-stage.left { align-items: stretch; text-align: left; justify-content: flex-start; user-select: text; }
     .gm-stats { display: flex; gap: 24px; margin-top: 16px; font-family: var(--font-display); font-size: 0.9rem; color: var(--text-dim); flex-wrap: wrap; }
     .gm-stats b { color: var(--accent); }
-    .big-target {
-      width: 150px; height: 150px; border-radius: 50%; cursor: pointer;
-      display: grid; place-items: center; font-family: var(--font-display); font-weight: 700;
-      transition: background 0.1s; border: 2px solid var(--border);
-    }
+    .big-target { width: 150px; height: 150px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; transition: background 0.1s; border: 2px solid var(--border); }
     .digit-display { font-family: var(--font-display); font-size: 3.4rem; font-weight: 700; letter-spacing: 0.2em; color: var(--accent); min-height: 1.2em; }
     .digit-input { font-size: 1.6rem; text-align: center; letter-spacing: 0.25em; max-width: 320px; }
     .mt-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; }
@@ -62,76 +112,85 @@
     .mt-panel { border: 1px solid var(--border); border-radius: 12px; padding: 16px; background: rgba(255,255,255,0.02); }
     .mt-panel h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-faint); margin-bottom: 12px; }
     .gauges { display: flex; gap: 10px; justify-content: center; }
-    .gauge {
-      width: 54px; height: 54px; border-radius: 50%; cursor: pointer;
-      border: 2px solid var(--border); display: grid; place-items: center;
-      font-family: var(--font-display); font-size: 0.7rem; color: var(--text-dim);
-      transition: all 0.15s; background: rgba(56,224,255,0.05);
-    }
+    .gauge { width: 54px; height: 54px; border-radius: 50%; cursor: pointer; border: 2px solid var(--border); display: grid; place-items: center; font-family: var(--font-display); font-size: 0.7rem; color: var(--text-dim); transition: all 0.15s; background: rgba(56,224,255,0.05); }
     .gauge.alert { border-color: var(--red); background: rgba(255,107,129,0.2); color: var(--red); box-shadow: 0 0 16px rgba(255,107,129,0.4); }
     .math-q { font-family: var(--font-display); font-size: 1.5rem; color: var(--text); margin-bottom: 12px; min-height: 1.3em; }
     .math-opts { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
     .math-opts button { min-width: 64px; }
-    .note-strip { font-size: 0.84rem; color: var(--text-faint); margin-top: 30px; max-width: 760px; }
-
-    /* ---- Spatial orientation ---- */
     .so-q { font-family: var(--font-display); font-size: 1.15rem; color: var(--text); margin: 14px 0 4px; }
     .so-opts { display: grid; grid-template-columns: repeat(2, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
     .so-opts button { justify-content: center; }
     .so-fb { min-height: 1.3em; font-size: 0.9rem; margin-top: 10px; }
-
-    /* ---- Six-pack scan ---- */
     .sp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
     @media (max-width: 560px) { .sp-grid { grid-template-columns: repeat(2, 1fr); } }
     .dial { cursor: pointer; transition: transform 0.1s; }
     .dial:hover { transform: scale(1.04); }
     .dial-label { font-family: var(--font-display); font-size: 0.66rem; fill: #5d6c8a; text-anchor: middle; }
-
-    /* ---- Memory grid ---- */
     .mg-grid { display: grid; grid-template-columns: repeat(4, 64px); gap: 10px; }
     @media (max-width: 420px) { .mg-grid { grid-template-columns: repeat(4, 54px); } }
-    .mg-cell {
-      width: 64px; height: 64px; border-radius: 12px; cursor: pointer;
-      background: rgba(56,224,255,0.06); border: 1px solid var(--border);
-      transition: all 0.12s;
-    }
+    .mg-cell { width: 64px; height: 64px; border-radius: 12px; cursor: pointer; background: rgba(56,224,255,0.06); border: 1px solid var(--border); transition: all 0.12s; }
     @media (max-width: 420px) { .mg-cell { width: 54px; height: 54px; } }
     .mg-cell.lit { background: var(--accent); box-shadow: 0 0 22px rgba(56,224,255,0.7); border-color: var(--accent); }
     .mg-cell.good { background: rgba(52,232,160,0.6); border-color: var(--green); }
     .mg-cell.bad { background: rgba(255,107,129,0.6); border-color: var(--red); }
+    .note-strip { font-size: 0.84rem; color: var(--text-faint); margin-top: 30px; max-width: 760px; }
   </style>
 </head>
 <body>
 
   <header class="page-hero">
     <div class="container">
-      <span class="eyebrow">Aptitude Prep · Free during beta</span>
+      <span class="eyebrow">Training Centre · Free during beta</span>
       <h1 style="margin-top:20px">Train like it's <span class="gradient-text">assessment day</span></h1>
-      <p>Airline screening (cut-e/AON, CAE, COMPASS) measures spatial orientation, monitoring, memory, reaction and divided attention. Six trainers, same muscles — scores stay on your device.</p>
+      <p>Aptitude, interview, judgement and systems knowledge — the four things airline selection actually measures, in one place. Scores stay on your device.</p>
+      <div class="sec-nav" style="margin-top:30px">
+        <a class="sec-chip" href="#radar">📡 Skill Radar</a>
+        <a class="sec-chip" href="#aptitude">🎯 Aptitude Games</a>
+        <a class="sec-chip" href="#interview">🗣️ Interview Prep</a>
+        <a class="sec-chip" href="#scenarios">🧩 Scenarios</a>
+        <a class="sec-chip" href="#knowledge">📚 A320 · B737 · ATPL</a>
+      </div>
     </div>
   </header>
 
-  <section style="padding-top:10px">
+  <!-- ============ SKILL RADAR ============ -->
+  <section id="radar" style="padding-top:10px">
     <div class="container">
+      <div class="card radar-panel">
+        <div id="radarChart" style="display:grid; place-items:center"></div>
+        <div>
+          <h2 style="margin-bottom:8px">Your skill radar</h2>
+          <p style="font-size:0.95rem; margin-bottom:22px">Built live from your personal bests across the six aptitude trainers. Fill the hexagon.</p>
+          <div class="skill-rows" id="skillRows"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APTITUDE GAMES ============ -->
+  <section id="aptitude" style="padding-top:0">
+    <div class="container">
+      <h2 class="sec-title">🎯 Aptitude games</h2>
+      <p class="sec-sub">The skills cut-e/AON, CAE and COMPASS-style screening measures.</p>
       <div class="game-grid">
         <div class="card game-card">
           <div class="icon">🧭</div>
-          <h3>Spatial Orientation <span class="tier-badge">NEW</span></h3>
-          <p>Heading 240°, beacon bears 135° — where is it relative to your nose? The classic compass-reasoning task, 60 seconds against the clock.</p>
+          <h3>Spatial Orientation</h3>
+          <p>Heading 240°, beacon bears 135° — where is it relative to your nose? 60 seconds against the clock.</p>
           <div class="best" id="best-spatial"></div>
           <button class="btn btn-primary btn-sm" onclick="openGame('spatial')">Start →</button>
         </div>
         <div class="card game-card">
           <div class="icon">🛩️</div>
-          <h3>Instrument Scan <span class="tier-badge">NEW</span></h3>
-          <p>Six live instruments, needles wandering. One drifts out of the green band — catch it fast. Pure monitoring, like the real screening task.</p>
+          <h3>Instrument Scan</h3>
+          <p>Six live instruments, needles wandering. One drifts out of the green band — catch it fast.</p>
           <div class="best" id="best-sixpack"></div>
           <button class="btn btn-primary btn-sm" onclick="openGame('sixpack')">Start →</button>
         </div>
         <div class="card game-card">
           <div class="icon">🔲</div>
-          <h3>Memory Grid <span class="tier-badge">NEW</span></h3>
-          <p>Cells flash in sequence on a 4×4 grid — replay them in order. Visual-spatial memory, the cut-e matrix format.</p>
+          <h3>Memory Grid</h3>
+          <p>Cells flash in sequence on a 4×4 grid — replay them in order. The cut-e matrix format.</p>
           <div class="best" id="best-grid"></div>
           <button class="btn btn-primary btn-sm" onclick="openGame('grid')">Start →</button>
         </div>
@@ -145,24 +204,59 @@
         <div class="card game-card">
           <div class="icon">🧠</div>
           <h3>Memory Span</h3>
-          <p>A digit sequence flashes once, then you type it back. Each pass adds a digit — forwards recall under time pressure.</p>
+          <p>A digit sequence flashes once, then you type it back. Each pass adds a digit.</p>
           <div class="best" id="best-memory"></div>
           <button class="btn btn-primary btn-sm" onclick="openGame('memory')">Start →</button>
         </div>
         <div class="card game-card">
           <div class="icon">🎛️</div>
           <h3>Multitask Monitor</h3>
-          <p>Mental arithmetic while monitoring six warning gauges — divided attention under time pressure, COMPASS-style.</p>
+          <p>Mental arithmetic while monitoring six warning gauges — divided attention under time pressure.</p>
           <div class="best" id="best-multitask"></div>
           <button class="btn btn-primary btn-sm" onclick="openGame('multitask')">Start →</button>
         </div>
       </div>
-
-      <p class="note-strip">These trainers build the underlying skills but are not replicas of any provider's copyrighted tests. For airline-specific formats, practise the official familiarisation material the airline sends you — and read our <a href="guide.html?slug=interview-prep" style="color:var(--accent)">assessment prep guide</a>.</p>
     </div>
   </section>
 
-  <!-- Game modal -->
+  <!-- ============ INTERVIEW PREP ============ -->
+  <section id="interview" style="padding-top:0">
+    <div class="container">
+      <h2 class="sec-title">🗣️ Interview prep <span class="tier-badge">NEW</span></h2>
+      <p class="sec-sub">Real competency questions from airline interviews. Answer out loud using STAR (Situation · Task · Action · Result), then reveal what assessors actually score.</p>
+      <div class="hr-chips" id="hrChips"></div>
+      <div class="card hr-card">
+        <div style="font-size:0.76rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-faint); margin-bottom:14px" id="hrCat"></div>
+        <div class="hr-q" id="hrQ"></div>
+        <ul class="hr-hints" id="hrHints"></ul>
+        <div class="hr-actions">
+          <button class="btn btn-ghost btn-sm" id="hrReveal">👁 What assessors look for</button>
+          <button class="btn btn-primary btn-sm" id="hrNext">Next question →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCENARIOS ============ -->
+  <section id="scenarios" style="padding-top:0">
+    <div class="container">
+      <h2 class="sec-title">🧩 Decision scenarios <span class="tier-badge">NEW</span></h2>
+      <p class="sec-sub">The group-exercise and command-judgement format: work a developing situation, make calls under pressure, get a debrief on every decision.</p>
+      <div class="scn-grid" id="scnGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ KNOWLEDGE MCQs ============ -->
+  <section id="knowledge" style="padding-top:0">
+    <div class="container">
+      <h2 class="sec-title">📚 Knowledge checks <span class="tier-badge">NEW</span></h2>
+      <p class="sec-sub">The technical-interview classics — 10 random questions per run, instant explanations. Original questions; always confirm systems answers against your current FCOM.</p>
+      <div class="game-grid" id="mcqGrid"></div>
+      <p class="note-strip">These trainers build skills and knowledge but are not replicas of any provider's copyrighted tests, and systems questions are general — fleet variants differ. Read the <a href="guide.html?slug=interview-prep" style="color:var(--accent)">assessment prep guide</a> for the full strategy.</p>
+    </div>
+  </section>
+
+  <!-- Modal -->
   <div class="gm-overlay" id="gmOverlay">
     <div class="gm">
       <div class="gm-head">
@@ -178,6 +272,7 @@
   <script src="assets/config.js"></script>
   <script src="assets/data.js"></script>
   <script src="assets/backend.js"></script>
+  <script src="assets/prep-data.js"></script>
   <script src="assets/app.js"></script>
   <script>
     /* ---------- shared ---------- */
@@ -190,11 +285,11 @@
     const setBest = (game, value, better) => {
       const s = getScores();
       if (s[game] === undefined || better(value, s[game])) { s[game] = value; localStorage.setItem(SCORES_KEY, JSON.stringify(s)); }
-      renderBests();
+      renderBests(); renderRadar();
     };
     function renderBests() {
       const s = getScores();
-      const set = (id, v, txt) => $(id).textContent = v !== undefined ? `Personal best: ${txt}` : "No score yet — set your baseline";
+      const set = (id, v, txt) => { const el = $(id); if (el) el.textContent = v !== undefined ? `Personal best: ${txt}` : "No score yet — set your baseline"; };
       set("best-spatial",  s.spatial,  `${s.spatial} pts`);
       set("best-sixpack",  s.sixpack,  `${s.sixpack} pts`);
       set("best-grid",     s.grid,     `${s.grid} cells`);
@@ -209,6 +304,7 @@
     };
     function openGame(name) {
       $("gmOverlay").classList.add("open");
+      stage().classList.remove("left");
       $("gmTitle").textContent = TITLES[name];
       ({ spatial: startSpatial, sixpack: startSixpack, grid: startGrid,
          reaction: startReaction, memory: startMemory, multitask: startMultitask })[name]();
@@ -216,18 +312,210 @@
     function closeGame() {
       cleanupFns.forEach(f => f()); cleanupFns = [];
       $("gmOverlay").classList.remove("open");
-      stage().innerHTML = ""; $("gmStats").innerHTML = "";
+      stage().innerHTML = ""; stage().classList.remove("left"); $("gmStats").innerHTML = "";
     }
     $("gmOverlay").addEventListener("click", e => { if (e.target === $("gmOverlay")) closeGame(); });
     const timer = (fn, ms) => { const t = setTimeout(fn, ms); cleanupFns.push(() => clearTimeout(t)); return t; };
     const ticker = (fn, ms) => { const t = setInterval(fn, ms); cleanupFns.push(() => clearInterval(t)); return t; };
     const endGame = () => { cleanupFns.forEach(f => f()); cleanupFns = []; };
 
-    /* ============================================================
-       1. SPATIAL ORIENTATION — heading vs bearing reasoning (60s)
-       ============================================================ */
-    const SECTORS = ["dead ahead", "ahead-right", "off the right wing", "behind-right", "dead astern", "behind-left", "off the left wing", "ahead-left"];
+    /* ============ SKILL RADAR ============ */
+    const SKILLS = [
+      { key: "spatial",  name: "Spatial",      norm: v => Math.min(100, v / 2) },
+      { key: "sixpack",  name: "Monitoring",   norm: v => Math.min(100, v / 4) },
+      { key: "grid",     name: "Visual memory",norm: v => Math.min(100, (v - 2) * 14) },
+      { key: "reaction", name: "Reaction",     norm: v => Math.max(0, Math.min(100, (450 - v) / 2.5)) },
+      { key: "memory",   name: "Digit span",   norm: v => Math.min(100, (v - 2) * 14) },
+      { key: "multitask",name: "Multitasking", norm: v => Math.min(100, v / 4.5) }
+    ];
+    function skillValues() {
+      const s = getScores();
+      return SKILLS.map(sk => ({ ...sk, raw: s[sk.key], pct: s[sk.key] !== undefined ? Math.max(4, sk.norm(s[sk.key])) : 0 }));
+    }
+    function renderRadar() {
+      const vals = skillValues();
+      const C = 190, R = 150, N = vals.length;
+      const pt = (i, r) => { const a = (i / N) * 2 * Math.PI - Math.PI / 2; return [C + r * Math.cos(a), C + r * Math.sin(a)]; };
+      const ring = r => Array.from({ length: N }, (_, i) => pt(i, r).join(",")).join(" ");
+      const dataPts = vals.map((v, i) => pt(i, R * v.pct / 100));
+      const labels = vals.map((v, i) => {
+        const [x, y] = pt(i, R + 26);
+        return `<text x="${x}" y="${y + 4}" fill="${v.pct > 0 ? "#93a3c0" : "#5d6c8a"}" font-size="11.5" font-weight="600" text-anchor="middle" font-family="Space Grotesk">${v.name}</text>`;
+      });
+      $("radarChart").innerHTML = `
+        <svg width="100%" viewBox="0 0 380 380" style="max-width:380px">
+          ${[0.25, 0.5, 0.75, 1].map(f => `<polygon points="${ring(R * f)}" fill="none" stroke="rgba(56,224,255,${f === 1 ? 0.3 : 0.12})" stroke-width="1"/>`).join("")}
+          ${vals.map((_, i) => { const [x, y] = pt(i, R); return `<line x1="${C}" y1="${C}" x2="${x}" y2="${y}" stroke="rgba(56,224,255,0.1)"/>`; }).join("")}
+          <polygon points="${dataPts.map(p => p.join(",")).join(" ")}" fill="rgba(56,224,255,0.16)" stroke="#38e0ff" stroke-width="2.5" stroke-linejoin="round" style="filter:drop-shadow(0 0 12px rgba(56,224,255,0.5))"/>
+          ${dataPts.map((p, i) => vals[i].pct > 0 ? `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#38e0ff"/>` : "").join("")}
+          ${labels.join("")}
+        </svg>`;
+      const fmt = { spatial: v => `${v} pts`, sixpack: v => `${v} pts`, grid: v => `${v} cells`, reaction: v => `${v} ms`, memory: v => `${v} digits`, multitask: v => `${v} pts` };
+      $("skillRows").innerHTML = vals.map(v => `
+        <div class="skill-row">
+          <span class="nm">${v.name}</span>
+          <div class="sbar"><div style="width:${v.pct}%"></div></div>
+          <span class="val">${v.raw !== undefined ? fmt[v.key](v.raw) : "—"}</span>
+        </div>`).join("");
+    }
 
+    /* ============ INTERVIEW FLASHCARDS ============ */
+    let hrCat = "", hrCurrent = null;
+    function hrPool() { return HR_QUESTIONS.filter(q => !hrCat || q.cat === hrCat); }
+    function hrDraw() {
+      const pool = hrPool();
+      let next;
+      do { next = pool[Math.floor(Math.random() * pool.length)]; } while (pool.length > 1 && next === hrCurrent);
+      hrCurrent = next;
+      $("hrCat").textContent = next.cat;
+      $("hrQ").textContent = next.q;
+      $("hrHints").innerHTML = next.hints.map(h => `<li>${h}</li>`).join("");
+      $("hrHints").classList.remove("open");
+      $("hrReveal").style.display = "inline-flex";
+    }
+    function hrInit() {
+      const cats = [...new Set(HR_QUESTIONS.map(q => q.cat))];
+      $("hrChips").innerHTML = `<button class="chip active" data-c="">All (${HR_QUESTIONS.length})</button>` +
+        cats.map(c => `<button class="chip" data-c="${c}">${c}</button>`).join("");
+      document.querySelectorAll("#hrChips .chip").forEach(ch => ch.addEventListener("click", () => {
+        document.querySelectorAll("#hrChips .chip").forEach(x => x.classList.remove("active"));
+        ch.classList.add("active");
+        hrCat = ch.dataset.c;
+        hrDraw();
+      }));
+      $("hrReveal").addEventListener("click", () => { $("hrHints").classList.add("open"); $("hrReveal").style.display = "none"; });
+      $("hrNext").addEventListener("click", hrDraw);
+      hrDraw();
+    }
+
+    /* ============ SCENARIOS ============ */
+    function scnInit() {
+      $("scnGrid").innerHTML = SCENARIOS.map(s => {
+        const best = getScores()["scn_" + s.id];
+        return `
+        <div class="card game-card">
+          <div class="icon">🧩</div>
+          <h3>${s.title}</h3>
+          <p>${s.intro.slice(0, 130)}…</p>
+          <div class="best">${best !== undefined ? `Best run: ${best}%` : "Not attempted yet"}</div>
+          <button class="btn btn-primary btn-sm" onclick="startScenario('${s.id}')">Work the problem →</button>
+        </div>`;
+      }).join("");
+    }
+    function startScenario(id) {
+      const s = SCENARIOS.find(x => x.id === id);
+      let step = -1, score = 0;
+      const max = s.steps.reduce((a, st) => a + Math.max(...st.opts.map(o => o.s)), 0);
+      $("gmOverlay").classList.add("open");
+      $("gmTitle").textContent = "🧩 " + s.title;
+      stage().classList.add("left");
+
+      function stats() { $("gmStats").innerHTML = `<span>Decision <b>${Math.min(step + 1, s.steps.length)}/${s.steps.length}</b></span><span>Judgement score <b>${score}/${max}</b></span>`; }
+
+      function show() {
+        step++;
+        if (step >= s.steps.length) return finish();
+        const st = s.steps[step];
+        stage().innerHTML = `
+          ${step === 0 ? `<p class="scn-text" style="color:var(--text-dim); font-size:0.95rem">${s.intro}</p>` : ""}
+          <p class="scn-text"><b>${st.text}</b></p>
+          ${st.opts.map((o, i) => `<button class="scn-opt" onclick="window.__scnPick(${i})">${o.t}</button>`).join("")}
+          <div id="scnFb"></div>`;
+        stats();
+      }
+
+      window.__scnPick = i => {
+        const o = s.steps[step].opts[i];
+        score += o.s;
+        const cls = o.s >= 8 ? "good" : o.s > 0 ? "" : "bad";
+        $("scnFb").innerHTML = `<div class="scn-fb ${cls}"><b>${o.s >= 8 ? "✓ Strong call." : o.s > 0 ? "△ Workable, but…" : "✗ Risky."}</b> ${o.fb}</div>
+          <button class="btn btn-primary btn-sm" onclick="window.__scnNext()">${step + 1 >= s.steps.length ? "See debrief →" : "Continue →"}</button>`;
+        document.querySelectorAll(".scn-opt").forEach(b => b.disabled = true);
+        stats();
+      };
+      window.__scnNext = show;
+      cleanupFns.push(() => { delete window.__scnPick; delete window.__scnNext; });
+
+      function finish() {
+        const pct = Math.round(score / max * 100);
+        setBest("scn_" + s.id, pct, (a, b) => a > b);
+        scnInit();
+        const verdict = pct >= 85 ? "Command-ready judgement: information first, explicit roles, pressure-proof decisions." : pct >= 60 ? "Solid instincts — review the decisions where you rushed or deferred." : "Re-run it: gather before deciding, allocate tasks explicitly, and let safety logic beat time pressure.";
+        stage().classList.remove("left");
+        stage().innerHTML = `<div class="digit-display">${pct}%</div>
+          <p style="margin:12px 0 6px">Judgement score: ${score} of ${max}</p>
+          <p style="color:var(--text-faint); font-size:0.9rem; max-width:480px">${verdict}</p>
+          <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startScenario('${s.id}')">Run it again →</button>`;
+      }
+      show();
+    }
+
+    /* ============ KNOWLEDGE MCQs ============ */
+    function mcqInit() {
+      $("mcqGrid").innerHTML = Object.entries(MCQ).map(([key, bank]) => {
+        const best = getScores()["mcq_" + key];
+        return `
+        <div class="card game-card">
+          <div class="icon">${bank.icon}</div>
+          <h3>${bank.label}</h3>
+          <p>${bank.qs.length} original questions · 10 random per run · instant explanations. ${bank.note}</p>
+          <div class="best">${best !== undefined ? `Personal best: ${best}/10` : "Not attempted yet"}</div>
+          <button class="btn btn-primary btn-sm" onclick="startMCQ('${key}')">Start quiz →</button>
+        </div>`;
+      }).join("");
+    }
+    function startMCQ(key) {
+      const bank = MCQ[key];
+      const qs = [...bank.qs].sort(() => Math.random() - 0.5).slice(0, 10);
+      let i = -1, right = 0;
+      $("gmOverlay").classList.add("open");
+      $("gmTitle").textContent = `${bank.icon} ${bank.label}`;
+      stage().classList.add("left");
+
+      function stats() { $("gmStats").innerHTML = `<span>Question <b>${Math.min(i + 1, qs.length)}/${qs.length}</b></span><span>Correct <b>${right}</b></span>`; }
+
+      function show() {
+        i++;
+        if (i >= qs.length) return finish();
+        const q = qs[i];
+        stage().innerHTML = `
+          <p class="scn-text"><b>${q.q}</b></p>
+          ${q.o.map((o, j) => `<button class="mcq-opt" id="opt-${j}" onclick="window.__mcqPick(${j})">${String.fromCharCode(65 + j)}. ${o}</button>`).join("")}
+          <div class="mcq-why" id="mcqWhy"></div>
+          <div id="mcqNext"></div>`;
+        stats();
+      }
+
+      window.__mcqPick = j => {
+        const q = qs[i];
+        document.querySelectorAll(".mcq-opt").forEach(b => b.disabled = true);
+        $("opt-" + q.c).classList.add("correct");
+        if (j === q.c) right++;
+        else $("opt-" + j).classList.add("wrong");
+        const why = $("mcqWhy");
+        why.style.display = "block";
+        why.textContent = q.why;
+        $("mcqNext").innerHTML = `<button class="btn btn-primary btn-sm" style="margin-top:6px" onclick="window.__mcqNext()">${i + 1 >= qs.length ? "See result →" : "Next →"}</button>`;
+        stats();
+      };
+      window.__mcqNext = show;
+      cleanupFns.push(() => { delete window.__mcqPick; delete window.__mcqNext; });
+
+      function finish() {
+        setBest("mcq_" + key, right, (a, b) => a > b);
+        mcqInit();
+        const verdict = right >= 9 ? "Interview-ready on this bank." : right >= 7 ? "Close — review the explanations you missed." : "Hit the books, then come back: explanations above are your study list.";
+        stage().classList.remove("left");
+        stage().innerHTML = `<div class="digit-display">${right}/10</div>
+          <p style="margin:12px 0 6px">${bank.label}</p>
+          <p style="color:var(--text-faint); font-size:0.9rem">${verdict}</p>
+          <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startMCQ('${key}')">Run it again →</button>`;
+      }
+      show();
+    }
+
+    /* ============ APTITUDE GAMES (v2, unchanged mechanics) ============ */
+    const SECTORS = ["dead ahead", "ahead-right", "off the right wing", "behind-right", "dead astern", "behind-left", "off the left wing", "ahead-left"];
     function compassSVG(heading) {
       const ticks = [];
       for (let d = 0; d < 360; d += 30) {
@@ -235,301 +523,182 @@
         const a = (d - 90) * Math.PI / 180;
         ticks.push(`<line x1="${90 + r1 * Math.cos(a)}" y1="${90 + r1 * Math.sin(a)}" x2="${90 + r2 * Math.cos(a)}" y2="${90 + r2 * Math.sin(a)}" stroke="rgba(56,224,255,0.4)" stroke-width="${d % 90 === 0 ? 2.4 : 1.2}"/>`);
       }
-      const lbl = (txt, d) => {
-        const a = (d - 90) * Math.PI / 180, r = 53;
-        return `<text x="${90 + r * Math.cos(a)}" y="${90 + r * Math.sin(a) + 4}" fill="#93a3c0" font-size="12" font-weight="700" text-anchor="middle" font-family="Space Grotesk">${txt}</text>`;
-      };
+      const lbl = (txt, d) => { const a = (d - 90) * Math.PI / 180, r = 53; return `<text x="${90 + r * Math.cos(a)}" y="${90 + r * Math.sin(a) + 4}" fill="#93a3c0" font-size="12" font-weight="700" text-anchor="middle" font-family="Space Grotesk">${txt}</text>`; };
       return `<svg width="180" height="180" viewBox="0 0 180 180">
         <circle cx="90" cy="90" r="80" fill="rgba(56,224,255,0.04)" stroke="rgba(56,224,255,0.3)"/>
-        ${ticks.join("")}
-        ${lbl("N", 0)}${lbl("E", 90)}${lbl("S", 180)}${lbl("W", 270)}
-        <g transform="rotate(${heading} 90 90)">
-          <path d="M90 58 L102 104 L90 95 L78 104 Z" fill="rgba(56,224,255,0.25)" stroke="#38e0ff" stroke-width="2" stroke-linejoin="round"/>
-        </g>
+        ${ticks.join("")}${lbl("N", 0)}${lbl("E", 90)}${lbl("S", 180)}${lbl("W", 270)}
+        <g transform="rotate(${heading} 90 90)"><path d="M90 58 L102 104 L90 95 L78 104 Z" fill="rgba(56,224,255,0.25)" stroke="#38e0ff" stroke-width="2" stroke-linejoin="round"/></g>
       </svg>`;
     }
-
     function startSpatial() {
       let score = 0, right = 0, wrong = 0, timeLeft = 60, answering = true;
-
-      function stats() {
-        $("gmStats").innerHTML = `<span>Time <b>${timeLeft}s</b></span><span>Score <b>${score}</b></span><span><b>${right}✓ ${wrong}✗</b></span>`;
-      }
-
+      function stats() { $("gmStats").innerHTML = `<span>Time <b>${timeLeft}s</b></span><span>Score <b>${score}</b></span><span><b>${right}✓ ${wrong}✗</b></span>`; }
       function question() {
         answering = true;
-        const heading = Math.floor(Math.random() * 72) * 5;
-        const bearing = Math.floor(Math.random() * 72) * 5;
-        const rel = ((bearing - heading) % 360 + 360) % 360;
-        const sector = Math.round(rel / 45) % 8;
-        // build 4 options: correct + 3 distinct others
+        const heading = Math.floor(Math.random() * 72) * 5, bearing = Math.floor(Math.random() * 72) * 5;
+        const rel = ((bearing - heading) % 360 + 360) % 360, sector = Math.round(rel / 45) % 8;
         const opts = new Set([sector]);
         while (opts.size < 4) opts.add(Math.floor(Math.random() * 8));
-        const shuffled = [...opts].sort(() => Math.random() - 0.5);
-
-        stage().innerHTML = `
-          ${compassSVG(heading)}
+        stage().innerHTML = `${compassSVG(heading)}
           <div class="so-q">Your heading: <b style="color:var(--accent)">${String(heading).padStart(3, "0")}°</b> · A beacon bears <b style="color:var(--accent)">${String(bearing).padStart(3, "0")}°</b> true</div>
           <p style="font-size:0.85rem; color:var(--text-faint)">Where is the beacon relative to your aircraft?</p>
-          <div class="so-opts">
-            ${shuffled.map(s => `<button class="btn btn-ghost btn-sm" onclick="window.__soAnswer(${s}, ${sector})">${SECTORS[s]}</button>`).join("")}
-          </div>
+          <div class="so-opts">${[...opts].sort(() => Math.random() - 0.5).map(s => `<button class="btn btn-ghost btn-sm" onclick="window.__soAnswer(${s}, ${sector})">${SECTORS[s]}</button>`).join("")}</div>
           <div class="so-fb" id="soFb"></div>`;
       }
-
       window.__soAnswer = (picked, correct) => {
         if (!answering) return;
         answering = false;
-        const fb = $("soFb");
-        if (picked === correct) { right++; score += 12; fb.innerHTML = `<span style="color:var(--green)">✓ Correct</span>`; }
-        else { wrong++; score = Math.max(0, score - 4); fb.innerHTML = `<span style="color:var(--red)">✗ It was ${SECTORS[correct]}</span>`; }
-        stats();
-        timer(question, 650);
+        if (picked === correct) { right++; score += 12; $("soFb").innerHTML = `<span style="color:var(--green)">✓ Correct</span>`; }
+        else { wrong++; score = Math.max(0, score - 4); $("soFb").innerHTML = `<span style="color:var(--red)">✗ It was ${SECTORS[correct]}</span>`; }
+        stats(); timer(question, 650);
       };
       cleanupFns.push(() => delete window.__soAnswer);
-
       ticker(() => {
-        timeLeft--;
-        stats();
+        timeLeft--; stats();
         if (timeLeft <= 0) {
-          endGame();
-          setBest("spatial", score, (a, b) => a > b);
+          endGame(); setBest("spatial", score, (a, b) => a > b);
           const acc = right + wrong ? Math.round(right / (right + wrong) * 100) : 0;
-          const verdict = acc >= 85 && right >= 12 ? "Assessment-ready — fast AND accurate." : acc >= 70 ? "Solid. Push speed without losing accuracy." : "Visualise the rose: rotate the bearing into your nose reference first.";
-          stage().innerHTML = `<div class="digit-display">${score} pts</div>
-            <p style="margin:12px 0 6px">${right} correct · ${wrong} wrong · ${acc}% accuracy</p>
-            <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+          stage().innerHTML = `<div class="digit-display">${score} pts</div><p style="margin:12px 0 6px">${right} correct · ${wrong} wrong · ${acc}% accuracy</p>
+            <p style="color:var(--text-faint); font-size:0.88rem">${acc >= 85 && right >= 12 ? "Assessment-ready — fast AND accurate." : acc >= 70 ? "Solid. Push speed without losing accuracy." : "Visualise the rose: rotate the bearing into your nose reference first."}</p>
             <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startSpatial()">Run it again →</button>`;
         }
       }, 1000);
-
       stats(); question();
     }
 
-    /* ============================================================
-       2. INSTRUMENT SCAN — six-pack monitoring (45s)
-       ============================================================ */
     const DIAL_NAMES = ["ASI", "ATT", "ALT", "TC", "HDG", "VSI"];
-
     function dialSVG(i) {
-      // needle drawn via group rotation set in JS; green band 35–65 mapped to -36°..+36° of a -120..120 sweep
-      const arc = (from, to, color, w) => {
-        const a1 = (from - 90) * Math.PI / 180, a2 = (to - 90) * Math.PI / 180, r = 34;
-        return `<path d="M${50 + r * Math.cos(a1)} ${50 + r * Math.sin(a1)} A${r} ${r} 0 0 1 ${50 + r * Math.cos(a2)} ${50 + r * Math.sin(a2)}" fill="none" stroke="${color}" stroke-width="${w}"/>`;
-      };
+      const arc = (from, to, color, w) => { const a1 = (from - 90) * Math.PI / 180, a2 = (to - 90) * Math.PI / 180, r = 34; return `<path d="M${50 + r * Math.cos(a1)} ${50 + r * Math.sin(a1)} A${r} ${r} 0 0 1 ${50 + r * Math.cos(a2)} ${50 + r * Math.sin(a2)}" fill="none" stroke="${color}" stroke-width="${w}"/>`; };
       return `<svg class="dial" id="dial-${i}" width="100" height="100" viewBox="0 0 100 100" onclick="window.__spClick(${i})">
         <circle cx="50" cy="50" r="44" fill="rgba(5,8,15,0.9)" stroke="rgba(148,197,255,0.25)" stroke-width="1.5"/>
-        ${arc(-120, 120, "rgba(148,197,255,0.15)", 5)}
-        ${arc(-36, 36, "rgba(52,232,160,0.55)", 5)}
-        <g id="needle-${i}" transform="rotate(0 50 50)">
-          <line x1="50" y1="50" x2="50" y2="16" stroke="#38e0ff" stroke-width="2.6" stroke-linecap="round"/>
-        </g>
-        <circle cx="50" cy="50" r="4" fill="#38e0ff"/>
-        <text x="50" y="78" class="dial-label">${DIAL_NAMES[i]}</text>
+        ${arc(-120, 120, "rgba(148,197,255,0.15)", 5)}${arc(-36, 36, "rgba(52,232,160,0.55)", 5)}
+        <g id="needle-${i}" transform="rotate(0 50 50)"><line x1="50" y1="50" x2="50" y2="16" stroke="#38e0ff" stroke-width="2.6" stroke-linecap="round"/></g>
+        <circle cx="50" cy="50" r="4" fill="#38e0ff"/><text x="50" y="78" class="dial-label">${DIAL_NAMES[i]}</text>
       </svg>`;
     }
-
     function startSixpack() {
       const DURATION = 45;
       let timeLeft = DURATION, score = 0, caught = 0, missed = 0, falseClicks = 0;
       let values = [50, 50, 50, 50, 50, 50], rogue = -1, rogueAt = 0;
-
-      stage().innerHTML = `
-        <p style="font-size:0.85rem; color:var(--text-faint); margin-bottom:14px">Needles wander inside the green band. When one escapes, click that instrument.</p>
+      stage().innerHTML = `<p style="font-size:0.85rem; color:var(--text-faint); margin-bottom:14px">Needles wander inside the green band. When one escapes, click that instrument.</p>
         <div class="sp-grid">${[0,1,2,3,4,5].map(dialSVG).join("")}</div>
         <p id="spFb" style="font-size:0.82rem; color:var(--text-faint); margin-top:12px; min-height:1.2em"></p>`;
-
-      function stats() {
-        $("gmStats").innerHTML = `<span>Time <b>${timeLeft}s</b></span><span>Score <b>${score}</b></span>
-          <span>Caught <b>${caught}</b></span><span>Missed <b>${missed}</b></span><span>False <b>${falseClicks}</b></span>`;
-      }
-
-      const valToAngle = v => (v - 50) * 2.4; // 0–100 → -120°..120°
-
+      function stats() { $("gmStats").innerHTML = `<span>Time <b>${timeLeft}s</b></span><span>Score <b>${score}</b></span><span>Caught <b>${caught}</b></span><span>Missed <b>${missed}</b></span><span>False <b>${falseClicks}</b></span>`; }
+      const valToAngle = v => (v - 50) * 2.4;
       function pickRogue() {
         if (rogue >= 0) { missed++; score = Math.max(0, score - 15); values[rogue] = 50; }
-        rogue = Math.floor(Math.random() * 6);
-        rogueAt = performance.now();
-        timer(pickRogue, 2600 + Math.random() * 3000);
-        stats();
+        rogue = Math.floor(Math.random() * 6); rogueAt = performance.now();
+        timer(pickRogue, 2600 + Math.random() * 3000); stats();
       }
-
       window.__spClick = i => {
         if (i === rogue && Math.abs(values[i] - 50) > 15) {
           const ms = Math.round(performance.now() - rogueAt);
-          score += Math.max(10, 70 - Math.floor(ms / 100));
-          caught++;
+          score += Math.max(10, 70 - Math.floor(ms / 100)); caught++;
           $("spFb").textContent = `${DIAL_NAMES[i]} caught in ${ms} ms`;
           values[i] = 50; rogue = -1;
-        } else {
-          falseClicks++; score = Math.max(0, score - 5);
-          $("spFb").textContent = "That one's in the green −5";
-        }
+        } else { falseClicks++; score = Math.max(0, score - 5); $("spFb").textContent = "That one's in the green −5"; }
         stats();
       };
       cleanupFns.push(() => delete window.__spClick);
-
-      ticker(() => { // physics + render at 10 Hz
+      ticker(() => {
         values = values.map((v, i) => {
           if (i === rogue) return v + (v >= 50 ? 1 : -1) * 1.6 * (1 + (performance.now() - rogueAt) / 4000);
-          const nv = v + (Math.random() - 0.5) * 4;
-          return Math.max(38, Math.min(62, nv));
-        });
-        values = values.map(v => Math.max(2, Math.min(98, v)));
-        values.forEach((v, i) => {
-          const n = $("needle-" + i);
-          if (n) n.setAttribute("transform", `rotate(${valToAngle(v)} 50 50)`);
-        });
+          return Math.max(38, Math.min(62, v + (Math.random() - 0.5) * 4));
+        }).map(v => Math.max(2, Math.min(98, v)));
+        values.forEach((v, i) => { const n = $("needle-" + i); if (n) n.setAttribute("transform", `rotate(${valToAngle(v)} 50 50)`); });
       }, 100);
-
       ticker(() => {
-        timeLeft--;
-        stats();
+        timeLeft--; stats();
         if (timeLeft <= 0) {
-          endGame();
-          setBest("sixpack", score, (a, b) => a > b);
-          const verdict = missed === 0 && falseClicks <= 1 ? "Clean scan — nothing escaped you." : missed <= 1 ? "Good coverage. Keep the scan moving, don't fixate." : "Build a rhythm: sweep all six every couple of seconds.";
-          stage().innerHTML = `<div class="digit-display">${score} pts</div>
-            <p style="margin:12px 0 6px">${caught} caught · ${missed} missed · ${falseClicks} false clicks</p>
-            <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+          endGame(); setBest("sixpack", score, (a, b) => a > b);
+          stage().innerHTML = `<div class="digit-display">${score} pts</div><p style="margin:12px 0 6px">${caught} caught · ${missed} missed · ${falseClicks} false clicks</p>
+            <p style="color:var(--text-faint); font-size:0.88rem">${missed === 0 && falseClicks <= 1 ? "Clean scan — nothing escaped you." : missed <= 1 ? "Good coverage. Keep the scan moving, don't fixate." : "Build a rhythm: sweep all six every couple of seconds."}</p>
             <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startSixpack()">Run it again →</button>`;
         }
       }, 1000);
-
-      stats();
-      timer(pickRogue, 1500 + Math.random() * 1500);
+      stats(); timer(pickRogue, 1500 + Math.random() * 1500);
     }
 
-    /* ============================================================
-       3. MEMORY GRID — flash sequence on 4×4, replay it
-       ============================================================ */
     function startGrid() {
       let len = 3, lives = 2, best = 0;
-
-      function stats(phase) {
-        $("gmStats").innerHTML = `<span>Sequence <b>${len} cells</b></span><span>Best this run <b>${best}</b></span><span>Lives <b>${"❤".repeat(lives) || "—"}</b></span><span>${phase}</span>`;
-      }
-
+      function stats(phase) { $("gmStats").innerHTML = `<span>Sequence <b>${len} cells</b></span><span>Best this run <b>${best}</b></span><span>Lives <b>${"❤".repeat(lives) || "—"}</b></span><span>${phase}</span>`; }
       function round() {
         const seq = [];
-        while (seq.length < len) {
-          const c = Math.floor(Math.random() * 16);
-          if (seq[seq.length - 1] !== c) seq.push(c);
-        }
+        while (seq.length < len) { const c = Math.floor(Math.random() * 16); if (seq[seq.length - 1] !== c) seq.push(c); }
         stage().innerHTML = `<p style="font-size:0.8rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:14px" id="mgPhase">Watch…</p>
           <div class="mg-grid">${Array.from({ length: 16 }, (_, i) => `<div class="mg-cell" id="mg-${i}"></div>`).join("")}</div>`;
         stats("Watch");
-
-        // play sequence
-        seq.forEach((c, i) => {
-          timer(() => $("mg-" + c)?.classList.add("lit"), 500 + i * 620);
-          timer(() => $("mg-" + c)?.classList.remove("lit"), 500 + i * 620 + 420);
-        });
+        seq.forEach((c, i) => { timer(() => $("mg-" + c)?.classList.add("lit"), 500 + i * 620); timer(() => $("mg-" + c)?.classList.remove("lit"), 500 + i * 620 + 420); });
         timer(() => input(seq), 500 + seq.length * 620 + 150);
       }
-
       function input(seq) {
         let pos = 0;
-        $("mgPhase").textContent = "Your turn — repeat the sequence";
-        stats("Repeat");
+        $("mgPhase").textContent = "Your turn — repeat the sequence"; stats("Repeat");
         document.querySelectorAll(".mg-cell").forEach((cell, i) => {
           cell.onclick = () => {
             if (i === seq[pos]) {
-              cell.classList.add("good");
-              timer(() => cell.classList.remove("good"), 250);
+              cell.classList.add("good"); timer(() => cell.classList.remove("good"), 250);
               pos++;
-              if (pos === seq.length) {
-                best = Math.max(best, len); len++;
-                $("mgPhase").innerHTML = `<span style="color:var(--green)">✓ Correct</span>`;
-                timer(round, 800);
-              }
+              if (pos === seq.length) { best = Math.max(best, len); len++; $("mgPhase").innerHTML = `<span style="color:var(--green)">✓ Correct</span>`; timer(round, 800); }
             } else {
-              cell.classList.add("bad");
-              $("mg-" + seq[pos])?.classList.add("lit");
-              lives--;
+              cell.classList.add("bad"); $("mg-" + seq[pos])?.classList.add("lit"); lives--;
               $("mgPhase").innerHTML = `<span style="color:var(--red)">✗ Wrong cell</span>`;
               document.querySelectorAll(".mg-cell").forEach(c => c.onclick = null);
-              if (lives <= 0) timer(finish, 1200);
-              else timer(round, 1200);
+              if (lives <= 0) timer(finish, 1200); else timer(round, 1200);
             }
           };
         });
       }
-
       function finish() {
-        endGame();
-        setBest("grid", best, (a, b) => a > b);
-        const verdict = best >= 8 ? "Exceptional visual memory." : best >= 6 ? "Strong — most candidates plateau at 5–6." : "Chunk the pattern into shapes, not individual cells.";
-        stage().innerHTML = `<div class="digit-display">${best} cells</div>
-          <p style="margin:12px 0 6px">Longest sequence reproduced this run</p>
-          <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+        endGame(); setBest("grid", best, (a, b) => a > b);
+        stage().innerHTML = `<div class="digit-display">${best} cells</div><p style="margin:12px 0 6px">Longest sequence reproduced this run</p>
+          <p style="color:var(--text-faint); font-size:0.88rem">${best >= 8 ? "Exceptional visual memory." : best >= 6 ? "Strong — most candidates plateau at 5–6." : "Chunk the pattern into shapes, not individual cells."}</p>
           <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startGrid()">Run it again →</button>`;
       }
       round();
     }
 
-    /* ============================================================
-       4. REACTION & VIGILANCE (v1)
-       ============================================================ */
     function startReaction() {
       const ROUNDS = 8;
       let round = 0, times = [], falseStarts = 0, waiting = false, goTime = 0;
-
       function stats() {
         const avg = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : "—";
-        $("gmStats").innerHTML = `<span>Round <b>${Math.min(round + 1, ROUNDS)}/${ROUNDS}</b></span>
-          <span>Last <b>${times.length ? times[times.length - 1] + " ms" : "—"}</b></span>
-          <span>Average <b>${avg}${times.length ? " ms" : ""}</b></span>
-          <span>False starts <b>${falseStarts}</b></span>`;
+        $("gmStats").innerHTML = `<span>Round <b>${Math.min(round + 1, ROUNDS)}/${ROUNDS}</b></span><span>Last <b>${times.length ? times[times.length - 1] + " ms" : "—"}</b></span><span>Average <b>${avg}${times.length ? " ms" : ""}</b></span><span>False starts <b>${falseStarts}</b></span>`;
       }
-
       function nextRound() {
         if (round >= ROUNDS) return finish();
         waiting = true;
         stage().innerHTML = `<div class="big-target" id="disc" style="background:rgba(255,255,255,0.04); color:var(--text-faint)">WAIT…</div>
           <p style="margin-top:18px; font-size:0.85rem; color:var(--text-faint)">Click the instant it turns cyan</p>`;
-        $("disc").onclick = () => {
-          if (waiting) { falseStarts++; times.push(800); waiting = false; round++; stats();
-            stage().querySelector("p").textContent = "Too early! +800 ms penalty."; timer(nextRound, 900); }
-        };
+        $("disc").onclick = () => { if (waiting) { falseStarts++; times.push(800); waiting = false; round++; stats(); stage().querySelector("p").textContent = "Too early! +800 ms penalty."; timer(nextRound, 900); } };
         timer(() => {
           if (!$("disc")) return;
           waiting = false; goTime = performance.now();
           const d = $("disc");
-          d.style.background = "var(--accent)"; d.style.color = "#03121a"; d.style.boxShadow = "0 0 40px rgba(56,224,255,0.6)";
-          d.textContent = "GO!";
+          d.style.background = "var(--accent)"; d.style.color = "#03121a"; d.style.boxShadow = "0 0 40px rgba(56,224,255,0.6)"; d.textContent = "GO!";
           d.onclick = () => { times.push(Math.round(performance.now() - goTime)); round++; stats(); nextRound(); };
         }, 1200 + Math.random() * 2600);
         stats();
       }
-
       function finish() {
         const avg = Math.round(times.reduce((a, b) => a + b, 0) / times.length);
         setBest("reaction", avg, (a, b) => a < b);
-        const verdict = avg < 300 ? "Sharp — airline assessment territory." : avg < 400 ? "Solid. Keep drilling to push under 300 ms." : "Keep practising — consistency beats speed.";
-        stage().innerHTML = `<div class="digit-display">${avg} ms</div>
-          <p style="margin:12px 0 6px">Average over ${times.length} rounds · ${falseStarts} false start${falseStarts === 1 ? "" : "s"}</p>
-          <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+        stage().innerHTML = `<div class="digit-display">${avg} ms</div><p style="margin:12px 0 6px">Average over ${times.length} rounds · ${falseStarts} false start${falseStarts === 1 ? "" : "s"}</p>
+          <p style="color:var(--text-faint); font-size:0.88rem">${avg < 300 ? "Sharp — airline assessment territory." : avg < 400 ? "Solid. Keep drilling to push under 300 ms." : "Keep practising — consistency beats speed."}</p>
           <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startReaction()">Run it again →</button>`;
       }
       nextRound();
     }
 
-    /* ============================================================
-       5. MEMORY SPAN — digits (v1)
-       ============================================================ */
     function startMemory() {
       let len = 3, lives = 2, best = 0;
-
       function show() {
         const seq = Array.from({ length: len }, () => Math.floor(Math.random() * 10)).join("");
-        stage().innerHTML = `<p style="font-size:0.8rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.12em">Memorise</p>
-          <div class="digit-display" id="seq"></div>`;
+        stage().innerHTML = `<p style="font-size:0.8rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.12em">Memorise</p><div class="digit-display" id="seq"></div>`;
         $("gmStats").innerHTML = `<span>Sequence <b>${len} digits</b></span><span>Best this run <b>${best}</b></span><span>Lives <b>${"❤".repeat(lives) || "—"}</b></span>`;
         $("seq").textContent = seq;
         timer(() => ask(seq), 600 + len * 420);
       }
-
       function ask(seq) {
         stage().innerHTML = `<p style="font-size:0.8rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.12em">Type it back</p>
           <input class="input digit-input" id="ans" inputmode="numeric" autocomplete="off" maxlength="${seq.length}">
@@ -538,57 +707,29 @@
         input.focus();
         input.addEventListener("input", () => {
           if (input.value.length !== seq.length) return;
-          if (input.value === seq) {
-            best = Math.max(best, len); len++;
-            $("fb").innerHTML = `<span style="color:var(--green)">✓ Correct</span>`;
-            timer(show, 700);
-          } else {
-            lives--;
-            $("fb").innerHTML = `<span style="color:var(--red)">✗ It was ${seq}</span>`;
-            if (lives <= 0) timer(() => finish(), 1100);
-            else timer(show, 1100);
-          }
+          if (input.value === seq) { best = Math.max(best, len); len++; $("fb").innerHTML = `<span style="color:var(--green)">✓ Correct</span>`; timer(show, 700); }
+          else { lives--; $("fb").innerHTML = `<span style="color:var(--red)">✗ It was ${seq}</span>`; if (lives <= 0) timer(finish, 1100); else timer(show, 1100); }
         });
       }
-
       function finish() {
         setBest("memory", best, (a, b) => a > b);
-        const verdict = best >= 8 ? "Excellent — above the typical assessment band." : best >= 6 ? "Good. Most candidates plateau at 6–7; push for 8+." : "Train daily for a week — span improves fast.";
-        stage().innerHTML = `<div class="digit-display">${best} digits</div>
-          <p style="margin:12px 0 6px">Longest sequence recalled this run</p>
-          <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+        stage().innerHTML = `<div class="digit-display">${best} digits</div><p style="margin:12px 0 6px">Longest sequence recalled this run</p>
+          <p style="color:var(--text-faint); font-size:0.88rem">${best >= 8 ? "Excellent — above the typical assessment band." : best >= 6 ? "Good. Most candidates plateau at 6–7; push for 8+." : "Train daily for a week — span improves fast."}</p>
           <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startMemory()">Run it again →</button>`;
       }
       show();
     }
 
-    /* ============================================================
-       6. MULTITASK MONITOR (v1)
-       ============================================================ */
     function startMultitask() {
       const DURATION = 60;
       let score = 0, missed = 0, mathRight = 0, mathWrong = 0, timeLeft = DURATION;
       let alertIdx = -1, alertAt = 0, answer = null;
-
-      stage().innerHTML = `
-        <div class="mt-wrap">
-          <div class="mt-panel">
-            <h4>Systems — click the red gauge</h4>
-            <div class="gauges" id="gauges">${[0,1,2,3,4,5].map(i => `<div class="gauge" data-i="${i}">SYS ${i + 1}</div>`).join("")}</div>
-            <p id="gFb" style="font-size:0.78rem; color:var(--text-faint); margin-top:10px; min-height:1.2em"></p>
-          </div>
-          <div class="mt-panel">
-            <h4>Mental arithmetic</h4>
-            <div class="math-q" id="mathQ"></div>
-            <div class="math-opts" id="mathOpts"></div>
-          </div>
-        </div>`;
-
-      function stats() {
-        $("gmStats").innerHTML = `<span>Time <b>${timeLeft}s</b></span><span>Score <b>${score}</b></span>
-          <span>Maths <b>${mathRight}✓ ${mathWrong}✗</b></span><span>Gauges missed <b>${missed}</b></span>`;
-      }
-
+      stage().innerHTML = `<div class="mt-wrap">
+        <div class="mt-panel"><h4>Systems — click the red gauge</h4>
+          <div class="gauges" id="gauges">${[0,1,2,3,4,5].map(i => `<div class="gauge" data-i="${i}">SYS ${i + 1}</div>`).join("")}</div>
+          <p id="gFb" style="font-size:0.78rem; color:var(--text-faint); margin-top:10px; min-height:1.2em"></p></div>
+        <div class="mt-panel"><h4>Mental arithmetic</h4><div class="math-q" id="mathQ"></div><div class="math-opts" id="mathOpts"></div></div></div>`;
+      function stats() { $("gmStats").innerHTML = `<span>Time <b>${timeLeft}s</b></span><span>Score <b>${score}</b></span><span>Maths <b>${mathRight}✓ ${mathWrong}✗</b></span><span>Gauges missed <b>${missed}</b></span>`; }
       document.querySelectorAll(".gauge").forEach(g => g.onclick = () => {
         const i = parseInt(g.dataset.i, 10);
         if (i === alertIdx) {
@@ -600,55 +741,40 @@
         stats();
       });
       function fireAlert() {
-        if (alertIdx >= 0) {
-          document.querySelectorAll(".gauge")[alertIdx].classList.remove("alert");
-          missed++; score = Math.max(0, score - 15);
-        }
-        alertIdx = Math.floor(Math.random() * 6);
-        alertAt = performance.now();
+        if (alertIdx >= 0) { document.querySelectorAll(".gauge")[alertIdx].classList.remove("alert"); missed++; score = Math.max(0, score - 15); }
+        alertIdx = Math.floor(Math.random() * 6); alertAt = performance.now();
         document.querySelectorAll(".gauge")[alertIdx].classList.add("alert");
-        timer(fireAlert, 2200 + Math.random() * 2800);
-        stats();
+        timer(fireAlert, 2200 + Math.random() * 2800); stats();
       }
-
       function newMath() {
         const a = 12 + Math.floor(Math.random() * 78), b = 3 + Math.floor(Math.random() * 16);
         const ops = [["+", a + b], ["−", a - b], ["×", Math.floor(a / 10) * b]];
         const [sym, val] = ops[Math.floor(Math.random() * ops.length)];
-        const shown = sym === "×" ? `${Math.floor(a / 10)} × ${b}` : `${a} ${sym} ${b}`;
         answer = val;
         const opts = new Set([val]);
         while (opts.size < 4) opts.add(val + [-12, -10, -3, -2, -1, 1, 2, 3, 10, 12][Math.floor(Math.random() * 10)]);
-        $("mathQ").textContent = shown + " = ?";
-        $("mathOpts").innerHTML = [...opts].sort(() => Math.random() - 0.5)
-          .map(v => `<button class="btn btn-ghost btn-sm" onclick="window.__mtAnswer(${v})">${v}</button>`).join("");
+        $("mathQ").textContent = (sym === "×" ? `${Math.floor(a / 10)} × ${b}` : `${a} ${sym} ${b}`) + " = ?";
+        $("mathOpts").innerHTML = [...opts].sort(() => Math.random() - 0.5).map(v => `<button class="btn btn-ghost btn-sm" onclick="window.__mtAnswer(${v})">${v}</button>`).join("");
       }
-      window.__mtAnswer = v => {
-        if (v === answer) { mathRight++; score += 8; } else { mathWrong++; score = Math.max(0, score - 4); }
-        stats(); newMath();
-      };
+      window.__mtAnswer = v => { if (v === answer) { mathRight++; score += 8; } else { mathWrong++; score = Math.max(0, score - 4); } stats(); newMath(); };
       cleanupFns.push(() => delete window.__mtAnswer);
-
-      ticker(() => {
-        timeLeft--;
-        stats();
-        if (timeLeft <= 0) finish();
-      }, 1000);
-
+      ticker(() => { timeLeft--; stats(); if (timeLeft <= 0) finish(); }, 1000);
       function finish() {
-        endGame();
-        setBest("multitask", score, (a, b) => a > b);
-        const verdict = score >= 350 ? "Strong divided attention — assessors look for exactly this." : score >= 200 ? "Decent balance. Don't let the gauges starve the maths." : "Focus on rhythm: scan gauges between every answer.";
-        stage().innerHTML = `<div class="digit-display">${score} pts</div>
-          <p style="margin:12px 0 6px">${mathRight} correct sums · ${missed} gauge${missed === 1 ? "" : "s"} missed</p>
-          <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+        endGame(); setBest("multitask", score, (a, b) => a > b);
+        stage().innerHTML = `<div class="digit-display">${score} pts</div><p style="margin:12px 0 6px">${mathRight} correct sums · ${missed} gauge${missed === 1 ? "" : "s"} missed</p>
+          <p style="color:var(--text-faint); font-size:0.88rem">${score >= 350 ? "Strong divided attention — assessors look for exactly this." : score >= 200 ? "Decent balance. Don't let the gauges starve the maths." : "Focus on rhythm: scan gauges between every answer."}</p>
           <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startMultitask()">Run it again →</button>`;
       }
-
       stats(); fireAlert(); newMath();
     }
 
-    document.addEventListener("DOMContentLoaded", renderBests);
+    document.addEventListener("DOMContentLoaded", () => {
+      renderBests();
+      renderRadar();
+      hrInit();
+      scnInit();
+      mcqInit();
+    });
   </script>
 </body>
 </html>

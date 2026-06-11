@@ -5,7 +5,7 @@ const NAV_ITEMS = [
   { href: "jobs.html",     label: "Jobs" },
   { href: "airlines.html", label: "Airlines" },
   { href: "schools.html",  label: "Schools Map" },
-  { href: "games.html",    label: "Prep Games" },
+  { href: "games.html",    label: "Training Centre" },
   { href: "salaries.html", label: "Salaries" },
   { href: "guides.html",   label: "Guides" }
 ];
