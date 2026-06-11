@@ -319,7 +319,9 @@
             ${j.reqs ? `<div style="font-size:0.84rem; color:var(--text-faint); margin-top:10px">${esc(j.reqs)}</div>` : ""}
           </div>
           <div class="job-right">
-            <span class="job-posted">${j.posted <= 2 ? "🔥 " : ""}${daysAgo(j.posted)}</span>
+            <span class="job-posted">${j.posted <= 2 ? "🔥 " : ""}${daysAgo(j.posted)} ·
+              <a href="#" onclick="event.preventDefault(); reportJob(${JSON.stringify(j.id)})"
+                 title="Closed? Broken link? Tell us." style="color:var(--text-faint); text-decoration:none">⚑ report</a></span>
             <span class="job-salary">${esc(j.salary)}</span>
             <div class="job-actions">
               <button class="save-btn ${savedIds.has(j.id) ? "saved" : ""}" title="Save job" onclick="toggleSave(${JSON.stringify(j.id)}, this)">${savedIds.has(j.id) ? "♥" : "♡"}</button>
@@ -328,6 +330,18 @@
           </div>
         </div>`;
       }).join("");
+    }
+
+    async function reportJob(id) {
+      if (!Backend.auth.user()) { location.href = "auth.html"; return; }
+      const job = allJobs.find(j => j.id === id);
+      if (!job) return;
+      const input = prompt(
+        `Report "${job.role} — ${job.airline}"\n\n1 — Vacancy appears closed\n2 — Apply link broken\n3 — Details are wrong\n\nType a number, or describe the problem:`, "1");
+      if (input === null || !input.trim()) return;
+      const reason = { "1": "Vacancy appears closed", "2": "Apply link broken", "3": "Details are wrong" }[input.trim()] || input.trim().slice(0, 300);
+      const res = await Backend.reports.submit(job, reason);
+      alert(res.error ? "Couldn't send the report: " + res.error : "✓ Thanks — we'll check this listing.");
     }
 
     async function toggleSave(id, btn) {

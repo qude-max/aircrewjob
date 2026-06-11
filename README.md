@@ -22,6 +22,16 @@ Runs in **demo mode** by default (accounts stored in localStorage). To go live w
 
 Everything lives in `assets/config.js`: Supabase URL + anon key, and your Discord invite link.
 
+## ⚠️ After ANY change to assets/data.js — regenerate the airline pages
+
+```bash
+node tools/generate-airlines.js
+```
+
+This rebuilds all static SEO pages in `/airline/` **and** `sitemap.xml` from the data.
+If you edit jobs, airline statuses or add carriers and forget this step, the airline
+landing pages and sitemap go stale. Then commit and push as usual.
+
 ---
 
 Job listings verified 10 Jun 2026. Always confirm requirements on the airline's official site before applying.

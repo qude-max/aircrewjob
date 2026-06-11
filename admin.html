@@ -71,6 +71,15 @@
         <div id="pendingList"></div>
       </div>
 
+      <div class="card" id="reportsCard" style="display:none; margin-bottom:22px">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px">
+          <h3>⚑ Listing reports</h3>
+          <span class="badge" id="reportsCount"></span>
+        </div>
+        <p style="font-size:0.88rem; margin-bottom:16px">Users flagged these listings as closed, broken or wrong. Check, fix in data.js (then regenerate airline pages), and dismiss.</p>
+        <div id="reportsList"></div>
+      </div>
+
       <div class="admin-grid" id="adminUI" style="display:none">
         <!-- Form -->
         <div class="card">
@@ -146,9 +155,32 @@
       document.getElementById("adminUI").style.display = "grid";
       document.getElementById("approvalsCard").style.display = "block";
       document.getElementById("statsRow").style.display = "grid";
+      document.getElementById("reportsCard").style.display = "block";
       renderList();
       renderPending();
       renderStats();
+      renderReports();
+    }
+
+    async function renderReports() {
+      const reports = await Backend.reports.list();
+      document.getElementById("reportsCount").textContent = `${reports.length} open`;
+      document.getElementById("reportsList").innerHTML = reports.length ? reports.map(r => `
+        <div class="admin-row">
+          <div>
+            <div class="t">${esc(r.job?.role)} — ${esc(r.job?.airline)} ${r.job?.aircraft ? "· " + esc(r.job.aircraft) : ""}</div>
+            <div class="s">"${esc(r.reason)}" · ${new Date(r.created).toLocaleDateString()}</div>
+          </div>
+          <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='dismissReport(${JSON.stringify(r.id)})'>Dismiss</button>
+          </div>
+        </div>`).join("")
+        : `<p style="color:var(--text-faint); font-size:0.9rem">No open reports — the board looks healthy.</p>`;
+    }
+
+    async function dismissReport(id) {
+      await Backend.reports.remove(id);
+      renderReports();
     }
 
     async function renderStats() {

@@ -363,6 +363,47 @@ const Backend = (() => {
     }
   };
 
+  /* ---------- listing reports (community freshness flags) ---------- */
+  const reportsApi = {
+    async submit(job, reason) {
+      if (!currentUser) return { error: "auth" };
+      if (mode === "supabase") {
+        const { error } = await sb.from("reports").insert({
+          job_id: job.id, user_id: currentUser.id, reason: reason
+        });
+        return error ? { error: error.message } : { ok: true };
+      }
+      const reports = LS.get("reports", []);
+      reports.unshift({
+        id: Date.now(), jobId: job.id, reason,
+        reporter: currentUser.email, created: new Date().toISOString(),
+        job: { airline: job.airline, role: job.role, aircraft: job.aircraft }
+      });
+      LS.set("reports", reports);
+      return { ok: true };
+    },
+    async list() {
+      if (mode === "supabase") {
+        const { data } = await sb.from("reports")
+          .select("*, jobs(airline, role, aircraft)")
+          .order("created_at", { ascending: false });
+        return (data || []).map(r => ({
+          id: r.id, jobId: r.job_id, reason: r.reason, created: r.created_at,
+          job: r.jobs || {}
+        }));
+      }
+      return LS.get("reports", []);
+    },
+    async remove(id) {
+      if (mode === "supabase") {
+        const { error } = await sb.from("reports").delete().eq("id", id);
+        return error ? { error: error.message } : { ok: true };
+      }
+      LS.set("reports", LS.get("reports", []).filter(r => r.id !== id));
+      return { ok: true };
+    }
+  };
+
   /* ---------- admin ---------- */
   const adminApi = {
     async pendingRecruiters() {
@@ -430,7 +471,7 @@ const Backend = (() => {
     }
   };
 
-  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, admin: adminApi, canPost };
+  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, canPost };
 })();
 
 Backend.ready = Backend.init();

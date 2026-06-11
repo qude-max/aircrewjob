@@ -83,6 +83,15 @@ create table if not exists public.applications (
   unique (user_id, job_id)
 );
 
+-- ---------- listing reports ----------
+create table if not exists public.reports (
+  id bigint generated always as identity primary key,
+  job_id bigint references public.jobs(id) on delete cascade,
+  user_id uuid references public.profiles(id) on delete set null,
+  reason text not null default '',
+  created_at timestamptz default now()
+);
+
 -- ============================================================
 -- Row Level Security
 -- ============================================================
@@ -90,6 +99,13 @@ alter table public.profiles enable row level security;
 alter table public.jobs enable row level security;
 alter table public.saved_jobs enable row level security;
 alter table public.applications enable row level security;
+alter table public.reports enable row level security;
+
+-- reports: signed-in users can flag; admins read & clear
+create policy "reports insert" on public.reports for insert
+  with check (auth.uid() = user_id);
+create policy "reports admin read" on public.reports for select using (public.is_admin());
+create policy "reports admin delete" on public.reports for delete using (public.is_admin());
 
 -- helper: is the current user an admin?
 create or replace function public.is_admin()
