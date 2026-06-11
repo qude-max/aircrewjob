@@ -5,17 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AirCrew Jobs — Pilot Jobs, Airline Intel & Career Guides</title>
   <meta name="description" content="The flight deck careers platform. Live pilot jobs, airline hiring intelligence, salary data and training guides — all in one place.">
-  <link rel="canonical" href="https://aircrewjob.vercel.app/">
+  <link rel="canonical" href="https://aircrewjob.com/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AirCrew Jobs">
   <meta property="og:title" content="AirCrew Jobs — Verified Pilot Jobs, Airline Intel & Career Guides">
   <meta property="og:description" content="Verified pilot vacancies from 17 airlines' official portals, hiring intel, salary data, a flight school & Class 1 map, and free aptitude prep games.">
-  <meta property="og:url" content="https://aircrewjob.vercel.app/">
-  <meta property="og:image" content="https://aircrewjob.vercel.app/assets/og.png">
+  <meta property="og:url" content="https://aircrewjob.com/">
+  <meta property="og:image" content="https://aircrewjob.com/assets/og.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <style>
     /* ---- Hero ---- */
@@ -264,7 +265,7 @@
         const p = positions[i];
         wrap.insertAdjacentHTML("beforeend",
           `<div class="blip" style="top:${p.top}%; left:${p.left}%; animation-delay:${p.delay}s">
-            <span>${code(j.airline)} · ${j.aircraft.split("/")[0].trim()} ${shortRole(j.role)} · ${spot(j.location)}</span>
+            <span>${esc(code(j.airline))} · ${esc(j.aircraft.split("/")[0].trim())} ${esc(shortRole(j.role))} · ${esc(spot(j.location))}</span>
           </div>`);
       });
 
@@ -274,7 +275,7 @@
 
       // Ticker (duplicated for seamless loop)
       const items = jobs.slice(0, 12).map(j =>
-        `<span class="ticker-item"><b>${j.airline}</b> ${j.role} · ${j.aircraft} · ${j.location}</span>`).join("");
+        `<span class="ticker-item"><b>${esc(j.airline)}</b> ${esc(j.role)} · ${esc(j.aircraft)} · ${esc(j.location)}</span>`).join("");
       document.getElementById("ticker").innerHTML = items + items;
 
       // Latest jobs (most recent 5)
@@ -283,11 +284,11 @@
         <a class="job-row reveal" href="jobs.html">
           ${logoHTML(j.airline)}
           <div>
-            <div class="role">${j.role} — ${j.aircraft}</div>
-            <div class="meta">${j.airline} · ${j.location}</div>
+            <div class="role">${esc(j.role)} — ${esc(j.aircraft)}</div>
+            <div class="meta">${esc(j.airline)} · ${esc(j.location)}</div>
           </div>
-          <div class="meta hide-m">${j.salary}</div>
-          <div class="hide-m"><span class="badge type">${j.type}</span></div>
+          <div class="meta hide-m">${esc(j.salary)}</div>
+          <div class="hide-m"><span class="badge type">${esc(j.type)}</span></div>
           <span class="badge ${j.posted <= 2 ? "new" : ""}">${j.posted <= 2 ? "NEW · " : ""}${daysAgo(j.posted)}</span>
         </a>`).join("");
       initReveal();

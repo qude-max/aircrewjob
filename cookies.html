@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookies — AirCrew Jobs</title>
+  <meta name="description" content="Cookie policy for AirCrew Jobs.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .legal { max-width: 760px; margin: 0 auto; }
+    .legal-head { padding: 150px 0 30px; }
+    .legal h2 { font-size: 1.25rem; margin: 36px 0 12px; padding-top: 22px; border-top: 1px solid var(--border); }
+    .legal h2::before { content: "§ "; color: var(--accent); }
+    .legal p, .legal li { font-size: 0.96rem; line-height: 1.75; color: var(--text-dim); margin-bottom: 12px; }
+    .legal ul { padding-left: 22px; margin-bottom: 14px; }
+    .legal b { color: var(--text); }
+    .draft-banner {
+      border: 1px solid rgba(255,197,85,0.4); background: rgba(255,197,85,0.07);
+      border-radius: var(--radius); padding: 16px 20px; margin: 24px 0; font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container legal">
+    <div class="legal-head">
+      <span class="eyebrow">Legal</span>
+      <h1 style="margin-top:20px; font-size:clamp(1.8rem,4vw,2.6rem)">Cookies & <span class="gradient-text">local storage</span></h1>
+      <p style="margin-top:14px; color:var(--text-faint)">Last updated: 10 June 2026 · Version 0.1 (draft)</p>
+    </div>
+
+    <div class="draft-banner">⚠ <b>Draft for legal review</b> — accurate to how the site works today.</div>
+
+    <h2>The short version</h2>
+    <p><b>We don't use advertising or tracking cookies, and there's no cookie banner because none is needed.</b> The platform uses only what's strictly necessary to function, which is why you've never been asked to "accept cookies" here.</p>
+
+    <h2>What we actually store</h2>
+    <ul>
+      <li><b>Authentication token (localStorage)</b> — set by Supabase when you sign in, so you stay signed in between visits. Strictly necessary; removed when you sign out.</li>
+      <li><b>Game scores & preferences (localStorage)</b> — your aptitude-game personal bests live only in your browser and never reach our servers. Clearing your browser data removes them.</li>
+      <li><b>Analytics</b> — we use Vercel Web Analytics, which is <b>cookieless</b>: it counts page views in aggregate without cookies, fingerprinting or cross-site tracking, and cannot identify you.</li>
+    </ul>
+
+    <h2>Third-party content</h2>
+    <p>Some pages load assets from third parties (Google Fonts, map tiles from CARTO/OpenStreetMap, script CDNs, airline logos via a favicon service). These requests expose your IP address to those providers as a technical necessity, but we don't allow any of them to set tracking cookies on our pages. If you follow a link to Discord or an airline's careers site, their own cookie policies apply there.</p>
+
+    <h2>Managing storage</h2>
+    <p>You can clear localStorage anytime via your browser settings (usually under "Site data"). Doing so signs you out and resets game scores, nothing more.</p>
+
+    <p style="margin:50px 0 80px"><a href="index.html" style="color:var(--accent)">← Back to AirCrew Jobs</a></p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/config.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/backend.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

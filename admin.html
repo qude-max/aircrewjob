@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <style>
     .admin-grid { display: grid; grid-template-columns: 400px 1fr; gap: 22px; align-items: start; }
@@ -168,8 +169,8 @@
       document.getElementById("pendingList").innerHTML = pending.length ? pending.map(r => `
         <div class="admin-row">
           <div>
-            <div class="t">${r.company || "—"}</div>
-            <div class="s">${r.full_name || "—"} · ${r.email}</div>
+            <div class="t">${esc(r.company) || "—"}</div>
+            <div class="s">${esc(r.full_name) || "—"} · ${esc(r.email)}</div>
           </div>
           <div class="row-actions">
             <button class="btn btn-primary btn-sm" onclick='approveRec(${JSON.stringify(r.id || r.email)}, true)'>Approve</button>
@@ -190,8 +191,8 @@
       document.getElementById("adminList").innerHTML = jobs.map(j => `
         <div class="admin-row">
           <div>
-            <div class="t">${j.role} — ${j.aircraft}</div>
-            <div class="s">${j.airline} · ${j.location} · ${j.salary}</div>
+            <div class="t">${esc(j.role)} — ${esc(j.aircraft)}</div>
+            <div class="s">${esc(j.airline)} · ${esc(j.location)} · ${esc(j.salary)}</div>
           </div>
           <div class="row-actions">
             <button class="icon-btn" title="Edit" onclick='startEdit(${JSON.stringify(j.id)})'>✏️</button>

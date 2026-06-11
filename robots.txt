@@ -4,4 +4,4 @@ Disallow: /admin.html
 Disallow: /recruiter.html
 Disallow: /account.html
 Disallow: /auth.html
-Sitemap: https://aircrewjob.vercel.app/sitemap.xml
+Sitemap: https://aircrewjob.com/sitemap.xml

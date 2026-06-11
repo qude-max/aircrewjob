@@ -5,17 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pilot Job Board — AirCrew Jobs</title>
   <meta name="description" content="Live pilot vacancies worldwide. Filter by region, role, type and minimum hours.">
-  <link rel="canonical" href="https://aircrewjob.vercel.app/jobs.html">
+  <link rel="canonical" href="https://aircrewjob.com/jobs.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AirCrew Jobs">
   <meta property="og:title" content="Pilot Job Board — verified vacancies worldwide | AirCrew Jobs">
   <meta property="og:description" content="Live pilot jobs from Emirates, Etihad, Ryanair, easyJet, Cathay, United and more — every listing verified on the airline's official careers portal.">
-  <meta property="og:url" content="https://aircrewjob.vercel.app/jobs.html">
-  <meta property="og:image" content="https://aircrewjob.vercel.app/assets/og.png">
+  <meta property="og:url" content="https://aircrewjob.com/jobs.html">
+  <meta property="og:image" content="https://aircrewjob.com/assets/og.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <style>
     .filter-bar {
@@ -245,27 +246,27 @@
 
       els.jobList.innerHTML = filtered.map((j, i) => {
         const applied = appliedIds.has(j.id);
-        const applyBtn = j.applyUrl
-          ? `<a class="btn btn-primary btn-sm" href="${j.applyUrl}" target="_blank" rel="noopener">Apply on airline site ↗</a>`
+        const applyBtn = safeUrl(j.applyUrl)
+          ? `<a class="btn btn-primary btn-sm" href="${safeUrl(j.applyUrl)}" target="_blank" rel="noopener">Apply on airline site ↗</a>`
           : `<button class="btn btn-primary btn-sm" ${applied ? "disabled style='opacity:0.55'" : ""} onclick="openApply(${JSON.stringify(j.id)})">${applied ? "✓ Applied" : "Apply →"}</button>`;
         return `
         <div class="job-card" id="job-${j.id}" style="animation-delay:${Math.min(i * 40, 400)}ms">
           ${logoHTML(j.airline)}
           <div>
-            <div class="job-title">${j.role} — ${j.aircraft}</div>
-            <div class="job-sub">${j.airline} · ${j.location}</div>
+            <div class="job-title">${esc(j.role)} — ${esc(j.aircraft)}</div>
+            <div class="job-sub">${esc(j.airline)} · ${esc(j.location)}</div>
             <div class="job-tags">
               ${j.verified ? `<span class="badge hiring" title="Sourced from the airline's official careers portal, ${typeof VERIFIED_DATE !== "undefined" ? VERIFIED_DATE : ""}">✓ Verified · official</span>` : `<span class="badge">Recruiter post</span>`}
-              <span class="badge type">${j.type}</span>
-              <span class="badge">${j.region}</span>
-              <span class="badge">${j.minHours === 0 ? "No hours required" : `Min ${j.minHours.toLocaleString()} hrs`}</span>
+              <span class="badge type">${esc(j.type)}</span>
+              <span class="badge">${esc(j.region)}</span>
+              <span class="badge">${j.minHours === 0 ? "No hours required" : `Min ${Number(j.minHours).toLocaleString()} hrs`}</span>
               ${j.rated ? `<span class="badge new">Type rated</span>` : ""}
             </div>
-            ${j.reqs ? `<div style="font-size:0.84rem; color:var(--text-faint); margin-top:10px">${j.reqs}</div>` : ""}
+            ${j.reqs ? `<div style="font-size:0.84rem; color:var(--text-faint); margin-top:10px">${esc(j.reqs)}</div>` : ""}
           </div>
           <div class="job-right">
             <span class="job-posted">${j.posted <= 2 ? "🔥 " : ""}${daysAgo(j.posted)}</span>
-            <span class="job-salary">${j.salary}</span>
+            <span class="job-salary">${esc(j.salary)}</span>
             <div class="job-actions">
               <button class="save-btn ${savedIds.has(j.id) ? "saved" : ""}" title="Save job" onclick="toggleSave(${JSON.stringify(j.id)}, this)">${savedIds.has(j.id) ? "♥" : "♡"}</button>
               ${applyBtn}

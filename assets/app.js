@@ -83,26 +83,25 @@ function renderFooter() {
           </ul>
         </div>
         <div>
-          <h4>Airlines</h4>
+          <h4>Airlines & Recruiters</h4>
           <ul>
-            <li><a href="airlines.html">Directory</a></li>
+            <li><a href="airlines.html">Airline Directory</a></li>
             <li><a href="airlines.html">Hiring Status</a></li>
-            <li><a href="recruiter.html">Recruiter Dashboard</a></li>
-            <li><a href="admin.html">Platform Admin</a></li>
+            <li><a href="recruiter.html">Post a job — free during beta</a></li>
           </ul>
         </div>
         <div>
-          <h4>Company</h4>
+          <h4>Company & Legal</h4>
           <ul>
-            <li><a href="index.html">About</a></li>
             <li><a href="${typeof DISCORD_INVITE !== "undefined" ? DISCORD_INVITE : "index.html#newsletter"}" target="_blank" rel="noopener">Chill Wings (Discord)</a></li>
             <li><a href="privacy.html">Privacy & Data Protection</a></li>
-            <li><a href="index.html">Contact</a></li>
+            <li><a href="terms.html">Terms of Use</a></li>
+            <li><a href="cookies.html">Cookies</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 AirCrew Jobs. Demo site — listings are illustrative.</span>
+        <span>© 2026 AirCrew Jobs · Listings verified against official airline sources.</span>
         <span>Fly safe. ✈</span>
       </div>
     </div>
@@ -137,14 +136,26 @@ function animateCounters() {
 
 function daysAgo(n) { return n === 0 ? "Today" : n === 1 ? "Yesterday" : `${n} days ago`; }
 
+/* HTML-escape user-generated content before inserting into innerHTML.
+   Prevents stored XSS from recruiter posts, applicant notes, names, etc. */
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+/* Only allow http(s) URLs into href attributes (blocks javascript: etc.) */
+function safeUrl(u) {
+  return /^https?:\/\//i.test(String(u ?? "")) ? esc(u) : "";
+}
+
 /* Airline logo with graceful fallback to initials.
    Uses Google's favicon service against the airline's domain (see DOMAINS in data.js). */
 function logoHTML(airline, cls = "job-logo") {
-  const initials = airline.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+  const initials = esc(String(airline || "?").split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase());
   const domain = (typeof DOMAINS !== "undefined" && DOMAINS[airline]) || null;
   if (!domain) return `<div class="${cls}">${initials}</div>`;
   return `<div class="${cls} has-img">
-    <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="${airline} logo" loading="lazy"
+    <img src="https://www.google.com/s2/favicons?domain=${esc(domain)}&sz=128" alt="${esc(airline)} logo" loading="lazy"
       onerror="this.parentElement.classList.remove('has-img'); this.remove()">
     <span class="logo-fallback">${initials}</span>
   </div>`;

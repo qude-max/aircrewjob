@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <style>
     .rec-grid { display: grid; grid-template-columns: 400px 1fr; gap: 22px; align-items: start; }
@@ -194,8 +195,8 @@
         <div class="listing" id="listing-${j.id}">
           <div class="listing-head" onclick="toggleApplicants(${JSON.stringify(j.id)})">
             <div>
-              <div class="t">${j.role} — ${j.aircraft}</div>
-              <div class="s">${j.airline} · ${j.location} · ${j.salary}</div>
+              <div class="t">${esc(j.role)} — ${esc(j.aircraft)}</div>
+              <div class="s">${esc(j.airline)} · ${esc(j.location)} · ${esc(j.salary)}</div>
             </div>
             <div class="row-actions">
               <span class="badge" id="appCount-${j.id}">…</span>
@@ -223,13 +224,13 @@
       box.innerHTML = apps.length ? apps.map(a => `
         <div class="applicant">
           <div>
-            <div class="name">${a.applicantName || "—"}</div>
-            <div class="meta">${a.applicantEmail || ""} · applied ${new Date(a.created).toLocaleDateString()}</div>
+            <div class="name">${esc(a.applicantName) || "—"}</div>
+            <div class="meta">${esc(a.applicantEmail)} · applied ${new Date(a.created).toLocaleDateString()}</div>
           </div>
           <div class="meta" style="text-align:right">
-            ${a.licence || "Licence n/a"}<br>${(a.hours || 0).toLocaleString()} hrs${a.ratings ? " · " + a.ratings : ""}
+            ${esc(a.licence) || "Licence n/a"}<br>${(Number(a.hours) || 0).toLocaleString()} hrs${a.ratings ? " · " + esc(a.ratings) : ""}
           </div>
-          ${a.note ? `<div class="note">${a.note}</div>` : ""}
+          ${a.note ? `<div class="note">${esc(a.note)}</div>` : ""}
           <div style="grid-column:1/-1; margin-top:8px; display:flex; align-items:center; gap:10px">
             <span style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-faint)">Status</span>
             <select class="input" style="max-width:170px; padding:7px 32px 7px 12px; font-size:0.84rem"
