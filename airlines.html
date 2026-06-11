@@ -115,6 +115,10 @@
             <div><dt>IATA</dt><dd>${a.code}</dd></div>
           </dl>
           <p class="airline-note">${a.note}</p>
+          <a href="airline/${a.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.html"
+             style="display:inline-block; margin-top:14px; color:var(--accent); font-family:var(--font-display); font-weight:600; font-size:0.88rem; text-decoration:none">
+            Full profile & openings →
+          </a>
         </div>`).join("") ||
         `<p style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-faint)">No airlines match that search.</p>`;
     }
