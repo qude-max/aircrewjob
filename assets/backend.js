@@ -16,7 +16,7 @@ const Backend = (() => {
     typeof window !== "undefined" && window.supabase;
 
   const mode = configured ? "supabase" : "demo";
-  let sb = null, currentUser = null, currentProfile = null;
+  let sb = null, currentUser = null, currentProfile = null, recoveryMode = false;
   const authListeners = [];
 
   /* ---------- demo-mode storage helpers ---------- */
@@ -44,7 +44,8 @@ const Backend = (() => {
       sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       const { data: { session } } = await sb.auth.getSession();
       if (session) { currentUser = session.user; await loadProfile(); }
-      sb.auth.onAuthStateChange(async (_e, s) => {
+      sb.auth.onAuthStateChange(async (ev, s) => {
+        if (ev === "PASSWORD_RECOVERY") recoveryMode = true;
         currentUser = s ? s.user : null;
         currentProfile = null;
         if (currentUser) await loadProfile();
@@ -114,6 +115,24 @@ const Backend = (() => {
       else LS.set("session", null);
       currentUser = null; currentProfile = null;
       notifyAuth();
+    },
+
+    /* password recovery */
+    isRecovery: () => recoveryMode,
+    async resetRequest(email) {
+      if (mode !== "supabase")
+        return { error: "Password reset isn't available in demo mode — demo accounts live only in this browser." };
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: location.origin + "/auth.html"
+      });
+      return error ? { error: error.message } : { ok: true };
+    },
+    async updatePassword(newPassword) {
+      if (mode !== "supabase") return { error: "Not available in demo mode." };
+      const { error } = await sb.auth.updateUser({ password: newPassword });
+      if (error) return { error: error.message };
+      recoveryMode = false;
+      return { ok: true };
     }
   };
 

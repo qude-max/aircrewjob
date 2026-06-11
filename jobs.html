@@ -121,7 +121,12 @@
 
       <div class="results-meta">
         <span id="resultCount">Loading…</span>
-        <span>Sorted by: <b style="color:var(--text-dim)">Most recent</b></span>
+        <span style="display:flex; gap:14px; align-items:center">
+          <button id="matchToggle" style="display:none; font-family:var(--font-display); font-size:0.84rem; font-weight:500;
+            padding:7px 16px; border-radius:999px; cursor:pointer; border:1px solid var(--border);
+            background:var(--surface); color:var(--text-dim); transition:all 0.2s">🎯 Matches my profile</button>
+          <span>Sorted by: <b style="color:var(--text-dim)">Most recent</b></span>
+        </span>
       </div>
 
       <div id="jobList"></div>
@@ -193,7 +198,18 @@
     ["fSearch","fRegion","fRole","fType","fHours","jobList","resultCount","applyOverlay","applyTitle","applySub","applyForm","applyMsg"]
       .forEach(id => els[id] = document.getElementById(id));
 
-    let allJobs = [], savedIds = new Set(), appliedIds = new Set(), applyJob = null;
+    let allJobs = [], savedIds = new Set(), appliedIds = new Set(), applyJob = null, matchOnly = false;
+
+    /* Does this job fit the signed-in pilot's profile? */
+    function fitsProfile(j, p) {
+      if ((p.total_hours || 0) < j.minHours) return false;
+      if (j.rated) {
+        const myRatings = (p.ratings || "").toUpperCase().split(/[,;/\s]+/).filter(Boolean);
+        const jobTypes = (j.aircraft || "").toUpperCase();
+        if (!myRatings.some(r => r.length >= 3 && jobTypes.includes(r))) return false;
+      }
+      return true;
+    }
 
     const initials = name => name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
@@ -206,6 +222,25 @@
       }
       render();
       focusJobFromUrl();
+
+      // "Matches my profile" — shown to signed-in pilots/crew with hours set
+      const p = Backend.auth.profile();
+      if (p && p.role !== "recruiter") {
+        const t = document.getElementById("matchToggle");
+        t.style.display = "inline-block";
+        t.addEventListener("click", () => {
+          if (!p.total_hours && !p.ratings) {
+            alert("Add your hours and ratings in My Account first, then this filter knows what fits you.");
+            location.href = "account.html";
+            return;
+          }
+          matchOnly = !matchOnly;
+          t.style.background = matchOnly ? "rgba(56,224,255,0.12)" : "var(--surface)";
+          t.style.borderColor = matchOnly ? "var(--border-bright)" : "var(--border)";
+          t.style.color = matchOnly ? "var(--accent)" : "var(--text-dim)";
+          render();
+        });
+      }
     }
 
     /* Deep link: jobs.html?job=ID scrolls to and highlights that listing */
@@ -228,13 +263,15 @@
       const region = els.fRegion.value, role = els.fRole.value, type = els.fType.value;
       const maxH = els.fHours.value === "" ? null : parseInt(els.fHours.value, 10);
 
+      const prof = Backend.auth.profile();
       const filtered = [...allJobs]
         .filter(j =>
           (!q || `${j.airline} ${j.aircraft} ${j.location} ${j.role}`.toLowerCase().includes(q)) &&
           (!region || j.region === region) &&
           (!role || j.role === role) &&
           (!type || j.type === type) &&
-          (maxH === null || j.minHours <= maxH))
+          (maxH === null || j.minHours <= maxH) &&
+          (!matchOnly || !prof || fitsProfile(j, prof)))
         .sort((a, b) => a.posted - b.posted);
 
       els.resultCount.textContent = `${filtered.length} position${filtered.length === 1 ? "" : "s"} found`;

@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pilot Aptitude Prep Games — AirCrew Jobs</title>
-  <meta name="description" content="Free practice for airline psychometric assessments: reaction & vigilance, memory span, and multitasking — the skills cut-e and CAE-style tests measure.">
+  <meta name="description" content="Free practice for airline psychometric assessments: spatial orientation, instrument scanning, memory, reaction and multitasking — the skills cut-e/AON and CAE-style tests measure.">
   <link rel="canonical" href="https://aircrewjob.com/games.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AirCrew Jobs">
   <meta property="og:title" content="Free Pilot Aptitude Prep Games | AirCrew Jobs">
-  <meta property="og:description" content="Train reaction, memory span and multitasking — the skills cut-e and CAE-style airline assessments measure. Free.">
+  <meta property="og:description" content="Six trainers for the skills airline assessments measure: spatial orientation, instrument scan, memory grid, reaction, memory span and multitasking. Free.">
   <meta property="og:url" content="https://aircrewjob.com/games.html">
   <meta property="og:image" content="https://aircrewjob.com/assets/og.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -25,6 +25,7 @@
     .game-card .icon { font-size: 2rem; margin-bottom: 12px; }
     .game-card p { font-size: 0.92rem; flex: 1; margin: 10px 0 16px; }
     .best { font-size: 0.8rem; color: var(--accent); font-family: var(--font-display); margin-bottom: 14px; min-height: 1.2em; }
+    .tier-badge { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent-2); }
 
     /* ---- Game modal ---- */
     .gm-overlay {
@@ -34,7 +35,7 @@
     }
     .gm-overlay.open { display: flex; }
     .gm {
-      width: min(680px, 100%); background: var(--bg-2);
+      width: min(720px, 100%); max-height: 92vh; overflow-y: auto; background: var(--bg-2);
       border: 1px solid var(--border-bright); border-radius: 20px;
       padding: 30px; box-shadow: 0 0 60px rgba(56,224,255,0.15);
     }
@@ -42,7 +43,7 @@
     .gm-head h3 { margin: 0; }
     .gm-close { background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--text-dim); cursor: pointer; padding: 6px 12px; font-size: 1rem; }
     .gm-stage {
-      min-height: 320px; border: 1px solid var(--border); border-radius: 14px;
+      min-height: 340px; border: 1px solid var(--border); border-radius: 14px;
       background: rgba(5,8,15,0.7); position: relative; overflow: hidden;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       text-align: center; padding: 24px; user-select: none;
@@ -72,6 +73,32 @@
     .math-opts { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
     .math-opts button { min-width: 64px; }
     .note-strip { font-size: 0.84rem; color: var(--text-faint); margin-top: 30px; max-width: 760px; }
+
+    /* ---- Spatial orientation ---- */
+    .so-q { font-family: var(--font-display); font-size: 1.15rem; color: var(--text); margin: 14px 0 4px; }
+    .so-opts { display: grid; grid-template-columns: repeat(2, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
+    .so-opts button { justify-content: center; }
+    .so-fb { min-height: 1.3em; font-size: 0.9rem; margin-top: 10px; }
+
+    /* ---- Six-pack scan ---- */
+    .sp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 560px) { .sp-grid { grid-template-columns: repeat(2, 1fr); } }
+    .dial { cursor: pointer; transition: transform 0.1s; }
+    .dial:hover { transform: scale(1.04); }
+    .dial-label { font-family: var(--font-display); font-size: 0.66rem; fill: #5d6c8a; text-anchor: middle; }
+
+    /* ---- Memory grid ---- */
+    .mg-grid { display: grid; grid-template-columns: repeat(4, 64px); gap: 10px; }
+    @media (max-width: 420px) { .mg-grid { grid-template-columns: repeat(4, 54px); } }
+    .mg-cell {
+      width: 64px; height: 64px; border-radius: 12px; cursor: pointer;
+      background: rgba(56,224,255,0.06); border: 1px solid var(--border);
+      transition: all 0.12s;
+    }
+    @media (max-width: 420px) { .mg-cell { width: 54px; height: 54px; } }
+    .mg-cell.lit { background: var(--accent); box-shadow: 0 0 22px rgba(56,224,255,0.7); border-color: var(--accent); }
+    .mg-cell.good { background: rgba(52,232,160,0.6); border-color: var(--green); }
+    .mg-cell.bad { background: rgba(255,107,129,0.6); border-color: var(--red); }
   </style>
 </head>
 <body>
@@ -80,7 +107,7 @@
     <div class="container">
       <span class="eyebrow">Aptitude Prep · Free during beta</span>
       <h1 style="margin-top:20px">Train like it's <span class="gradient-text">assessment day</span></h1>
-      <p>Airline screening (cut-e/AON, CAE, COMPASS) measures reaction, memory and divided attention. These trainers exercise exactly those muscles — scores stay on your device.</p>
+      <p>Airline screening (cut-e/AON, CAE, COMPASS) measures spatial orientation, monitoring, memory, reaction and divided attention. Six trainers, same muscles — scores stay on your device.</p>
     </div>
   </header>
 
@@ -88,23 +115,44 @@
     <div class="container">
       <div class="game-grid">
         <div class="card game-card">
+          <div class="icon">🧭</div>
+          <h3>Spatial Orientation <span class="tier-badge">NEW</span></h3>
+          <p>Heading 240°, beacon bears 135° — where is it relative to your nose? The classic compass-reasoning task, 60 seconds against the clock.</p>
+          <div class="best" id="best-spatial"></div>
+          <button class="btn btn-primary btn-sm" onclick="openGame('spatial')">Start →</button>
+        </div>
+        <div class="card game-card">
+          <div class="icon">🛩️</div>
+          <h3>Instrument Scan <span class="tier-badge">NEW</span></h3>
+          <p>Six live instruments, needles wandering. One drifts out of the green band — catch it fast. Pure monitoring, like the real screening task.</p>
+          <div class="best" id="best-sixpack"></div>
+          <button class="btn btn-primary btn-sm" onclick="openGame('sixpack')">Start →</button>
+        </div>
+        <div class="card game-card">
+          <div class="icon">🔲</div>
+          <h3>Memory Grid <span class="tier-badge">NEW</span></h3>
+          <p>Cells flash in sequence on a 4×4 grid — replay them in order. Visual-spatial memory, the cut-e matrix format.</p>
+          <div class="best" id="best-grid"></div>
+          <button class="btn btn-primary btn-sm" onclick="openGame('grid')">Start →</button>
+        </div>
+        <div class="card game-card">
           <div class="icon">⚡</div>
           <h3>Reaction & Vigilance</h3>
-          <p>Wait for the disc to turn cyan, then hit it — 8 rounds with random delays. Jump early and you're penalised, exactly like a vigilance task.</p>
+          <p>Wait for the disc to turn cyan, then hit it — 8 rounds with random delays. Jump early and you're penalised.</p>
           <div class="best" id="best-reaction"></div>
           <button class="btn btn-primary btn-sm" onclick="openGame('reaction')">Start →</button>
         </div>
         <div class="card game-card">
           <div class="icon">🧠</div>
           <h3>Memory Span</h3>
-          <p>A digit sequence flashes once, then you type it back. Each pass adds a digit. Airlines test forwards and backwards recall — this trains both.</p>
+          <p>A digit sequence flashes once, then you type it back. Each pass adds a digit — forwards recall under time pressure.</p>
           <div class="best" id="best-memory"></div>
           <button class="btn btn-primary btn-sm" onclick="openGame('memory')">Start →</button>
         </div>
         <div class="card game-card">
           <div class="icon">🎛️</div>
           <h3>Multitask Monitor</h3>
-          <p>Keep answering mental-arithmetic questions while monitoring six gauges — when one goes red, silence it fast. Divided attention under time pressure.</p>
+          <p>Mental arithmetic while monitoring six warning gauges — divided attention under time pressure, COMPASS-style.</p>
           <div class="best" id="best-multitask"></div>
           <button class="btn btn-primary btn-sm" onclick="openGame('multitask')">Start →</button>
         </div>
@@ -135,7 +183,7 @@
     /* ---------- shared ---------- */
     const $ = id => document.getElementById(id);
     const stage = () => $("gmStage");
-    let activeGame = null, cleanupFns = [];
+    let cleanupFns = [];
 
     const SCORES_KEY = "acj_game_scores";
     const getScores = () => { try { return JSON.parse(localStorage.getItem(SCORES_KEY)) || {}; } catch { return {}; } };
@@ -146,29 +194,283 @@
     };
     function renderBests() {
       const s = getScores();
-      $("best-reaction").textContent  = s.reaction  !== undefined ? `Personal best: ${s.reaction} ms avg` : "No score yet — set your baseline";
-      $("best-memory").textContent    = s.memory    !== undefined ? `Personal best: ${s.memory} digits` : "No score yet — set your baseline";
-      $("best-multitask").textContent = s.multitask !== undefined ? `Personal best: ${s.multitask} pts` : "No score yet — set your baseline";
+      const set = (id, v, txt) => $(id).textContent = v !== undefined ? `Personal best: ${txt}` : "No score yet — set your baseline";
+      set("best-spatial",  s.spatial,  `${s.spatial} pts`);
+      set("best-sixpack",  s.sixpack,  `${s.sixpack} pts`);
+      set("best-grid",     s.grid,     `${s.grid} cells`);
+      set("best-reaction", s.reaction, `${s.reaction} ms avg`);
+      set("best-memory",   s.memory,   `${s.memory} digits`);
+      set("best-multitask",s.multitask,`${s.multitask} pts`);
     }
 
+    const TITLES = {
+      spatial: "🧭 Spatial Orientation", sixpack: "🛩️ Instrument Scan", grid: "🔲 Memory Grid",
+      reaction: "⚡ Reaction & Vigilance", memory: "🧠 Memory Span", multitask: "🎛️ Multitask Monitor"
+    };
     function openGame(name) {
-      activeGame = name;
       $("gmOverlay").classList.add("open");
-      $("gmTitle").textContent = { reaction: "⚡ Reaction & Vigilance", memory: "🧠 Memory Span", multitask: "🎛️ Multitask Monitor" }[name];
-      ({ reaction: startReaction, memory: startMemory, multitask: startMultitask })[name]();
+      $("gmTitle").textContent = TITLES[name];
+      ({ spatial: startSpatial, sixpack: startSixpack, grid: startGrid,
+         reaction: startReaction, memory: startMemory, multitask: startMultitask })[name]();
     }
     function closeGame() {
       cleanupFns.forEach(f => f()); cleanupFns = [];
       $("gmOverlay").classList.remove("open");
       stage().innerHTML = ""; $("gmStats").innerHTML = "";
-      activeGame = null;
     }
     $("gmOverlay").addEventListener("click", e => { if (e.target === $("gmOverlay")) closeGame(); });
-
     const timer = (fn, ms) => { const t = setTimeout(fn, ms); cleanupFns.push(() => clearTimeout(t)); return t; };
     const ticker = (fn, ms) => { const t = setInterval(fn, ms); cleanupFns.push(() => clearInterval(t)); return t; };
+    const endGame = () => { cleanupFns.forEach(f => f()); cleanupFns = []; };
 
-    /* ---------- 1. Reaction & Vigilance ---------- */
+    /* ============================================================
+       1. SPATIAL ORIENTATION — heading vs bearing reasoning (60s)
+       ============================================================ */
+    const SECTORS = ["dead ahead", "ahead-right", "off the right wing", "behind-right", "dead astern", "behind-left", "off the left wing", "ahead-left"];
+
+    function compassSVG(heading) {
+      const ticks = [];
+      for (let d = 0; d < 360; d += 30) {
+        const r1 = 78, r2 = d % 90 === 0 ? 64 : 70;
+        const a = (d - 90) * Math.PI / 180;
+        ticks.push(`<line x1="${90 + r1 * Math.cos(a)}" y1="${90 + r1 * Math.sin(a)}" x2="${90 + r2 * Math.cos(a)}" y2="${90 + r2 * Math.sin(a)}" stroke="rgba(56,224,255,0.4)" stroke-width="${d % 90 === 0 ? 2.4 : 1.2}"/>`);
+      }
+      const lbl = (txt, d) => {
+        const a = (d - 90) * Math.PI / 180, r = 53;
+        return `<text x="${90 + r * Math.cos(a)}" y="${90 + r * Math.sin(a) + 4}" fill="#93a3c0" font-size="12" font-weight="700" text-anchor="middle" font-family="Space Grotesk">${txt}</text>`;
+      };
+      return `<svg width="180" height="180" viewBox="0 0 180 180">
+        <circle cx="90" cy="90" r="80" fill="rgba(56,224,255,0.04)" stroke="rgba(56,224,255,0.3)"/>
+        ${ticks.join("")}
+        ${lbl("N", 0)}${lbl("E", 90)}${lbl("S", 180)}${lbl("W", 270)}
+        <g transform="rotate(${heading} 90 90)">
+          <path d="M90 58 L102 104 L90 95 L78 104 Z" fill="rgba(56,224,255,0.25)" stroke="#38e0ff" stroke-width="2" stroke-linejoin="round"/>
+        </g>
+      </svg>`;
+    }
+
+    function startSpatial() {
+      let score = 0, right = 0, wrong = 0, timeLeft = 60, answering = true;
+
+      function stats() {
+        $("gmStats").innerHTML = `<span>Time <b>${timeLeft}s</b></span><span>Score <b>${score}</b></span><span><b>${right}✓ ${wrong}✗</b></span>`;
+      }
+
+      function question() {
+        answering = true;
+        const heading = Math.floor(Math.random() * 72) * 5;
+        const bearing = Math.floor(Math.random() * 72) * 5;
+        const rel = ((bearing - heading) % 360 + 360) % 360;
+        const sector = Math.round(rel / 45) % 8;
+        // build 4 options: correct + 3 distinct others
+        const opts = new Set([sector]);
+        while (opts.size < 4) opts.add(Math.floor(Math.random() * 8));
+        const shuffled = [...opts].sort(() => Math.random() - 0.5);
+
+        stage().innerHTML = `
+          ${compassSVG(heading)}
+          <div class="so-q">Your heading: <b style="color:var(--accent)">${String(heading).padStart(3, "0")}°</b> · A beacon bears <b style="color:var(--accent)">${String(bearing).padStart(3, "0")}°</b> true</div>
+          <p style="font-size:0.85rem; color:var(--text-faint)">Where is the beacon relative to your aircraft?</p>
+          <div class="so-opts">
+            ${shuffled.map(s => `<button class="btn btn-ghost btn-sm" onclick="window.__soAnswer(${s}, ${sector})">${SECTORS[s]}</button>`).join("")}
+          </div>
+          <div class="so-fb" id="soFb"></div>`;
+      }
+
+      window.__soAnswer = (picked, correct) => {
+        if (!answering) return;
+        answering = false;
+        const fb = $("soFb");
+        if (picked === correct) { right++; score += 12; fb.innerHTML = `<span style="color:var(--green)">✓ Correct</span>`; }
+        else { wrong++; score = Math.max(0, score - 4); fb.innerHTML = `<span style="color:var(--red)">✗ It was ${SECTORS[correct]}</span>`; }
+        stats();
+        timer(question, 650);
+      };
+      cleanupFns.push(() => delete window.__soAnswer);
+
+      ticker(() => {
+        timeLeft--;
+        stats();
+        if (timeLeft <= 0) {
+          endGame();
+          setBest("spatial", score, (a, b) => a > b);
+          const acc = right + wrong ? Math.round(right / (right + wrong) * 100) : 0;
+          const verdict = acc >= 85 && right >= 12 ? "Assessment-ready — fast AND accurate." : acc >= 70 ? "Solid. Push speed without losing accuracy." : "Visualise the rose: rotate the bearing into your nose reference first.";
+          stage().innerHTML = `<div class="digit-display">${score} pts</div>
+            <p style="margin:12px 0 6px">${right} correct · ${wrong} wrong · ${acc}% accuracy</p>
+            <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+            <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startSpatial()">Run it again →</button>`;
+        }
+      }, 1000);
+
+      stats(); question();
+    }
+
+    /* ============================================================
+       2. INSTRUMENT SCAN — six-pack monitoring (45s)
+       ============================================================ */
+    const DIAL_NAMES = ["ASI", "ATT", "ALT", "TC", "HDG", "VSI"];
+
+    function dialSVG(i) {
+      // needle drawn via group rotation set in JS; green band 35–65 mapped to -36°..+36° of a -120..120 sweep
+      const arc = (from, to, color, w) => {
+        const a1 = (from - 90) * Math.PI / 180, a2 = (to - 90) * Math.PI / 180, r = 34;
+        return `<path d="M${50 + r * Math.cos(a1)} ${50 + r * Math.sin(a1)} A${r} ${r} 0 0 1 ${50 + r * Math.cos(a2)} ${50 + r * Math.sin(a2)}" fill="none" stroke="${color}" stroke-width="${w}"/>`;
+      };
+      return `<svg class="dial" id="dial-${i}" width="100" height="100" viewBox="0 0 100 100" onclick="window.__spClick(${i})">
+        <circle cx="50" cy="50" r="44" fill="rgba(5,8,15,0.9)" stroke="rgba(148,197,255,0.25)" stroke-width="1.5"/>
+        ${arc(-120, 120, "rgba(148,197,255,0.15)", 5)}
+        ${arc(-36, 36, "rgba(52,232,160,0.55)", 5)}
+        <g id="needle-${i}" transform="rotate(0 50 50)">
+          <line x1="50" y1="50" x2="50" y2="16" stroke="#38e0ff" stroke-width="2.6" stroke-linecap="round"/>
+        </g>
+        <circle cx="50" cy="50" r="4" fill="#38e0ff"/>
+        <text x="50" y="78" class="dial-label">${DIAL_NAMES[i]}</text>
+      </svg>`;
+    }
+
+    function startSixpack() {
+      const DURATION = 45;
+      let timeLeft = DURATION, score = 0, caught = 0, missed = 0, falseClicks = 0;
+      let values = [50, 50, 50, 50, 50, 50], rogue = -1, rogueAt = 0;
+
+      stage().innerHTML = `
+        <p style="font-size:0.85rem; color:var(--text-faint); margin-bottom:14px">Needles wander inside the green band. When one escapes, click that instrument.</p>
+        <div class="sp-grid">${[0,1,2,3,4,5].map(dialSVG).join("")}</div>
+        <p id="spFb" style="font-size:0.82rem; color:var(--text-faint); margin-top:12px; min-height:1.2em"></p>`;
+
+      function stats() {
+        $("gmStats").innerHTML = `<span>Time <b>${timeLeft}s</b></span><span>Score <b>${score}</b></span>
+          <span>Caught <b>${caught}</b></span><span>Missed <b>${missed}</b></span><span>False <b>${falseClicks}</b></span>`;
+      }
+
+      const valToAngle = v => (v - 50) * 2.4; // 0–100 → -120°..120°
+
+      function pickRogue() {
+        if (rogue >= 0) { missed++; score = Math.max(0, score - 15); values[rogue] = 50; }
+        rogue = Math.floor(Math.random() * 6);
+        rogueAt = performance.now();
+        timer(pickRogue, 2600 + Math.random() * 3000);
+        stats();
+      }
+
+      window.__spClick = i => {
+        if (i === rogue && Math.abs(values[i] - 50) > 15) {
+          const ms = Math.round(performance.now() - rogueAt);
+          score += Math.max(10, 70 - Math.floor(ms / 100));
+          caught++;
+          $("spFb").textContent = `${DIAL_NAMES[i]} caught in ${ms} ms`;
+          values[i] = 50; rogue = -1;
+        } else {
+          falseClicks++; score = Math.max(0, score - 5);
+          $("spFb").textContent = "That one's in the green −5";
+        }
+        stats();
+      };
+      cleanupFns.push(() => delete window.__spClick);
+
+      ticker(() => { // physics + render at 10 Hz
+        values = values.map((v, i) => {
+          if (i === rogue) return v + (v >= 50 ? 1 : -1) * 1.6 * (1 + (performance.now() - rogueAt) / 4000);
+          const nv = v + (Math.random() - 0.5) * 4;
+          return Math.max(38, Math.min(62, nv));
+        });
+        values = values.map(v => Math.max(2, Math.min(98, v)));
+        values.forEach((v, i) => {
+          const n = $("needle-" + i);
+          if (n) n.setAttribute("transform", `rotate(${valToAngle(v)} 50 50)`);
+        });
+      }, 100);
+
+      ticker(() => {
+        timeLeft--;
+        stats();
+        if (timeLeft <= 0) {
+          endGame();
+          setBest("sixpack", score, (a, b) => a > b);
+          const verdict = missed === 0 && falseClicks <= 1 ? "Clean scan — nothing escaped you." : missed <= 1 ? "Good coverage. Keep the scan moving, don't fixate." : "Build a rhythm: sweep all six every couple of seconds.";
+          stage().innerHTML = `<div class="digit-display">${score} pts</div>
+            <p style="margin:12px 0 6px">${caught} caught · ${missed} missed · ${falseClicks} false clicks</p>
+            <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+            <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startSixpack()">Run it again →</button>`;
+        }
+      }, 1000);
+
+      stats();
+      timer(pickRogue, 1500 + Math.random() * 1500);
+    }
+
+    /* ============================================================
+       3. MEMORY GRID — flash sequence on 4×4, replay it
+       ============================================================ */
+    function startGrid() {
+      let len = 3, lives = 2, best = 0;
+
+      function stats(phase) {
+        $("gmStats").innerHTML = `<span>Sequence <b>${len} cells</b></span><span>Best this run <b>${best}</b></span><span>Lives <b>${"❤".repeat(lives) || "—"}</b></span><span>${phase}</span>`;
+      }
+
+      function round() {
+        const seq = [];
+        while (seq.length < len) {
+          const c = Math.floor(Math.random() * 16);
+          if (seq[seq.length - 1] !== c) seq.push(c);
+        }
+        stage().innerHTML = `<p style="font-size:0.8rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:14px" id="mgPhase">Watch…</p>
+          <div class="mg-grid">${Array.from({ length: 16 }, (_, i) => `<div class="mg-cell" id="mg-${i}"></div>`).join("")}</div>`;
+        stats("Watch");
+
+        // play sequence
+        seq.forEach((c, i) => {
+          timer(() => $("mg-" + c)?.classList.add("lit"), 500 + i * 620);
+          timer(() => $("mg-" + c)?.classList.remove("lit"), 500 + i * 620 + 420);
+        });
+        timer(() => input(seq), 500 + seq.length * 620 + 150);
+      }
+
+      function input(seq) {
+        let pos = 0;
+        $("mgPhase").textContent = "Your turn — repeat the sequence";
+        stats("Repeat");
+        document.querySelectorAll(".mg-cell").forEach((cell, i) => {
+          cell.onclick = () => {
+            if (i === seq[pos]) {
+              cell.classList.add("good");
+              timer(() => cell.classList.remove("good"), 250);
+              pos++;
+              if (pos === seq.length) {
+                best = Math.max(best, len); len++;
+                $("mgPhase").innerHTML = `<span style="color:var(--green)">✓ Correct</span>`;
+                timer(round, 800);
+              }
+            } else {
+              cell.classList.add("bad");
+              $("mg-" + seq[pos])?.classList.add("lit");
+              lives--;
+              $("mgPhase").innerHTML = `<span style="color:var(--red)">✗ Wrong cell</span>`;
+              document.querySelectorAll(".mg-cell").forEach(c => c.onclick = null);
+              if (lives <= 0) timer(finish, 1200);
+              else timer(round, 1200);
+            }
+          };
+        });
+      }
+
+      function finish() {
+        endGame();
+        setBest("grid", best, (a, b) => a > b);
+        const verdict = best >= 8 ? "Exceptional visual memory." : best >= 6 ? "Strong — most candidates plateau at 5–6." : "Chunk the pattern into shapes, not individual cells.";
+        stage().innerHTML = `<div class="digit-display">${best} cells</div>
+          <p style="margin:12px 0 6px">Longest sequence reproduced this run</p>
+          <p style="color:var(--text-faint); font-size:0.88rem">${verdict}</p>
+          <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startGrid()">Run it again →</button>`;
+      }
+      round();
+    }
+
+    /* ============================================================
+       4. REACTION & VIGILANCE (v1)
+       ============================================================ */
     function startReaction() {
       const ROUNDS = 8;
       let round = 0, times = [], falseStarts = 0, waiting = false, goTime = 0;
@@ -196,10 +498,7 @@
           const d = $("disc");
           d.style.background = "var(--accent)"; d.style.color = "#03121a"; d.style.boxShadow = "0 0 40px rgba(56,224,255,0.6)";
           d.textContent = "GO!";
-          d.onclick = () => {
-            times.push(Math.round(performance.now() - goTime));
-            round++; stats(); nextRound();
-          };
+          d.onclick = () => { times.push(Math.round(performance.now() - goTime)); round++; stats(); nextRound(); };
         }, 1200 + Math.random() * 2600);
         stats();
       }
@@ -216,7 +515,9 @@
       nextRound();
     }
 
-    /* ---------- 2. Memory Span ---------- */
+    /* ============================================================
+       5. MEMORY SPAN — digits (v1)
+       ============================================================ */
     function startMemory() {
       let len = 3, lives = 2, best = 0;
 
@@ -225,7 +526,6 @@
         stage().innerHTML = `<p style="font-size:0.8rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.12em">Memorise</p>
           <div class="digit-display" id="seq"></div>`;
         $("gmStats").innerHTML = `<span>Sequence <b>${len} digits</b></span><span>Best this run <b>${best}</b></span><span>Lives <b>${"❤".repeat(lives) || "—"}</b></span>`;
-        // reveal then hide (display time scales with length)
         $("seq").textContent = seq;
         timer(() => ask(seq), 600 + len * 420);
       }
@@ -262,7 +562,9 @@
       show();
     }
 
-    /* ---------- 3. Multitask Monitor ---------- */
+    /* ============================================================
+       6. MULTITASK MONITOR (v1)
+       ============================================================ */
     function startMultitask() {
       const DURATION = 60;
       let score = 0, missed = 0, mathRight = 0, mathWrong = 0, timeLeft = DURATION;
@@ -287,7 +589,6 @@
           <span>Maths <b>${mathRight}✓ ${mathWrong}✗</b></span><span>Gauges missed <b>${missed}</b></span>`;
       }
 
-      // gauges
       document.querySelectorAll(".gauge").forEach(g => g.onclick = () => {
         const i = parseInt(g.dataset.i, 10);
         if (i === alertIdx) {
@@ -299,7 +600,7 @@
         stats();
       });
       function fireAlert() {
-        if (alertIdx >= 0) { // previous one missed
+        if (alertIdx >= 0) {
           document.querySelectorAll(".gauge")[alertIdx].classList.remove("alert");
           missed++; score = Math.max(0, score - 15);
         }
@@ -310,7 +611,6 @@
         stats();
       }
 
-      // maths
       function newMath() {
         const a = 12 + Math.floor(Math.random() * 78), b = 3 + Math.floor(Math.random() * 16);
         const ops = [["+", a + b], ["−", a - b], ["×", Math.floor(a / 10) * b]];
@@ -329,7 +629,6 @@
       };
       cleanupFns.push(() => delete window.__mtAnswer);
 
-      // clock
       ticker(() => {
         timeLeft--;
         stats();
@@ -337,7 +636,7 @@
       }, 1000);
 
       function finish() {
-        cleanupFns.forEach(f => f()); cleanupFns = [];
+        endGame();
         setBest("multitask", score, (a, b) => a > b);
         const verdict = score >= 350 ? "Strong divided attention — assessors look for exactly this." : score >= 200 ? "Decent balance. Don't let the gauges starve the maths." : "Focus on rhythm: scan gauges between every answer.";
         stage().innerHTML = `<div class="digit-display">${score} pts</div>

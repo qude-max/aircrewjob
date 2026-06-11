@@ -67,6 +67,34 @@
         </div>
         <button class="btn btn-primary" type="submit" id="submitBtn" style="width:100%; justify-content:center">Sign in →</button>
         <div class="auth-msg" id="authMsg"></div>
+        <p style="text-align:center; margin-top:14px">
+          <a href="#" id="forgotLink" style="color:var(--text-faint); font-size:0.84rem; text-decoration:none">Forgot your password?</a>
+        </p>
+      </form>
+
+      <!-- Reset request -->
+      <form id="resetForm" style="display:none">
+        <p style="font-size:0.92rem; margin-bottom:18px">Enter your account email and we'll send you a reset link.</p>
+        <div class="field">
+          <label>Email</label>
+          <input class="input" id="rEmail" type="email" placeholder="you@airline.com" required autocomplete="email">
+        </div>
+        <button class="btn btn-primary" type="submit" style="width:100%; justify-content:center">Send reset link →</button>
+        <div class="auth-msg" id="resetMsg"></div>
+        <p style="text-align:center; margin-top:14px">
+          <a href="#" id="backToSignin" style="color:var(--text-faint); font-size:0.84rem; text-decoration:none">← Back to sign in</a>
+        </p>
+      </form>
+
+      <!-- New password (after clicking the email link) -->
+      <form id="recoveryForm" style="display:none">
+        <p style="font-size:0.92rem; margin-bottom:18px">Choose a new password for your account.</p>
+        <div class="field">
+          <label>New password</label>
+          <input class="input" id="newPw" type="password" placeholder="••••••••" required minlength="6" autocomplete="new-password">
+        </div>
+        <button class="btn btn-primary" type="submit" style="width:100%; justify-content:center">Set new password →</button>
+        <div class="auth-msg" id="recoveryMsg"></div>
       </form>
 
       <div class="mode-pill" id="modePill"></div>
@@ -139,11 +167,46 @@
       setTimeout(() => location.href = homeFor(Backend.auth.profile()), 700);
     });
 
+    /* ---- Password reset ---- */
+    const showForm = which => {
+      document.getElementById("authForm").style.display = which === "auth" ? "block" : "none";
+      document.querySelector(".auth-tabs").style.display = which === "auth" ? "flex" : "none";
+      document.getElementById("resetForm").style.display = which === "reset" ? "block" : "none";
+      document.getElementById("recoveryForm").style.display = which === "recovery" ? "block" : "none";
+    };
+    document.getElementById("forgotLink").addEventListener("click", e => { e.preventDefault(); showForm("reset"); });
+    document.getElementById("backToSignin").addEventListener("click", e => { e.preventDefault(); showForm("auth"); });
+
+    document.getElementById("resetForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const m = document.getElementById("resetMsg");
+      m.className = "auth-msg"; m.textContent = "…";
+      const res = await Backend.auth.resetRequest(document.getElementById("rEmail").value.trim());
+      m.className = "auth-msg " + (res.error ? "err" : "ok");
+      m.textContent = res.error ? res.error : "✓ If that email has an account, a reset link is on its way. Check your inbox.";
+    });
+
+    document.getElementById("recoveryForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const m = document.getElementById("recoveryMsg");
+      m.className = "auth-msg"; m.textContent = "…";
+      const res = await Backend.auth.updatePassword(document.getElementById("newPw").value);
+      m.className = "auth-msg " + (res.error ? "err" : "ok");
+      m.textContent = res.error ? res.error : "✓ Password updated — taking you to your account…";
+      if (!res.error) setTimeout(() => location.href = homeFor(Backend.auth.profile()), 900);
+    });
+
     Backend.ready.then(mode => {
       document.getElementById("modePill").textContent = mode === "demo"
         ? "Running in demo mode — accounts are stored in this browser only."
         : "Connected to live backend.";
-      if (Backend.auth.user()) location.href = homeFor(Backend.auth.profile());
+      // arriving from a reset-link email?
+      if (Backend.auth.isRecovery && Backend.auth.isRecovery()) { showForm("recovery"); return; }
+      // small delay: the recovery event can land just after ready resolves
+      setTimeout(() => {
+        if (Backend.auth.isRecovery && Backend.auth.isRecovery()) { showForm("recovery"); return; }
+        if (Backend.auth.user()) location.href = homeFor(Backend.auth.profile());
+      }, 600);
     });
   </script>
 </body>
