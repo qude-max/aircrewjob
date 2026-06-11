@@ -135,12 +135,9 @@
 
       <div id="jobList"></div>
 
-      <p style="font-size:0.82rem; color:var(--text-faint); margin-top:26px">
-        ✓ Verified listings are sourced from the official careers portals of 17 airlines across 5 continents
-        (Emirates, Etihad, Qatar Airways, flydubai, Ryanair, easyJet, Wizz Air, Vueling, Jet2, Norwegian,
-        Cathay Pacific, Singapore Airlines, IndiGo, United, Ethiopian, Virgin Australia, Air New Zealand)
-        — last checked 10 Jun 2026. Requirements are summarised; always confirm full criteria on the airline's
-        site before applying. Listings marked "Recruiter post" come from approved recruiters, not airline portals.
+      <p style="font-size:0.82rem; color:var(--text-faint); margin-top:26px" id="sourceNote">
+        ✓ Verified listings are sourced from official airline careers portals. Requirements are summarised;
+        always confirm full criteria on the airline's site before applying.
       </p>
     </div>
   </section>
@@ -238,6 +235,14 @@
       }
       render();
       focusJobFromUrl();
+
+      // Source note — computed from the data so it can never go stale
+      const vAirlines = [...new Set(allJobs.filter(j => j.verified).map(j => j.airline))];
+      document.getElementById("sourceNote").innerHTML =
+        `✓ Verified listings are sourced from the official careers portals of ${vAirlines.length} airlines
+         (${vAirlines.map(esc).join(", ")}) — checked ${typeof VERIFIED_DATE !== "undefined" ? esc(VERIFIED_DATE) : "regularly"} and re-verified weekly.
+         Requirements are summarised; always confirm full criteria on the airline's site before applying.
+         Listings marked "Recruiter post" come from approved recruiters, not airline portals.`;
 
       // "Matches my profile" — shown to signed-in pilots/crew with hours set
       const p = Backend.auth.profile();

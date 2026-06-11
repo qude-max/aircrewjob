@@ -265,11 +265,23 @@ const JOBS = [
     reqs: "B787 First Officers, Riyadh base. Apply only via official Riyadh Air channels.",
     applyUrl: "https://pilots-riyadhair.icims.com/jobs/1124/first-officer-b787/job" },
 
-  /* ---- British Airways (careers.ba.com) — verified 11 Jun 2026 ---- */
-  { id: 241, airline: "British Airways", role: "First Officer", aircraft: "A320 / B777 / B787 (DEP)", region: "Europe", location: "London Heathrow / Gatwick", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, verified: true,
+  /* ---- British Airways (careers.ba.com) — 4 live postings, verified 11 Jun 2026 ---- */
+  { id: 241, airline: "British Airways", role: "First Officer", aircraft: "Military Pilot Pathway", region: "Europe", location: "London Heathrow", type: "Direct Entry", minHours: 1000, rated: false, posted: 0, verified: true,
     salary: "See official listing",
-    reqs: "Direct Entry, Self-Sponsored & Military pathways open year-round (criteria per scheme). Speedbird Academy (fully-funded ab initio) closed for 2026 — next intake expected 2027; register on the portal.",
-    applyUrl: "https://careers.ba.com/future-pilots" },
+    reqs: "Current/former military pilots transitioning to BA mainline — full criteria on the posting. (No mainline civilian DEP FO posting currently; Speedbird Academy reopens 2027.)",
+    applyUrl: "https://careers.ba.com/job/heathrow/military-pilot-pathway/22348/94593554320" },
+  { id: 243, airline: "British Airways", role: "Captain", aircraft: "E190 (BA Cityflyer)", region: "Europe", location: "London City (LCY)", type: "Direct Entry", minHours: 3000, rated: false, posted: 0, verified: true,
+    salary: "See official listing",
+    reqs: "Direct Entry Captain at BA Cityflyer — full criteria on the posting.",
+    applyUrl: "https://careers.ba.com/job/london/ba-cityflyer-direct-entry-captain/22348/94593554608" },
+  { id: 244, airline: "British Airways", role: "Captain", aircraft: "E190 (BA Cityflyer)", region: "Europe", location: "Edinburgh (EDI)", type: "Direct Entry", minHours: 3000, rated: false, posted: 0, verified: true,
+    salary: "See official listing",
+    reqs: "Direct Entry Captain at BA Cityflyer, Edinburgh base — full criteria on the posting.",
+    applyUrl: "https://careers.ba.com/job/edinburgh/ba-cityflyer-direct-entry-captain/22348/94593554592" },
+  { id: 245, airline: "British Airways", role: "First Officer", aircraft: "E190 (BA Cityflyer) — Aspiration to Command", region: "Europe", location: "London City (LCY)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, verified: true,
+    salary: "See official listing",
+    reqs: "Experienced FOs joining the E190 command pathway — full criteria on the posting.",
+    applyUrl: "https://careers.ba.com/job/london/ba-cityflyer-aspiration-to-command/22348/94593554560" },
 
   /* ---- Aer Lingus (aerlingus.com) — verified 11 Jun 2026 ---- */
   { id: 242, airline: "Aer Lingus", role: "First Officer", aircraft: "A320 family", region: "Europe", location: "Dublin (DUB)", type: "Direct Entry", minHours: 500, rated: false, posted: 0, verified: true,
@@ -289,7 +301,11 @@ const JOBS = [
   { id: 303, airline: "Singapore Airlines", category: "crew", role: "Cabin Crew", aircraft: "SQ international fleet", region: "Asia-Pacific", location: "MY · KR · JP · TH · IN bases", type: "Direct Entry", minHours: 0, rated: false, posted: 0, verified: true,
     salary: "See official listing",
     reqs: "Open now for Malaysia, South Korea, Japan, Thailand & India intakes (Singapore base currently closed) · video interview then in-person.",
-    applyUrl: "https://careers.singaporeair.com/sia/go/Cabin-Crew/689244/" }
+    applyUrl: "https://careers.singaporeair.com/sia/go/Cabin-Crew/689244/" },
+  { id: 304, airline: "British Airways", category: "crew", role: "Cabin Crew", aircraft: "Talent Pool", region: "Europe", location: "London Heathrow", type: "Direct Entry", minHours: 0, rated: false, posted: 0, verified: true,
+    salary: "See official listing",
+    reqs: "Live talent-pool posting — register for upcoming Heathrow cabin crew intakes.",
+    applyUrl: "https://careers.ba.com/job/heathrow/cabin-crew-talent-pool/22348/94593554544" }
 ];
 
 const AIRLINES = [
@@ -316,7 +332,7 @@ const AIRLINES = [
   { name: "Turkish Airlines",   code: "TK", domain: "turkishairlines.com",   country: "Türkiye",      fleet: "B777, A330, A320, B787",  pilots: 5100, bases: "Istanbul",                    status: "hiring", note: "✓ Verified 11 Jun 2026: foreign Captains (5,500 hrs) & rated FOs (1,500 on type) — 3/1 commuting roster, ~1,000 pilots/yr intake." },
   { name: "Riyadh Air",         code: "RX", domain: "riyadhair.com",         country: "Saudi Arabia", fleet: "B787 (A321 on order)",    pilots: 400,  bases: "Riyadh",                      status: "hiring", note: "✓ Verified 11 Jun 2026: B787 DEC Captains & FOs for Saudi Arabia's new flag carrier. Apply only via official channels — fee-charging agents are scams." },
   { name: "Air Canada",         code: "AC", domain: "aircanada.com",         country: "Canada",       fleet: "B787, A220, B777, A321",  pilots: 4700, bases: "YYZ, YVR, YUL",               status: "hiring", note: "Strong hiring cycle post-CBA. (Not yet verified by AirCrew Jobs.)" },
-  { name: "British Airways",    code: "BA", domain: "britishairways.com",    country: "UK",           fleet: "A320, A350, B777, B787, A380", pilots: 4300, bases: "LHR, LGW",               status: "hiring", note: "✓ Verified 11 Jun 2026: Direct Entry, Self-Sponsored & Military pathways open. Speedbird Academy (160 funded ab initio places) closed for 2026 — next intake expected 2027." },
+  { name: "British Airways",    code: "BA", domain: "britishairways.com",    country: "UK",           fleet: "A320, A350, B777, B787, A380 (+E190 Cityflyer)", pilots: 4300, bases: "LHR, LGW, LCY", status: "hiring", note: "✓ Verified 11 Jun 2026: 4 live pilot postings — Military Pilot Pathway (mainline) + Cityflyer E190 DE Captains (LCY & EDI) and Aspiration to Command. No mainline civilian DEP FO posting right now; Speedbird Academy reopens 2027. Cabin crew talent pool open." },
   { name: "Aer Lingus",         code: "EI", domain: "aerlingus.com",         country: "Ireland",      fleet: "A320, A321XLR, A330",     pilots: 1100, bases: "DUB, ORK, SNN",               status: "hiring", note: "✓ Verified 11 Jun 2026: 2026 Direct Entry Pilot campaign live for the A320 family. Future Pilot (cadet) programme runs periodic windows." },
   { name: "Korean Air",         code: "KE", domain: "koreanair.com",         country: "South Korea",  fleet: "B777, B787, A350, B747",  pilots: 2800, bases: "Seoul",                       status: "closed", note: "Foreign pilot recruitment currently closed." }
 ];
