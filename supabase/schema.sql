@@ -227,6 +227,11 @@ insert into public.jobs (airline, role, aircraft, region, location, type, min_ho
 ('Riyadh Air','Captain','B787','Middle East','Riyadh (RUH)','Rated',5000,true,'See official listing',true,'https://www.riyadhair.com/en/careers/pilots','DEC Captains — official channels only.', now()),
 ('Riyadh Air','First Officer','B787','Middle East','Riyadh (RUH)','Rated',1500,true,'See official listing',true,'https://pilots-riyadhair.icims.com/jobs/1124/first-officer-b787/job','B787 FOs, Riyadh base.', now());
 
+-- British Airways & Aer Lingus (verified 11 Jun 2026)
+insert into public.jobs (airline, role, aircraft, region, location, type, min_hours, rated, salary, verified, apply_url, reqs, posted_at) values
+('British Airways','First Officer','A320 / B777 / B787 (DEP)','Europe','London Heathrow / Gatwick','Direct Entry',1500,false,'See official listing',true,'https://careers.ba.com/future-pilots','DEP, Self-Sponsored & Military pathways open. Speedbird Academy closed for 2026 — next intake expected 2027.', now()),
+('Aer Lingus','First Officer','A320 family','Europe','Dublin (DUB)','Direct Entry',500,false,'See official listing',true,'https://www.aerlingus.com/careers/careers-in-the-air/direct-entry-pilots/','2026 Direct Entry campaign live — criteria on portal.', now());
+
 -- Cabin crew (verified 11 Jun 2026)
 insert into public.jobs (airline, role, aircraft, region, location, type, min_hours, rated, salary, verified, apply_url, reqs, category, posted_at) values
 ('Emirates','Cabin Crew','A380 / B777 cabins','Middle East','Dubai (DXB)','Direct Entry',0,false,'Tax-free + free accommodation + travel perks',true,'https://www.emiratesgroupcareers.com/cabin-crew/','21+ · Grade 12 · fluent English · 1+ yr customer service · open days worldwide.','crew', now()),

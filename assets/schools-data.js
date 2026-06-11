@@ -20,6 +20,13 @@ const SCHOOLS = [
   { name: "Lufthansa Aviation Training (EFA)", city: "Bremen, Germany",        lat: 53.05,  lng: 8.79,    region: "Europe",       auth: "EASA",          url: "https://www.european-flight-academy.com", note: "Lufthansa Group's academy — cadet routes into LH Group airlines." },
   { name: "AFTA — Atlantic Flight Training", city: "Cork, Ireland",            lat: 51.84,  lng: -8.49,   region: "Europe",       auth: "EASA (IAA)",    url: "https://www.afta.ie",                   note: "Modular & integrated, Ryanair/Aer Lingus feeder history." },
   { name: "Egnatia Aviation",               city: "Kavala, Greece",            lat: 40.91,  lng: 24.62,   region: "Europe",       auth: "EASA",          url: "https://www.egnatia-aviation.aero",     note: "Integrated ATPL, 300+ flying days/year climate." },
+  { name: "Air Service Training",           city: "Perth, Scotland, UK",       lat: 56.44,  lng: -3.37,   region: "Europe",       auth: "UK CAA + EASA", url: "https://www.airservicetraining.co.uk",  note: "Operating since 1931 — one of the world's oldest ATOs." },
+  { name: "Bristol Groundschool",           city: "Clevedon, UK",              lat: 51.44,  lng: -2.85,   region: "Europe",       auth: "UK CAA + EASA (theory)", url: "https://www.bristol.gs",       note: "The best-known ATPL theory distance-learning specialist." },
+  { name: "ENAC",                           city: "Toulouse, France",          lat: 43.57,  lng: 1.48,    region: "Europe",       auth: "EASA (DGAC)",   url: "https://www.enac.fr",                   note: "France's national civil aviation university — pilot & engineering routes." },
+  { name: "Astonfly",                       city: "Paris (Toussus-le-Noble), France", lat: 48.75, lng: 2.11, region: "Europe",    auth: "EASA",          url: "https://www.astonfly.fr",               note: "One of France's largest ATOs — integrated & modular." },
+  { name: "Lund University School of Aviation", city: "Ljungbyhed, Sweden",    lat: 56.08,  lng: 13.23,   region: "Europe",       auth: "EASA",          url: "https://www.tfhs.lu.se",                note: "University flight programme at Sweden's historic training field." },
+  { name: "Flying Academy",                 city: "Prague, Czechia",           lat: 50.10,  lng: 14.26,   region: "Europe",       auth: "EASA + FAA",    url: "https://www.flyingacademy.com",         note: "EASA training in Prague/Brno plus an FAA campus in Miami." },
+  { name: "Airways Aviation",               city: "Huesca, Spain",             lat: 42.08,  lng: -0.32,   region: "Europe",       auth: "EASA + CASA",   url: "https://www.airwaysaviation.com",       note: "European campus (Huesca) + Gold Coast, Australia." },
 
   /* ---- Americas ---- */
   { name: "ATP Flight School (HQ)",         city: "Jacksonville, FL, USA",     lat: 30.34,  lng: -81.66,  region: "Americas",     auth: "FAA",           url: "https://atpflightschool.com",           note: "USA's largest — 70+ locations, airline-direct pathways (incl. United Aviate)." },
@@ -31,6 +38,11 @@ const SCHOOLS = [
   { name: "Hillsboro Aero Academy",         city: "Portland, OR, USA",         lat: 45.53,  lng: -122.95, region: "Americas",     auth: "FAA",           url: "https://www.flyhaa.com",                note: "Fixed-wing + helicopter, strong international cohort." },
   { name: "CAE Phoenix Aviation Academy",   city: "Phoenix-Mesa, AZ, USA",     lat: 33.31,  lng: -111.65, region: "Americas",     auth: "FAA + airline programmes", url: "https://www.cae.com",            note: "CAE's US ab initio academy; global airline cadet contracts." },
   { name: "Moncton Flight College",         city: "Moncton, NB, Canada",       lat: 46.12,  lng: -64.69,  region: "Americas",     auth: "Transport Canada", url: "https://mfc.nb.ca",                  note: "One of Canada's largest; airline cadet programmes." },
+  { name: "American Flyers",                city: "Addison, TX, USA",          lat: 32.97,  lng: -96.84,  region: "Americas",     auth: "FAA",           url: "https://www.americanflyers.com",        note: "Established 1939 — multiple US locations, strong instrument training reputation." },
+  { name: "Phoenix East Aviation",          city: "Daytona Beach, FL, USA",    lat: 29.18,  lng: -81.06,  region: "Americas",     auth: "FAA",           url: "https://www.pea.com",                   note: "Long-running international academy on the Florida coast." },
+  { name: "Spartan College of Aeronautics", city: "Tulsa, OK, USA",            lat: 36.15,  lng: -95.99,  region: "Americas",     auth: "FAA",           url: "https://www.spartan.edu",               note: "Operating since 1928 — flight + aviation maintenance programmes." },
+  { name: "Sling Pilot Academy",            city: "Torrance, CA, USA",         lat: 33.80,  lng: -118.34, region: "Americas",     auth: "FAA",           url: "https://slingpilotacademy.com",         note: "Fast-growing LA academy flying modern Sling aircraft." },
+  { name: "Seneca Polytechnic Aviation",    city: "Toronto, ON, Canada",       lat: 43.80,  lng: -79.35,  region: "Americas",     auth: "Transport Canada", url: "https://www.senecapolytechnic.ca",   note: "Degree + CPL route, one of Canada's best-known programmes." },
 
   /* ---- Middle East & Africa ---- */
   { name: "Emirates Flight Training Academy", city: "Dubai, UAE",              lat: 24.92,  lng: 55.36,   region: "Middle East",  auth: "UAE GCAA",      url: "https://www.eftacademy.com",            note: "Emirates' own academy at Dubai South — cadet & international students." },
@@ -39,6 +51,8 @@ const SCHOOLS = [
   { name: "Qatar Aeronautical Academy",     city: "Doha, Qatar",               lat: 25.26,  lng: 51.56,   region: "Middle East",  auth: "Qatar QCAA",    url: "https://qaa.edu.qa",                    note: "Qatar Airways-linked MPL/cadet training." },
   { name: "43 Air School",                  city: "Port Alfred, South Africa", lat: -33.59, lng: 26.89,   region: "Africa",       auth: "SACAA (EASA-aligned)", url: "https://www.43airschool.com",      note: "Africa's best-known ATO." },
   { name: "Ethiopian Aviation Academy",     city: "Addis Ababa, Ethiopia",     lat: 8.98,   lng: 38.80,   region: "Africa",       auth: "ECAA (ICAO)",   url: "https://corporate.ethiopianairlines.com/eaa", note: "Ethiopian Airlines' academy — trainee pilot intakes for ET and other African carriers." },
+  { name: "Blue Chip Flight School",        city: "Pretoria, South Africa",    lat: -25.81, lng: 28.18,   region: "Africa",       auth: "SACAA",         url: "https://www.bluechipflightschool.co.za", note: "Established Gauteng school — PPL to CPL/IR." },
+  { name: "EgyptAir Training Academy",      city: "Cairo, Egypt",              lat: 30.11,  lng: 31.40,   region: "Africa",       auth: "ECAA (Egypt)",  url: "https://egyptair-trainingacademy.com",  note: "EgyptAir's academy — ab initio and type training for the region." },
 
   /* ---- Asia-Pacific ---- */
   { name: "Singapore Flying College",       city: "Singapore (Seletar)",       lat: 1.42,   lng: 103.87,  region: "Asia-Pacific", auth: "CAAS",          url: "https://www.singaporeflyingcollege.com", note: "Singapore Airlines' cadet college (with overseas flying campuses)." },
@@ -48,7 +62,10 @@ const SCHOOLS = [
   { name: "Int'l Aviation Academy of NZ",   city: "Christchurch, NZ",          lat: -43.49, lng: 172.53,  region: "Asia-Pacific", auth: "NZ CAA",        url: "https://www.iaanz.co.nz",               note: "Established NZ academy; domestic + international cadets." },
   { name: "IGRUA",                          city: "Amethi, India",             lat: 26.15,  lng: 81.81,   region: "Asia-Pacific", auth: "DGCA (India)",  url: "https://igrua.gov.in",                  note: "India's national flying academy; airline tie-ups incl. IndiGo cadet route." },
   { name: "NFTI (CAE Gondia)",              city: "Gondia, India",             lat: 21.46,  lng: 80.22,   region: "Asia-Pacific", auth: "DGCA (India)",  url: "https://www.nfti.co.in",                note: "CAE joint-venture academy feeding Indian carriers." },
-  { name: "BAA Training Vietnam",           city: "Ho Chi Minh City, Vietnam", lat: 10.82,  lng: 106.63,  region: "Asia-Pacific", auth: "CAAV + EASA pathway", url: "https://www.baatraining.com",     note: "Growing SE-Asia campus serving Vietnamese carriers." }
+  { name: "BAA Training Vietnam",           city: "Ho Chi Minh City, Vietnam", lat: 10.82,  lng: 106.63,  region: "Asia-Pacific", auth: "CAAV + EASA pathway", url: "https://www.baatraining.com",     note: "Growing SE-Asia campus serving Vietnamese carriers." },
+  { name: "Alpha Aviation Group",           city: "Clark, Philippines",        lat: 15.19,  lng: 120.55,  region: "Asia-Pacific", auth: "CAAP (MPL/A320)", url: "https://www.alphaaviationgroup.com",  note: "MPL and A320 programmes feeding Philippine and regional carriers." },
+  { name: "HM Aerospace",                   city: "Langkawi, Malaysia",        lat: 6.34,   lng: 99.73,   region: "Asia-Pacific", auth: "CAAM",          url: "https://www.hmaerospace.com",           note: "Malaysia's island academy — CPL/IR with airline tie-ups." },
+  { name: "Ardmore Flying School",          city: "Auckland, NZ",              lat: -37.03, lng: 174.97,  region: "Asia-Pacific", auth: "NZ CAA",        url: "https://www.ardmore.co.nz",             note: "One of NZ's longest-established commercial schools." }
 ];
 
 const MEDICAL = [
@@ -67,6 +84,12 @@ const MEDICAL = [
   { name: "ÚLZ — Institute of Aviation Medicine",   city: "Prague, Czechia",      lat: 50.08, lng: 14.39,  region: "Europe",       auth: "EASA (CAA CZ) — initial & revalidation", url: "https://www.ulz.cz",            note: "Czech initial Class 1." },
   { name: "Istituto di Medicina Aerospaziale",      city: "Rome, Italy",          lat: 41.86, lng: 12.46,  region: "Europe",       auth: "EASA (ENAC) — initial & revalidation", url: "https://www.aeronautica.difesa.it", note: "Italian initial Class 1 (also Milan)." },
   { name: "Flymedisinsk Institutt",                 city: "Oslo, Norway",         lat: 59.94, lng: 10.72,  region: "Europe",       auth: "EASA (CAA Norway) — initial & revalidation", url: "https://flymed.no",         note: "Norway's aeromedical institute." },
+  { name: "CEMPN — Toulouse",                       city: "Toulouse, France",     lat: 43.60, lng: 1.44,   region: "Europe",       auth: "EASA (DGAC) — initial & revalidation", url: "https://www.ecologie.gouv.fr",  note: "France's second initial Class 1 centre." },
+  { name: "Brussels AeMC (Queen Astrid Hospital)",  city: "Brussels, Belgium",    lat: 50.89, lng: 4.30,   region: "Europe",       auth: "EASA (BCAA) — initial & revalidation", url: "https://mobilit.belgium.be",    note: "Belgian initial Class 1." },
+  { name: "Mehiläinen Aeromedical Centre",          city: "Helsinki, Finland",    lat: 60.17, lng: 24.94,  region: "Europe",       auth: "EASA (Traficom) — initial & revalidation", url: "https://www.mehilainen.fi", note: "Finland's initial Class 1 centre." },
+  { name: "Aeromedical Center Budapest",            city: "Budapest, Hungary",    lat: 47.50, lng: 19.05,  region: "Europe",       auth: "EASA (Hungary) — initial & revalidation", url: "https://www.aeromedical.hu", note: "Hungarian initial Class 1." },
+  { name: "Hellenic AF Aviation Medicine Center",   city: "Athens, Greece",       lat: 37.99, lng: 23.78,  region: "Europe",       auth: "EASA (HCAA) — initial", url: "https://hcaa.gov.gr",                      note: "Greek initial Class 1 examinations." },
+  { name: "Flyvemedicinsk Klinik",                  city: "Copenhagen, Denmark",  lat: 55.69, lng: 12.57,  region: "Europe",       auth: "EASA (Denmark) — initial & revalidation", url: "https://www.trafikstyrelsen.dk", note: "Danish initial Class 1." },
 
   /* ---- Middle East / Asia-Pacific / Africa ---- */
   { name: "GCAA / airline aeromedical centres",     city: "Dubai & Abu Dhabi, UAE", lat: 25.10, lng: 55.17, region: "Middle East", auth: "UAE GCAA — initial & renewal", url: "https://www.gcaa.gov.ae",              note: "UAE Class 1 via GCAA-approved AeMCs in Dubai & Abu Dhabi." },
@@ -81,5 +104,7 @@ const REGULATOR_LOCATORS = [
   { name: "Canada — Transport Canada", url: "https://tc.canada.ca/en/aviation/medical-fitness-aviation/find-civil-aviation-medical-examiner", note: "CAME locator for Category 1 medicals, initial and renewal." },
   { name: "Australia — CASA",     url: "https://www.casa.gov.au/licences-and-certificates/medical-professionals/find-dame", note: "DAME locator for Class 1 medicals, initial and renewal." },
   { name: "New Zealand — CAA NZ", url: "https://www.aviation.govt.nz/licensing-and-certification/medical-certification/", note: "Medical examiner directory for Class 1." },
-  { name: "EASA states",          url: "https://www.easa.europa.eu/en/domains/aircrew-and-medical/aeromedical-centres", note: "Initial Class 1 must be at an AeMC (pins on the map); REVALIDATIONS can be done by any authorised AME in your state — see your authority's list." }
+  { name: "EASA states",          url: "https://www.easa.europa.eu/en/domains/aircrew-and-medical/aeromedical-centres", note: "Initial Class 1 must be at an AeMC (pins on the map); REVALIDATIONS can be done by any authorised AME in your state — see your authority's list." },
+  { name: "Japan — JCAB",         url: "https://www.mlit.go.jp/en/koku/index.html", note: "Class 1 medicals via JCAB-designated aviation medical examiners — see the official examiner list." },
+  { name: "Brazil — ANAC",        url: "https://www.gov.br/anac/pt-br", note: "CMA (medical certificate) via ANAC-credentialed examiners and clinics across Brazil." }
 ];

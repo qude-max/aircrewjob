@@ -32,7 +32,9 @@ const DOMAINS = {
   "Jet2": "jet2.com",
   "Air Canada": "aircanada.com",
   "Korean Air": "koreanair.com",
-  "Riyadh Air": "riyadhair.com"
+  "Riyadh Air": "riyadhair.com",
+  "British Airways": "britishairways.com",
+  "Aer Lingus": "aerlingus.com"
 };
 
 const JOBS = [
@@ -263,6 +265,18 @@ const JOBS = [
     reqs: "B787 First Officers, Riyadh base. Apply only via official Riyadh Air channels.",
     applyUrl: "https://pilots-riyadhair.icims.com/jobs/1124/first-officer-b787/job" },
 
+  /* ---- British Airways (careers.ba.com) — verified 11 Jun 2026 ---- */
+  { id: 241, airline: "British Airways", role: "First Officer", aircraft: "A320 / B777 / B787 (DEP)", region: "Europe", location: "London Heathrow / Gatwick", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, verified: true,
+    salary: "See official listing",
+    reqs: "Direct Entry, Self-Sponsored & Military pathways open year-round (criteria per scheme). Speedbird Academy (fully-funded ab initio) closed for 2026 — next intake expected 2027; register on the portal.",
+    applyUrl: "https://careers.ba.com/future-pilots" },
+
+  /* ---- Aer Lingus (aerlingus.com) — verified 11 Jun 2026 ---- */
+  { id: 242, airline: "Aer Lingus", role: "First Officer", aircraft: "A320 family", region: "Europe", location: "Dublin (DUB)", type: "Direct Entry", minHours: 500, rated: false, posted: 0, verified: true,
+    salary: "See official listing",
+    reqs: "2026 Direct Entry campaign live — FOs on A320 family (Captains case-by-case). Full criteria on the careers portal.",
+    applyUrl: "https://www.aerlingus.com/careers/careers-in-the-air/direct-entry-pilots/" },
+
   /* ================= CABIN CREW — verified 11 Jun 2026 ================= */
   { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, verified: true,
     salary: "Tax-free + free accommodation + travel perks",
@@ -302,6 +316,8 @@ const AIRLINES = [
   { name: "Turkish Airlines",   code: "TK", domain: "turkishairlines.com",   country: "Türkiye",      fleet: "B777, A330, A320, B787",  pilots: 5100, bases: "Istanbul",                    status: "hiring", note: "✓ Verified 11 Jun 2026: foreign Captains (5,500 hrs) & rated FOs (1,500 on type) — 3/1 commuting roster, ~1,000 pilots/yr intake." },
   { name: "Riyadh Air",         code: "RX", domain: "riyadhair.com",         country: "Saudi Arabia", fleet: "B787 (A321 on order)",    pilots: 400,  bases: "Riyadh",                      status: "hiring", note: "✓ Verified 11 Jun 2026: B787 DEC Captains & FOs for Saudi Arabia's new flag carrier. Apply only via official channels — fee-charging agents are scams." },
   { name: "Air Canada",         code: "AC", domain: "aircanada.com",         country: "Canada",       fleet: "B787, A220, B777, A321",  pilots: 4700, bases: "YYZ, YVR, YUL",               status: "hiring", note: "Strong hiring cycle post-CBA. (Not yet verified by AirCrew Jobs.)" },
+  { name: "British Airways",    code: "BA", domain: "britishairways.com",    country: "UK",           fleet: "A320, A350, B777, B787, A380", pilots: 4300, bases: "LHR, LGW",               status: "hiring", note: "✓ Verified 11 Jun 2026: Direct Entry, Self-Sponsored & Military pathways open. Speedbird Academy (160 funded ab initio places) closed for 2026 — next intake expected 2027." },
+  { name: "Aer Lingus",         code: "EI", domain: "aerlingus.com",         country: "Ireland",      fleet: "A320, A321XLR, A330",     pilots: 1100, bases: "DUB, ORK, SNN",               status: "hiring", note: "✓ Verified 11 Jun 2026: 2026 Direct Entry Pilot campaign live for the A320 family. Future Pilot (cadet) programme runs periodic windows." },
   { name: "Korean Air",         code: "KE", domain: "koreanair.com",         country: "South Korea",  fleet: "B777, B787, A350, B747",  pilots: 2800, bases: "Seoul",                       status: "closed", note: "Foreign pilot recruitment currently closed." }
 ];
 
