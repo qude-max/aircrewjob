@@ -162,6 +162,7 @@ const Backend = (() => {
       id: r.id, airline: r.airline, role: r.role, aircraft: r.aircraft,
       region: r.region, location: r.location, type: r.type,
       minHours: r.min_hours, rated: r.rated, salary: r.salary,
+      category: r.category || "pilot",
       verified: r.verified || false, applyUrl: r.apply_url || null, reqs: r.reqs || null,
       owner: r.posted_by || null,
       posted: Math.max(0, Math.floor((Date.now() - new Date(r.posted_at)) / 86400000))
@@ -200,6 +201,7 @@ const Backend = (() => {
           airline: job.airline, role: job.role, aircraft: job.aircraft, region: job.region,
           location: job.location, type: job.type, min_hours: job.minHours, rated: job.rated,
           salary: job.salary, apply_url: job.applyUrl || null, reqs: job.reqs || null,
+          category: job.category || "pilot",
           verified: false, posted_by: currentUser.id
         });
         return error ? { error: error.message } : { ok: true };

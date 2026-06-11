@@ -31,7 +31,8 @@ const DOMAINS = {
   "Turkish Airlines": "turkishairlines.com",
   "Jet2": "jet2.com",
   "Air Canada": "aircanada.com",
-  "Korean Air": "koreanair.com"
+  "Korean Air": "koreanair.com",
+  "Riyadh Air": "riyadhair.com"
 };
 
 const JOBS = [
@@ -240,7 +241,41 @@ const JOBS = [
   { id: 212, airline: "Air New Zealand", role: "First Officer", aircraft: "Turboprop (Q300 / ATR72)", region: "Asia-Pacific", location: "NZ regional bases", type: "Direct Entry", minHours: 500, rated: false, posted: 0, verified: true,
     salary: "See official listing",
     reqs: "Expression of interest · NZCAA CPL/ATPL · NZ/AU citizenship or residency · multiple bases.",
-    applyUrl: "https://careers.airnewzealand.co.nz/job/expression-of-interest-first-officer-turboprop-fleet-in-auckland-nz-jid-149" }
+    applyUrl: "https://careers.airnewzealand.co.nz/job/expression-of-interest-first-officer-turboprop-fleet-in-auckland-nz-jid-149" },
+
+  /* ---- Turkish Airlines (careers.turkishairlines.com) — verified 11 Jun 2026 ---- */
+  { id: 231, airline: "Turkish Airlines", role: "Captain", aircraft: "A320 / A330 / B777", region: "Middle East", location: "Istanbul (IST)", type: "Rated", minHours: 5500, rated: true, posted: 0, verified: true,
+    salary: "≈ $174,000–$198,000",
+    reqs: "5,500 hrs TT · 3,000 hrs on aircraft >27t · 3 weeks on / 1 off commuting roster · work permit arranged.",
+    applyUrl: "https://careers.turkishairlines.com/en-us/cockpit-crew" },
+  { id: 232, airline: "Turkish Airlines", role: "First Officer", aircraft: "A320 / A330 / B777", region: "Middle East", location: "Istanbul (IST)", type: "Rated", minHours: 1500, rated: true, posted: 0, verified: true,
+    salary: "≈ $84,000–$132,000",
+    reqs: "EASA/FAA/ICAO CPL/IR with ATPL credits or ATPL · 1,500 hrs on the applied type · commuting roster.",
+    applyUrl: "https://careers.turkishairlines.com/en-us/cockpit-crew" },
+
+  /* ---- Riyadh Air (riyadhair.com / icims) — verified 11 Jun 2026 ---- */
+  { id: 233, airline: "Riyadh Air", role: "Captain", aircraft: "B787", region: "Middle East", location: "Riyadh (RUH)", type: "Rated", minHours: 5000, rated: true, posted: 0, verified: true,
+    salary: "See official listing",
+    reqs: "Direct Entry Captains for Saudi Arabia's new flag carrier — full criteria on the official portal. Beware unofficial agents charging fees.",
+    applyUrl: "https://www.riyadhair.com/en/careers/pilots" },
+  { id: 234, airline: "Riyadh Air", role: "First Officer", aircraft: "B787", region: "Middle East", location: "Riyadh (RUH)", type: "Rated", minHours: 1500, rated: true, posted: 0, verified: true,
+    salary: "See official listing",
+    reqs: "B787 First Officers, Riyadh base. Apply only via official Riyadh Air channels.",
+    applyUrl: "https://pilots-riyadhair.icims.com/jobs/1124/first-officer-b787/job" },
+
+  /* ================= CABIN CREW — verified 11 Jun 2026 ================= */
+  { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, verified: true,
+    salary: "Tax-free + free accommodation + travel perks",
+    reqs: "21+ · high-school (Grade 12) · fluent English · 1+ yr customer service · open days worldwide + online application.",
+    applyUrl: "https://www.emiratesgroupcareers.com/cabin-crew/" },
+  { id: 302, airline: "Qatar Airways", category: "crew", role: "Cabin Crew", aircraft: "QR international fleet", region: "Middle East", location: "Doha (DOH)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, verified: true,
+    salary: "Tax-free + furnished accommodation + medical",
+    reqs: "Online application open · walk-in events worldwide (Nice, Bangkok, Tokyo & more on the portal).",
+    applyUrl: "https://careers.qatarairways.com/global/JobDetail/Cabin-Crew-Recruitment-Doha-Qatar-2026/77216" },
+  { id: 303, airline: "Singapore Airlines", category: "crew", role: "Cabin Crew", aircraft: "SQ international fleet", region: "Asia-Pacific", location: "MY · KR · JP · TH · IN bases", type: "Direct Entry", minHours: 0, rated: false, posted: 0, verified: true,
+    salary: "See official listing",
+    reqs: "Open now for Malaysia, South Korea, Japan, Thailand & India intakes (Singapore base currently closed) · video interview then in-person.",
+    applyUrl: "https://careers.singaporeair.com/sia/go/Cabin-Crew/689244/" }
 ];
 
 const AIRLINES = [
@@ -264,7 +299,8 @@ const AIRLINES = [
   { name: "Qantas",             code: "QF", domain: "qantas.com",            country: "Australia",    fleet: "B737, A330, B787, A350",  pilots: 3200, bases: "SYD, MEL, BNE, PER",          status: "paused", note: "✓ Verified 10 Jun 2026: Jetstar applications closed. Group virtual pilot info sessions 25 Jun, 8 Jul & 2 Sep 2026 — register via careers.qantas.com." },
   { name: "Delta Air Lines",    code: "DL", domain: "delta.com",             country: "USA",          fleet: "B737, A321, B767, A350",  pilots: 17500, bases: "ATL, MSP, DTW, SLC, NYC",    status: "hiring", note: "US major — check propel pathway and delta.com/careers for current FO windows. (Not yet verified by AirCrew Jobs.)" },
   { name: "Lufthansa",          code: "LH", domain: "lufthansa.com",         country: "Germany",      fleet: "A320, A350, B747, B787",  pilots: 5400, bases: "FRA, MUC",                    status: "hiring", note: "European legacy — cadet (Lufthansa Aviation Training) and rated DE windows. (Not yet verified by AirCrew Jobs.)" },
-  { name: "Turkish Airlines",   code: "TK", domain: "turkishairlines.com",   country: "Türkiye",      fleet: "B777, A330, B787, A350",  pilots: 5100, bases: "Istanbul",                    status: "hiring", note: "Recruits foreign captains & FOs on widebody fleets periodically. (Not yet verified by AirCrew Jobs.)" },
+  { name: "Turkish Airlines",   code: "TK", domain: "turkishairlines.com",   country: "Türkiye",      fleet: "B777, A330, A320, B787",  pilots: 5100, bases: "Istanbul",                    status: "hiring", note: "✓ Verified 11 Jun 2026: foreign Captains (5,500 hrs) & rated FOs (1,500 on type) — 3/1 commuting roster, ~1,000 pilots/yr intake." },
+  { name: "Riyadh Air",         code: "RX", domain: "riyadhair.com",         country: "Saudi Arabia", fleet: "B787 (A321 on order)",    pilots: 400,  bases: "Riyadh",                      status: "hiring", note: "✓ Verified 11 Jun 2026: B787 DEC Captains & FOs for Saudi Arabia's new flag carrier. Apply only via official channels — fee-charging agents are scams." },
   { name: "Air Canada",         code: "AC", domain: "aircanada.com",         country: "Canada",       fleet: "B787, A220, B777, A321",  pilots: 4700, bases: "YYZ, YVR, YUL",               status: "hiring", note: "Strong hiring cycle post-CBA. (Not yet verified by AirCrew Jobs.)" },
   { name: "Korean Air",         code: "KE", domain: "koreanair.com",         country: "South Korea",  fleet: "B777, B787, A350, B747",  pilots: 2800, bases: "Seoul",                       status: "closed", note: "Foreign pilot recruitment currently closed." }
 ];

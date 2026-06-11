@@ -90,11 +90,14 @@
           <form id="jobForm">
             <div class="field"><label>Airline / operator</label><input class="input" id="jAirline" required placeholder="Your company name"></div>
             <div class="field-row">
+              <div class="field"><label>Category</label>
+                <select class="input" id="jCategory"><option value="pilot">✈️ Pilot</option><option value="crew">🛎️ Cabin Crew</option></select>
+              </div>
               <div class="field"><label>Role</label>
                 <select class="input" id="jRole"><option>Captain</option><option selected>First Officer</option><option>Second Officer</option><option>Cadet Pilot</option></select>
               </div>
-              <div class="field"><label>Aircraft</label><input class="input" id="jAircraft" required placeholder="e.g. A320"></div>
             </div>
+            <div class="field"><label>Aircraft</label><input class="input" id="jAircraft" required placeholder="e.g. A320"></div>
             <div class="field-row">
               <div class="field"><label>Region</label>
                 <select class="input" id="jRegion"><option>Europe</option><option>Middle East</option><option>Americas</option><option>Asia-Pacific</option><option>Africa</option></select>
@@ -261,11 +264,12 @@
       e.preventDefault();
       const msg = document.getElementById("jMsg");
       const salaryText = (jCurrency.value + jSalary.value.trim()).trim() + (jTaxFree.checked ? " (tax-free)" : "");
+      const isCrew = jCategory.value === "crew";
       const res = await Backend.jobs.create({
-        airline: jAirline.value.trim(), role: jRole.value, aircraft: jAircraft.value.trim(),
+        airline: jAirline.value.trim(), role: isCrew ? "Cabin Crew" : jRole.value, aircraft: jAircraft.value.trim(),
         region: jRegion.value, type: jType.value, location: jLocation.value.trim(),
-        minHours: parseInt(jHours.value, 10) || 0, rated: jRated.checked,
-        salary: salaryText, reqs: jReqs.value.trim() || null
+        minHours: isCrew ? 0 : (parseInt(jHours.value, 10) || 0), rated: isCrew ? false : jRated.checked,
+        salary: salaryText, reqs: jReqs.value.trim() || null, category: jCategory.value
       });
       msg.className = "save-msg " + (res.error ? "err" : "ok");
       msg.textContent = res.error ? "⚠ " + res.error : "✓ Vacancy published — it's live on the job board";

@@ -96,6 +96,10 @@
 
   <section style="padding-top:10px">
     <div class="container">
+      <div style="display:flex; gap:10px; margin-bottom:20px">
+        <button class="cat-tab active" data-cat="pilot" style="font-family:var(--font-display); font-weight:600; font-size:0.95rem; padding:11px 26px; border-radius:12px; cursor:pointer; border:1px solid var(--border-bright); background:rgba(56,224,255,0.12); color:var(--accent); transition:all 0.2s">✈️ Pilot Jobs</button>
+        <button class="cat-tab" data-cat="crew" style="font-family:var(--font-display); font-weight:600; font-size:0.95rem; padding:11px 26px; border-radius:12px; cursor:pointer; border:1px solid var(--border); background:var(--surface); color:var(--text-dim); transition:all 0.2s">🛎️ Cabin Crew <span class="badge new" style="margin-left:6px">NEW</span></button>
+      </div>
       <div class="filter-bar">
         <input class="input" id="fSearch" type="search" placeholder="🔍  Search airline, aircraft, base…">
         <select class="input" id="fRegion">
@@ -199,6 +203,18 @@
       .forEach(id => els[id] = document.getElementById(id));
 
     let allJobs = [], savedIds = new Set(), appliedIds = new Set(), applyJob = null, matchOnly = false;
+    let category = "pilot";
+
+    document.querySelectorAll(".cat-tab").forEach(t => t.addEventListener("click", () => {
+      category = t.dataset.cat;
+      document.querySelectorAll(".cat-tab").forEach(x => {
+        const active = x === t;
+        x.style.background = active ? "rgba(56,224,255,0.12)" : "var(--surface)";
+        x.style.borderColor = active ? "var(--border-bright)" : "var(--border)";
+        x.style.color = active ? "var(--accent)" : "var(--text-dim)";
+      });
+      render();
+    }));
 
     /* Does this job fit the signed-in pilot's profile? */
     function fitsProfile(j, p) {
@@ -266,6 +282,7 @@
       const prof = Backend.auth.profile();
       const filtered = [...allJobs]
         .filter(j =>
+          (j.category || "pilot") === category &&
           (!q || `${j.airline} ${j.aircraft} ${j.location} ${j.role}`.toLowerCase().includes(q)) &&
           (!region || j.region === region) &&
           (!role || j.role === role) &&
