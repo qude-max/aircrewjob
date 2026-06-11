@@ -95,7 +95,8 @@ function renderFooter() {
           <h4>Company</h4>
           <ul>
             <li><a href="index.html">About</a></li>
-            <li><a href="${typeof DISCORD_INVITE !== "undefined" ? DISCORD_INVITE : "index.html#newsletter"}" target="_blank" rel="noopener">Discord Community</a></li>
+            <li><a href="${typeof DISCORD_INVITE !== "undefined" ? DISCORD_INVITE : "index.html#newsletter"}" target="_blank" rel="noopener">Chill Wings (Discord)</a></li>
+            <li><a href="privacy.html">Privacy & Data Protection</a></li>
             <li><a href="index.html">Contact</a></li>
           </ul>
         </div>
@@ -149,9 +150,20 @@ function logoHTML(airline, cls = "job-logo") {
   </div>`;
 }
 
+/* Vercel Web Analytics — only loads on the deployed site, never locally.
+   Enable it once in Vercel: Project → Analytics → Enable. */
+function initAnalytics() {
+  if (!location.hostname.endsWith(".vercel.app") && !location.hostname.includes("aircrewjob")) return;
+  const s = document.createElement("script");
+  s.defer = true;
+  s.src = "/_vercel/insights/script.js";
+  document.head.appendChild(s);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderNav();
   renderFooter();
   initReveal();
   animateCounters();
+  initAnalytics();
 });

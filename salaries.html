@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pilot Salary Explorer — AirCrew Jobs</title>
   <meta name="description" content="Compare pilot pay across airlines and regions, from first-year FO to senior captain.">
+  <link rel="canonical" href="https://aircrewjob.vercel.app/salaries.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AirCrew Jobs">
+  <meta property="og:title" content="Pilot Salary Explorer — what pilots earn | AirCrew Jobs">
+  <meta property="og:description" content="Compare pilot pay across airlines and regions, from first-year First Officer to senior Captain.">
+  <meta property="og:url" content="https://aircrewjob.vercel.app/salaries.html">
+  <meta property="og:image" content="https://aircrewjob.vercel.app/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -84,7 +92,10 @@
     </div>
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/config.js"></script>
   <script src="assets/data.js"></script>
+  <script src="assets/backend.js"></script>
   <script src="assets/app.js"></script>
   <script>
     let regionFilter = "", sortKey = "captain";
