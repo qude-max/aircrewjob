@@ -310,7 +310,7 @@
           : `<button class="btn btn-primary btn-sm" ${applied ? "disabled style='opacity:0.55'" : ""} onclick="openApply(${JSON.stringify(j.id)})">${applied ? "✓ Applied" : "Apply →"}</button>`;
         return `
         <div class="job-card" id="job-${j.id}" style="animation-delay:${Math.min(i * 40, 400)}ms">
-          ${logoHTML(j.airline)}
+          ${logoHTML(j.airline, "job-logo", j.applyUrl)}
           <div>
             <div class="job-title">${esc(j.role)} — ${esc(j.aircraft)}</div>
             <div class="job-sub">${esc(j.airline)} · ${esc(j.location)}</div>

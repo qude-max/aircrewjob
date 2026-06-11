@@ -150,9 +150,13 @@ function safeUrl(u) {
 
 /* Airline logo with graceful fallback to initials.
    Uses Google's favicon service against the airline's domain (see DOMAINS in data.js). */
-function logoHTML(airline, cls = "job-logo") {
+function logoHTML(airline, cls = "job-logo", urlHint = null) {
   const initials = esc(String(airline || "?").split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase());
-  const domain = (typeof DOMAINS !== "undefined" && DOMAINS[airline]) || null;
+  let domain = (typeof DOMAINS !== "undefined" && DOMAINS[airline]) || null;
+  // fallback: derive the logo from the job's apply link (gives recruiter posts a logo too)
+  if (!domain && urlHint) {
+    try { domain = new URL(urlHint).hostname.replace(/^(www|careers|jobs|apply)\./, ""); } catch {}
+  }
   if (!domain) return `<div class="${cls}">${initials}</div>`;
   return `<div class="${cls} has-img">
     <img src="https://www.google.com/s2/favicons?domain=${esc(domain)}&sz=128" alt="${esc(airline)} logo" loading="lazy"

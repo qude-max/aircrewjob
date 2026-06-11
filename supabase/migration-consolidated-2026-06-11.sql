@@ -62,14 +62,10 @@ select * from (values
 ) as v(airline, role, aircraft, region, location, type, min_hours, rated, salary, verified, apply_url, reqs, posted_at)
 where not exists (select 1 from public.jobs where airline = 'IndiGo');
 
--- 4. Turkish Airlines + Riyadh Air (if missing)
-insert into public.jobs (airline, role, aircraft, region, location, type, min_hours, rated, salary, verified, apply_url, reqs, posted_at)
-select * from (values
-  ('Turkish Airlines','Captain','A320 / A330 / B777','Middle East','Istanbul (IST)','Rated',5500,true,'≈ $174,000–$198,000',true,'https://careers.turkishairlines.com/en-us/cockpit-crew','5,500 hrs TT · 3,000 hrs >27t · 3/1 commuting roster.', now()),
-  ('Turkish Airlines','First Officer','A320 / A330 / B777','Middle East','Istanbul (IST)','Rated',1500,true,'≈ $84,000–$132,000',true,'https://careers.turkishairlines.com/en-us/cockpit-crew','CPL/IR with ATPL credits or ATPL · 1,500 hrs on type.', now())
-) as v(airline, role, aircraft, region, location, type, min_hours, rated, salary, verified, apply_url, reqs, posted_at)
-where not exists (select 1 from public.jobs where airline = 'Turkish Airlines');
+-- 4. Turkish Airlines: no open cockpit postings (checked 11 Jun 2026) — remove if present
+delete from public.jobs where airline = 'Turkish Airlines';
 
+-- Riyadh Air (if missing)
 insert into public.jobs (airline, role, aircraft, region, location, type, min_hours, rated, salary, verified, apply_url, reqs, posted_at)
 select * from (values
   ('Riyadh Air','Captain','B787','Middle East','Riyadh (RUH)','Rated',5000,true,'See official listing',true,'https://www.riyadhair.com/en/careers/pilots','DEC Captains — official channels only.', now()),
@@ -96,10 +92,8 @@ insert into public.jobs (airline, role, aircraft, region, location, type, min_ho
 insert into public.jobs (airline, role, aircraft, region, location, type, min_hours, rated, salary, verified, apply_url, reqs, category, posted_at) values
 ('British Airways','Cabin Crew','Talent Pool','Europe','London Heathrow','Direct Entry',0,false,'See official listing',true,'https://careers.ba.com/job/heathrow/cabin-crew-talent-pool/22348/94593554544','Live talent-pool posting — register for upcoming Heathrow cabin crew intakes.','crew', now());
 
--- 7. Aer Lingus (if missing)
-insert into public.jobs (airline, role, aircraft, region, location, type, min_hours, rated, salary, verified, apply_url, reqs, posted_at)
-select 'Aer Lingus','First Officer','A320 family','Europe','Dublin (DUB)','Direct Entry',500,false,'See official listing',true,'https://www.aerlingus.com/careers/careers-in-the-air/direct-entry-pilots/','2026 Direct Entry campaign live — criteria on portal.', now()
-where not exists (select 1 from public.jobs where airline = 'Aer Lingus');
+-- 7. Aer Lingus: DEP application process closed (confirmed 11 Jun 2026) — remove if present
+delete from public.jobs where airline = 'Aer Lingus';
 
--- 8. Sanity check — should match the website's data.js (53 rows)
+-- 8. Sanity check — should match the website's data.js (50 rows, 4 crew)
 select count(*) as total_jobs, count(*) filter (where category = 'crew') as crew_jobs from public.jobs;

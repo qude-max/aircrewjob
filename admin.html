@@ -109,6 +109,7 @@
               </div>
             </div>
             <div class="field"><label>Salary / package</label><input class="input" id="jSalary" required placeholder="e.g. €78,000–€110,000"></div>
+            <div class="field"><label>Apply link (optional — external application page)</label><input class="input" id="jApplyUrl" type="url" placeholder="https://… (also used for the logo)"></div>
             <div style="display:flex; gap:10px">
               <button class="btn btn-primary btn-sm" type="submit" id="jSubmit">Publish vacancy</button>
               <button class="btn btn-ghost btn-sm" type="button" id="jReset" style="display:none">Cancel edit</button>
@@ -244,6 +245,7 @@
       jAirline.value = j.airline; jRole.value = j.role; jAircraft.value = j.aircraft;
       jRegion.value = j.region; jType.value = j.type; jLocation.value = j.location;
       jHours.value = j.minHours; jRated.checked = j.rated; jSalary.value = j.salary;
+      jApplyUrl.value = j.applyUrl || "";
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -270,7 +272,8 @@
       const job = {
         airline: jAirline.value.trim(), role: jRole.value, aircraft: jAircraft.value.trim(),
         region: jRegion.value, type: jType.value, location: jLocation.value.trim(),
-        minHours: parseInt(jHours.value, 10) || 0, rated: jRated.checked, salary: jSalary.value.trim()
+        minHours: parseInt(jHours.value, 10) || 0, rated: jRated.checked, salary: jSalary.value.trim(),
+        applyUrl: jApplyUrl.value.trim() || null
       };
       const res = editing !== null
         ? await Backend.jobs.update(editing, job)

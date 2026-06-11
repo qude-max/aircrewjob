@@ -245,15 +245,8 @@ const JOBS = [
     reqs: "Expression of interest · NZCAA CPL/ATPL · NZ/AU citizenship or residency · multiple bases.",
     applyUrl: "https://careers.airnewzealand.co.nz/job/expression-of-interest-first-officer-turboprop-fleet-in-auckland-nz-jid-149" },
 
-  /* ---- Turkish Airlines (careers.turkishairlines.com) — verified 11 Jun 2026 ---- */
-  { id: 231, airline: "Turkish Airlines", role: "Captain", aircraft: "A320 / A330 / B777", region: "Middle East", location: "Istanbul (IST)", type: "Rated", minHours: 5500, rated: true, posted: 0, verified: true,
-    salary: "≈ $174,000–$198,000",
-    reqs: "5,500 hrs TT · 3,000 hrs on aircraft >27t · 3 weeks on / 1 off commuting roster · work permit arranged.",
-    applyUrl: "https://careers.turkishairlines.com/en-us/cockpit-crew" },
-  { id: 232, airline: "Turkish Airlines", role: "First Officer", aircraft: "A320 / A330 / B777", region: "Middle East", location: "Istanbul (IST)", type: "Rated", minHours: 1500, rated: true, posted: 0, verified: true,
-    salary: "≈ $84,000–$132,000",
-    reqs: "EASA/FAA/ICAO CPL/IR with ATPL credits or ATPL · 1,500 hrs on the applied type · commuting roster.",
-    applyUrl: "https://careers.turkishairlines.com/en-us/cockpit-crew" },
+  /* Turkish Airlines: no open cockpit postings on the portal (checked 11 Jun 2026) — listings removed,
+     status tracked in the airline directory instead. */
 
   /* ---- Riyadh Air (riyadhair.com / icims) — verified 11 Jun 2026 ---- */
   { id: 233, airline: "Riyadh Air", role: "Captain", aircraft: "B787", region: "Middle East", location: "Riyadh (RUH)", type: "Rated", minHours: 5000, rated: true, posted: 0, verified: true,
@@ -283,11 +276,8 @@ const JOBS = [
     reqs: "Experienced FOs joining the E190 command pathway — full criteria on the posting.",
     applyUrl: "https://careers.ba.com/job/london/ba-cityflyer-aspiration-to-command/22348/94593554560" },
 
-  /* ---- Aer Lingus (aerlingus.com) — verified 11 Jun 2026 ---- */
-  { id: 242, airline: "Aer Lingus", role: "First Officer", aircraft: "A320 family", region: "Europe", location: "Dublin (DUB)", type: "Direct Entry", minHours: 500, rated: false, posted: 0, verified: true,
-    salary: "See official listing",
-    reqs: "2026 Direct Entry campaign live — FOs on A320 family (Captains case-by-case). Full criteria on the careers portal.",
-    applyUrl: "https://www.aerlingus.com/careers/careers-in-the-air/direct-entry-pilots/" },
+  /* Aer Lingus: DEP application process CLOSED (confirmed on their page, 11 Jun 2026) —
+     listing removed, status tracked in the airline directory instead. */
 
   /* ================= CABIN CREW — verified 11 Jun 2026 ================= */
   { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, verified: true,
@@ -329,11 +319,11 @@ const AIRLINES = [
   { name: "Qantas",             code: "QF", domain: "qantas.com",            country: "Australia",    fleet: "B737, A330, B787, A350",  pilots: 3200, bases: "SYD, MEL, BNE, PER",          status: "paused", note: "✓ Verified 10 Jun 2026: Jetstar applications closed. Group virtual pilot info sessions 25 Jun, 8 Jul & 2 Sep 2026 — register via careers.qantas.com." },
   { name: "Delta Air Lines",    code: "DL", domain: "delta.com",             country: "USA",          fleet: "B737, A321, B767, A350",  pilots: 17500, bases: "ATL, MSP, DTW, SLC, NYC",    status: "hiring", note: "US major — check propel pathway and delta.com/careers for current FO windows. (Not yet verified by AirCrew Jobs.)" },
   { name: "Lufthansa",          code: "LH", domain: "lufthansa.com",         country: "Germany",      fleet: "A320, A350, B747, B787",  pilots: 5400, bases: "FRA, MUC",                    status: "hiring", note: "European legacy — cadet (Lufthansa Aviation Training) and rated DE windows. (Not yet verified by AirCrew Jobs.)" },
-  { name: "Turkish Airlines",   code: "TK", domain: "turkishairlines.com",   country: "Türkiye",      fleet: "B777, A330, A320, B787",  pilots: 5100, bases: "Istanbul",                    status: "hiring", note: "✓ Verified 11 Jun 2026: foreign Captains (5,500 hrs) & rated FOs (1,500 on type) — 3/1 commuting roster, ~1,000 pilots/yr intake." },
+  { name: "Turkish Airlines",   code: "TK", domain: "turkishairlines.com",   country: "Türkiye",      fleet: "B777, A330, A320, B787",  pilots: 5100, bases: "Istanbul",                    status: "paused", note: "✓ Checked 11 Jun 2026: no open cockpit postings on the careers portal right now. TK recruits in periodic waves (typically rated FOs 1,500 hrs on type, Captains 5,500 hrs, 3/1 commuting roster) — watch careers.turkishairlines.com." },
   { name: "Riyadh Air",         code: "RX", domain: "riyadhair.com",         country: "Saudi Arabia", fleet: "B787 (A321 on order)",    pilots: 400,  bases: "Riyadh",                      status: "hiring", note: "✓ Verified 11 Jun 2026: B787 DEC Captains & FOs for Saudi Arabia's new flag carrier. Apply only via official channels — fee-charging agents are scams." },
   { name: "Air Canada",         code: "AC", domain: "aircanada.com",         country: "Canada",       fleet: "B787, A220, B777, A321",  pilots: 4700, bases: "YYZ, YVR, YUL",               status: "hiring", note: "Strong hiring cycle post-CBA. (Not yet verified by AirCrew Jobs.)" },
   { name: "British Airways",    code: "BA", domain: "britishairways.com",    country: "UK",           fleet: "A320, A350, B777, B787, A380 (+E190 Cityflyer)", pilots: 4300, bases: "LHR, LGW, LCY", status: "hiring", note: "✓ Verified 11 Jun 2026: 4 live pilot postings — Military Pilot Pathway (mainline) + Cityflyer E190 DE Captains (LCY & EDI) and Aspiration to Command. No mainline civilian DEP FO posting right now; Speedbird Academy reopens 2027. Cabin crew talent pool open." },
-  { name: "Aer Lingus",         code: "EI", domain: "aerlingus.com",         country: "Ireland",      fleet: "A320, A321XLR, A330",     pilots: 1100, bases: "DUB, ORK, SNN",               status: "hiring", note: "✓ Verified 11 Jun 2026: 2026 Direct Entry Pilot campaign live for the A320 family. Future Pilot (cadet) programme runs periodic windows." },
+  { name: "Aer Lingus",         code: "EI", domain: "aerlingus.com",         country: "Ireland",      fleet: "A320, A321XLR, A330",     pilots: 1100, bases: "DUB, ORK, SNN",               status: "paused", note: "✓ Checked 11 Jun 2026: Direct Entry application process is closed. EI runs periodic DEP and cadet windows — watch aerlingus.com/careers." },
   { name: "Korean Air",         code: "KE", domain: "koreanair.com",         country: "South Korea",  fleet: "B777, B787, A350, B747",  pilots: 2800, bases: "Seoul",                       status: "closed", note: "Foreign pilot recruitment currently closed." }
 ];
 
