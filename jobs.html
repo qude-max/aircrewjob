@@ -16,9 +16,44 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <style>
+    /* ---- Job map ---- */
+    .map-shell {
+      border: 1px solid var(--border-bright); border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--glow); margin-bottom: 18px;
+    }
+    #jobMap { height: 560px; width: 100%; background: #05080f; }
+    @media (max-width: 680px) { #jobMap { height: 430px; } }
+    .view-toggle { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .view-btn {
+      font-family: var(--font-display); font-weight: 600; font-size: 0.88rem;
+      padding: 10px 20px; cursor: pointer; border: none;
+      background: var(--surface); color: var(--text-dim); transition: all 0.2s;
+    }
+    .view-btn.active { background: rgba(56,224,255,0.14); color: var(--accent); }
+    .base-pin {
+      display: grid; place-items: center;
+      width: 100%; height: 100%; border-radius: 50%;
+      background: rgba(56,224,255,0.22); border: 2px solid #38e0ff;
+      color: #dff7ff; font-family: "Space Grotesk", sans-serif; font-weight: 700;
+      box-shadow: 0 0 18px rgba(56,224,255,0.65);
+    }
+    .leaflet-popup-content-wrapper { background: var(--bg-2); color: var(--text); border: 1px solid var(--border-bright); border-radius: 12px; box-shadow: 0 0 30px rgba(56,224,255,0.2); }
+    .leaflet-popup-tip { background: var(--bg-2); border: 1px solid var(--border-bright); }
+    .leaflet-popup-content { margin: 14px 16px; font-family: var(--font-body); min-width: 240px; }
+    .leaflet-container a.leaflet-popup-close-button { color: var(--text-faint); }
+    .leaflet-control-attribution { background: rgba(5,8,15,0.7) !important; color: var(--text-faint) !important; }
+    .leaflet-control-attribution a { color: var(--text-dim) !important; }
+    .leaflet-bar a { background: var(--bg-2) !important; color: var(--text) !important; border-color: var(--border) !important; }
+    .pop-base { font-family: var(--font-display); font-weight: 600; font-size: 1rem; margin-bottom: 10px; }
+    .pop-job { display: flex; justify-content: space-between; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--border); font-size: 0.85rem; }
+    .pop-job .r { color: var(--text); font-weight: 500; }
+    .pop-job .a { color: var(--text-faint); font-size: 0.76rem; }
+    .pop-apply { color: var(--accent); font-family: var(--font-display); font-weight: 600; font-size: 0.8rem; text-decoration: none; white-space: nowrap; }
+
     .filter-bar {
       display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 12px;
       padding: 18px; border: 1px solid var(--border); border-radius: var(--radius);
@@ -125,15 +160,19 @@
 
       <div class="results-meta">
         <span id="resultCount">Loading…</span>
-        <span style="display:flex; gap:14px; align-items:center">
+        <span style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
           <button id="matchToggle" style="display:none; font-family:var(--font-display); font-size:0.84rem; font-weight:500;
             padding:7px 16px; border-radius:999px; cursor:pointer; border:1px solid var(--border);
             background:var(--surface); color:var(--text-dim); transition:all 0.2s">🎯 Matches my profile</button>
-          <span>Sorted by: <b style="color:var(--text-dim)">Most recent</b></span>
+          <span class="view-toggle">
+            <button class="view-btn active" id="viewMapBtn">🗺 Map</button>
+            <button class="view-btn" id="viewListBtn">☰ List</button>
+          </span>
         </span>
       </div>
 
-      <div id="jobList"></div>
+      <div class="map-shell" id="mapShell"><div id="jobMap"></div></div>
+      <div id="jobList" style="display:none"></div>
 
       <p style="font-size:0.82rem; color:var(--text-faint); margin-top:26px" id="sourceNote">
         ✓ Verified listings are sourced from official airline careers portals. Requirements are summarised;
@@ -189,6 +228,7 @@
     </div>
   </div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/config.js"></script>
   <script src="assets/data.js"></script>
@@ -201,6 +241,64 @@
 
     let allJobs = [], savedIds = new Set(), appliedIds = new Set(), applyJob = null, matchOnly = false;
     let category = "pilot";
+
+    /* ---------- Map / List view (map is the default) ---------- */
+    let view = localStorage.getItem("acj_jobs_view") || "map";
+    let jobMap = null, mapMarkers = [];
+
+    function setView(v) {
+      view = v;
+      localStorage.setItem("acj_jobs_view", v);
+      document.getElementById("mapShell").style.display = v === "map" ? "block" : "none";
+      els.jobList.style.display = v === "list" ? "block" : "none";
+      document.getElementById("viewMapBtn").classList.toggle("active", v === "map");
+      document.getElementById("viewListBtn").classList.toggle("active", v === "list");
+      if (v === "map" && jobMap) setTimeout(() => jobMap.invalidateSize(), 60);
+    }
+    document.getElementById("viewMapBtn").addEventListener("click", () => setView("map"));
+    document.getElementById("viewListBtn").addEventListener("click", () => setView("list"));
+
+    function initMap() {
+      if (jobMap) return;
+      jobMap = L.map("jobMap", { worldCopyJump: true, minZoom: 2 }).setView([26, 30], 2);
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: "abcd", maxZoom: 10
+      }).addTo(jobMap);
+    }
+
+    function updateMap(filtered) {
+      if (!jobMap) return;
+      mapMarkers.forEach(m => jobMap.removeLayer(m));
+      mapMarkers = [];
+      // group filtered jobs by base
+      const groups = {};
+      filtered.forEach(j => {
+        const coords = (typeof BASES !== "undefined") && BASES[j.location];
+        if (!coords) return;
+        const key = j.location;
+        (groups[key] = groups[key] || { coords, jobs: [] }).jobs.push(j);
+      });
+      Object.entries(groups).forEach(([loc, g]) => {
+        const n = g.jobs.length;
+        const size = n >= 8 ? 46 : n >= 4 ? 38 : 30;
+        const icon = L.divIcon({
+          className: "",
+          html: `<div class="base-pin" style="font-size:${n >= 8 ? 1 : 0.85}rem">${n}</div>`,
+          iconSize: [size, size], iconAnchor: [size / 2, size / 2]
+        });
+        const rows = g.jobs.slice(0, 8).map(j => `
+          <div class="pop-job">
+            <span><span class="r">${j.category === "crew" ? "🛎️" : "✈️"} ${esc(j.role)} — ${esc(j.aircraft)}</span><br><span class="a">${esc(j.airline)} · ${esc(j.salary)}</span></span>
+            ${safeUrl(j.applyUrl) ? `<a class="pop-apply" href="${safeUrl(j.applyUrl)}" target="_blank" rel="noopener">Apply ↗</a>`
+              : `<a class="pop-apply" href="#" onclick="event.preventDefault(); setView('list'); location.hash=''; document.getElementById('job-${j.id}')?.scrollIntoView({behavior:'smooth', block:'center'})">View →</a>`}
+          </div>`).join("");
+        const more = g.jobs.length > 8 ? `<div class="pop-job"><span class="a">+ ${g.jobs.length - 8} more — switch to list view</span></div>` : "";
+        const m = L.marker(g.coords, { icon }).addTo(jobMap)
+          .bindPopup(`<div class="pop-base">📍 ${esc(loc)} · ${n} opening${n > 1 ? "s" : ""}</div>${rows}${more}`, { maxWidth: 340 });
+        mapMarkers.push(m);
+      });
+    }
 
     document.querySelectorAll(".cat-tab").forEach(t => t.addEventListener("click", () => {
       category = t.dataset.cat;
@@ -233,6 +331,10 @@
         savedIds = await Backend.saved.ids();
         appliedIds = new Set((await Backend.apps.list()).map(a => a.jobId));
       }
+      // deep links (?job=ID) need the list view to highlight the card
+      if (new URLSearchParams(location.search).get("job")) view = "list";
+      initMap();
+      setView(view);
       render();
       focusJobFromUrl();
 
@@ -297,6 +399,7 @@
         .sort((a, b) => a.posted - b.posted);
 
       els.resultCount.textContent = `${filtered.length} position${filtered.length === 1 ? "" : "s"} found`;
+      updateMap(filtered);
 
       if (!filtered.length) {
         els.jobList.innerHTML = `<div class="empty-state"><div class="icon">🛩️</div><p>No vacancies match those filters.<br>Try widening your search — or set a job alert in <a href="account.html" style="color:var(--accent)">your account</a>.</p></div>`;

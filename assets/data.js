@@ -37,6 +37,36 @@ const DOMAINS = {
   "Aer Lingus": "aerlingus.com"
 };
 
+/* Base coordinates for the job map — keyed by the exact `location` strings used in JOBS.
+   Multi-base entries pin at the airline's hub. */
+const BASES = {
+  "Dubai (DXB)":                      [25.25, 55.36],
+  "Abu Dhabi (AUH)":                  [24.43, 54.65],
+  "Doha (DOH)":                       [25.27, 51.61],
+  "Riyadh (RUH)":                     [24.96, 46.70],
+  "Bases across Europe":              [53.43, -6.25],   // Ryanair — Dublin hub
+  "EU training partners":             [53.43, -6.25],
+  "UK & EU bases":                    [51.87, -0.37],   // easyJet — Luton hub
+  "35+ bases EU & ME":                [47.44, 19.26],   // Wizz — Budapest hub
+  "Budapest + partners":              [47.44, 19.26],   // Wizz Pilot Academy
+  "Barcelona + Spanish bases":        [41.30, 2.08],
+  "CAE academies + Barcelona":        [41.30, 2.08],
+  "UK bases":                         [53.87, -1.66],   // Jet2 — Leeds hub
+  "Oslo Gardermoen (OSL)":            [60.19, 11.10],
+  "London Heathrow":                  [51.47, -0.45],
+  "London City (LCY)":                [51.50, 0.05],
+  "Edinburgh (EDI)":                  [55.95, -3.37],
+  "Hong Kong (HKG)":                  [22.31, 113.92],
+  "Singapore (SIN)":                  [1.36, 103.99],
+  "MY · KR · JP · TH · IN bases":     [1.36, 103.99],   // SIA crew — Singapore HQ
+  "Indian bases":                     [28.56, 77.10],   // IndiGo — Delhi hub
+  "India + CAE academies":            [28.56, 77.10],
+  "US bases (DEN, ORD, IAH, EWR…)":   [39.86, -104.67], // United — Denver
+  "Addis Ababa (ADD)":                [8.98, 38.80],
+  "Australian bases":                 [-27.38, 153.12], // Virgin Australia — Brisbane
+  "NZ regional bases":                [-37.01, 174.79]  // Air NZ — Auckland
+};
+
 const JOBS = [
   /* ================= MIDDLE EAST ================= */
 
