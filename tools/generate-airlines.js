@@ -156,3 +156,6 @@ const xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.s
   + "\n</urlset>\n";
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"), xml);
 console.log(`\n${slugs.length} airline pages + sitemap.xml (${urls.length} URLs)`);
+
+/* also regenerate the database sync file — one command does everything */
+require("./sync-jobs.js");

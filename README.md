@@ -22,15 +22,16 @@ Runs in **demo mode** by default (accounts stored in localStorage). To go live w
 
 Everything lives in `assets/config.js`: Supabase URL + anon key, and your Discord invite link.
 
-## ⚠️ After ANY change to assets/data.js — regenerate the airline pages
+## ⚠️ After ANY change to assets/data.js — two steps
 
 ```bash
-node tools/generate-airlines.js
+node tools/generate-airlines.js   # rebuilds /airline/ pages, sitemap.xml AND supabase/sync-jobs.sql
 ```
 
-This rebuilds all static SEO pages in `/airline/` **and** `sitemap.xml` from the data.
-If you edit jobs, airline statuses or add carriers and forget this step, the airline
-landing pages and sitemap go stale. Then commit and push as usual.
+then paste **`supabase/sync-jobs.sql`** into the Supabase SQL Editor and run it.
+The static pages read data.js directly, but the LIVE job board reads the database —
+the sync file is what carries catalog changes into it. It's auto-generated and
+idempotent (safe to run repeatedly); recruiter posts are never touched.
 
 ---
 
