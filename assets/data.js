@@ -34,7 +34,11 @@ const DOMAINS = {
   "Korean Air": "koreanair.com",
   "Riyadh Air": "riyadhair.com",
   "British Airways": "britishairways.com",
-  "Aer Lingus": "aerlingus.com"
+  "Aer Lingus": "aerlingus.com",
+  "DHL Aviation": "dhl.com",
+  "SAS": "flysas.com",
+  "Akasa Air": "akasaair.com",
+  "Gulf Air": "gulfair.com"
 };
 
 /* Base coordinates for the job map — keyed by the exact `location` strings used in JOBS.
@@ -63,6 +67,11 @@ const BASES = {
   "India + CAE academies":            [28.56, 77.10],
   "US bases (DEN, ORD, IAH, EWR…)":   [39.86, -104.67], // United — Denver
   "Addis Ababa (ADD)":                [8.98, 38.80],
+  "Leipzig (LEJ)":                    [51.42, 12.24],
+  "East Midlands (EMA)":              [52.83, -1.33],
+  "Copenhagen (CPH)":                 [55.62, 12.65],
+  "Mumbai (BOM)":                     [19.09, 72.87],
+  "Bahrain (BAH)":                    [26.27, 50.63],
   "Australian bases":                 [-27.38, 153.12], // Virgin Australia — Brisbane
   "NZ regional bases":                [-37.01, 174.79]  // Air NZ — Auckland
 };
@@ -309,6 +318,38 @@ const JOBS = [
   /* Aer Lingus: DEP application process CLOSED (confirmed on their page, 11 Jun 2026) —
      listing removed, status tracked in the airline directory instead. */
 
+  /* ---- DHL Aviation (careers.dhl.com) — verified 12 Jun 2026 ---- */
+  { id: 251, airline: "DHL Aviation", role: "First Officer", aircraft: "A330 / B757 (EAT Leipzig)", region: "Europe", location: "Leipzig (LEJ)", type: "Direct Entry", minHours: 500, rated: false, posted: 0, verified: true,
+    salary: "See requisitions — 144 OFF days/yr roster",
+    reqs: "Rated & non-rated FOs at EAT Leipzig (cargo) — commuter-friendly 7-on/6-off pattern, 36 days leave. Captains also recruited; criteria per requisition.",
+    applyUrl: "https://careers.dhl.com/global/en/flight-operations" },
+  { id: 252, airline: "DHL Aviation", role: "First Officer", aircraft: "B777 (DHL Air UK)", region: "Europe", location: "East Midlands (EMA)", type: "Rated", minHours: 500, rated: true, posted: 0, verified: true,
+    salary: "See requisitions",
+    reqs: "Type-rated B777 FOs for DHL Air UK long-haul cargo — Captains also recruited via the same portal.",
+    applyUrl: "https://careers.dhl.com/global/en/flight-operations" },
+
+  /* ---- SAS (careers.sasgroup.net) — direct posting, verified 12 Jun 2026 ---- */
+  { id: 253, airline: "SAS", role: "First Officer", aircraft: "A320 / A330 / A350", region: "Europe", location: "Copenhagen (CPH)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, verified: true,
+    salary: "See official posting",
+    reqs: "'Experienced First Officer' posting live at Kastrup — full criteria on the posting. A350 growth (Seoul, Mumbai routes) driving intake.",
+    applyUrl: "https://careers.sasgroup.net/job/Kastrup-JOIN-SAS-AS-A-EXPERIENCED-FIRST-OFFICER/1222839901/" },
+
+  /* ---- Akasa Air (akasaair.com) — verified 12 Jun 2026 ---- */
+  { id: 254, airline: "Akasa Air", role: "First Officer", aircraft: "B737 MAX", region: "Asia-Pacific", location: "Mumbai (BOM)", type: "Direct Entry", minHours: 200, rated: false, posted: 0, verified: true,
+    salary: "See official listing",
+    reqs: "CPL holders and B737 type-rated pilots — India's fastest-growing fleet (226 MAX on order). Captains also recruited; criteria per role on the portal.",
+    applyUrl: "https://www.akasaair.com/careers-at-akasa-air/pilots-careers-at-akasa-air" },
+  { id: 255, airline: "Akasa Air", role: "Cadet Pilot", aircraft: "SkyCadet Programme", region: "Asia-Pacific", location: "Mumbai (BOM)", type: "Cadet", minHours: 0, rated: false, posted: 0, verified: true,
+    salary: "Structured pathway to the B737 MAX",
+    reqs: "⏰ Applications close 24 Jun 2026. Ab initio pathway into Akasa's flight deck — criteria on the official programme page.",
+    applyUrl: "https://www.akasaair.com/akasa-air-skycadet-programme" },
+
+  /* ---- Gulf Air (gulfair.com) — verified 12 Jun 2026 ---- */
+  { id: 256, airline: "Gulf Air", role: "Captain", aircraft: "B787", region: "Middle East", location: "Bahrain (BAH)", type: "Rated", minHours: 4000, rated: true, posted: 0, verified: true,
+    salary: "Tax-free + housing + schooling (2 children)",
+    reqs: "B787 Captains advertised — search 'pilot' in the official portal's Job Search for full per-role criteria.",
+    applyUrl: "https://www.gulfair.com/careers" },
+
   /* ================= CABIN CREW — verified 11 Jun 2026 ================= */
   { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, verified: true,
     salary: "Tax-free + free accommodation + travel perks",
@@ -354,6 +395,10 @@ const AIRLINES = [
   { name: "Air Canada",         code: "AC", domain: "aircanada.com",         country: "Canada",       fleet: "B787, A220, B777, A321",  pilots: 4700, bases: "YYZ, YVR, YUL",               status: "hiring", note: "Strong hiring cycle post-CBA. (Not yet verified by AirCrew Jobs.)" },
   { name: "British Airways",    code: "BA", domain: "britishairways.com",    country: "UK",           fleet: "A320, A350, B777, B787, A380 (+E190 Cityflyer)", pilots: 4300, bases: "LHR, LGW, LCY", status: "hiring", note: "✓ Verified 11 Jun 2026: 4 live pilot postings — Military Pilot Pathway (mainline) + Cityflyer E190 DE Captains (LCY & EDI) and Aspiration to Command. No mainline civilian DEP FO posting right now; Speedbird Academy reopens 2027. Cabin crew talent pool open." },
   { name: "Aer Lingus",         code: "EI", domain: "aerlingus.com",         country: "Ireland",      fleet: "A320, A321XLR, A330",     pilots: 1100, bases: "DUB, ORK, SNN",               status: "paused", note: "✓ Checked 11 Jun 2026: Direct Entry application process is closed. EI runs periodic DEP and cadet windows — watch aerlingus.com/careers." },
+  { name: "DHL Aviation",       code: "D0", domain: "dhl.com",               country: "Germany / UK", fleet: "A330, A300, B757, B777, B767", pilots: 1200, bases: "LEJ, EMA",              status: "hiring", note: "✓ Verified 12 Jun 2026: EAT Leipzig recruiting rated & non-rated A330/B757 FOs (144 OFF days/yr roster); DHL Air UK recruiting B777 pilots. Cargo — no night-stop passenger pressure, commuter-friendly." },
+  { name: "SAS",                code: "SK", domain: "flysas.com",            country: "Scandinavia",  fleet: "A320neo, A330, A350",     pilots: 1500, bases: "CPH, OSL, ARN",               status: "hiring", note: "✓ Verified 12 Jun 2026: 'Experienced First Officer' posting live at Copenhagen. A350 growth (Seoul, Mumbai routes) accelerating intake; MPL cadet windows run periodically." },
+  { name: "Akasa Air",          code: "QP", domain: "akasaair.com",          country: "India",        fleet: "B737 MAX (226 on order)", pilots: 900,  bases: "BOM, BLR, DEL",               status: "hiring", note: "✓ Verified 12 Jun 2026: recruiting CPL holders & B737-rated pilots; SkyCadet ab initio programme closes 24 Jun 2026. India's fastest-growing airline." },
+  { name: "Gulf Air",           code: "GF", domain: "gulfair.com",           country: "Bahrain",      fleet: "B787, A320neo, A321",     pilots: 800,  bases: "Bahrain",                     status: "hiring", note: "✓ Verified 12 Jun 2026: B787 Captains advertised on the official portal. Tax-free package + housing + schooling for two children." },
   { name: "Korean Air",         code: "KE", domain: "koreanair.com",         country: "South Korea",  fleet: "B777, B787, A350, B747",  pilots: 2800, bases: "Seoul",                       status: "closed", note: "Foreign pilot recruitment currently closed." }
 ];
 

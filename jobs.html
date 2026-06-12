@@ -165,8 +165,8 @@
             padding:7px 16px; border-radius:999px; cursor:pointer; border:1px solid var(--border);
             background:var(--surface); color:var(--text-dim); transition:all 0.2s">🎯 Matches my profile</button>
           <span class="view-toggle">
-            <button class="view-btn active" id="viewMapBtn">🗺 Map</button>
-            <button class="view-btn" id="viewListBtn">☰ List</button>
+            <button class="view-btn" id="viewMapBtn">🗺 Map</button>
+            <button class="view-btn active" id="viewListBtn">☰ List</button>
           </span>
         </span>
       </div>
@@ -243,7 +243,7 @@
     let category = "pilot";
 
     /* ---------- Map / List view (map is the default) ---------- */
-    let view = localStorage.getItem("acj_jobs_view") || "map";
+    let view = localStorage.getItem("acj_jobs_view") || "list";
     let jobMap = null, mapMarkers = [];
 
     function setView(v) {
