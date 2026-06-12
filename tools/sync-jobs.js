@@ -23,7 +23,7 @@ const { JOBS } = ctx;
 const q = s => "'" + String(s ?? "").replace(/'/g, "''") + "'";
 const verified = JOBS.filter(j => j.verified);
 
-const rows = verified.map(j => `(${j.id}, ${q(j.airline)}, ${q(j.role)}, ${q(j.aircraft)}, ${q(j.region)}, ${q(j.location)}, ${q(j.type)}, ${j.minHours || 0}, ${j.rated ? "true" : "false"}, ${q(j.salary)}, true, ${q(j.applyUrl)}, ${j.reqs ? q(j.reqs) : "null"}, ${q(j.category || "pilot")}, now())`).join(",\n");
+const rows = verified.map(j => `(${j.id}, ${q(j.airline)}, ${q(j.role)}, ${q(j.aircraft)}, ${q(j.region)}, ${q(j.location)}, ${q(j.type)}, ${j.minHours || 0}, ${j.rated ? "true" : "false"}, ${q(j.salary)}, true, ${q(j.applyUrl)}, ${j.reqs ? q(j.reqs) : "null"}, ${q(j.category || "pilot")}, ${j.added ? q(j.added) + "::timestamptz" : "now()"})`).join(",\n");
 
 const ids = verified.map(j => j.id).join(", ");
 
@@ -45,7 +45,7 @@ on conflict (id) do update set
   region = excluded.region, location = excluded.location, type = excluded.type,
   min_hours = excluded.min_hours, rated = excluded.rated, salary = excluded.salary,
   verified = true, apply_url = excluded.apply_url, reqs = excluded.reqs,
-  category = excluded.category;
+  category = excluded.category, posted_at = excluded.posted_at;
 
 -- remove verified listings that left the catalog (closed/withdrawn)
 delete from public.jobs where verified = true and id not in (${ids});

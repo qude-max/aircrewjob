@@ -17,6 +17,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#05080f">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="stylesheet" href="assets/style.css">
   <style>
     /* ---- section nav ---- */
@@ -162,6 +165,8 @@
           <h2 style="margin-bottom:8px">Your skill radar</h2>
           <p style="font-size:0.95rem; margin-bottom:22px">Built live from your personal bests across the six aptitude trainers. Fill the hexagon.</p>
           <div class="skill-rows" id="skillRows"></div>
+          <button class="btn btn-ghost btn-sm" id="shareRadar" style="margin-top:22px">📤 Share my radar</button>
+          <span id="shareFb" style="font-size:0.82rem; color:var(--text-faint); margin-left:10px"></span>
         </div>
       </div>
     </div>
@@ -358,6 +363,79 @@
           <span class="val">${v.raw !== undefined ? fmt[v.key](v.raw) : "—"}</span>
         </div>`).join("");
     }
+
+    /* ============ SHARE CARD (canvas PNG) ============ */
+    async function shareRadarCard() {
+      const vals = skillValues();
+      const W = 1200, H = 630;
+      const cv = document.createElement("canvas");
+      cv.width = W; cv.height = H;
+      const x = cv.getContext("2d");
+
+      // background
+      x.fillStyle = "#05080f"; x.fillRect(0, 0, W, H);
+      x.strokeStyle = "rgba(56,224,255,0.05)";
+      for (let i = 0; i < W; i += 56) { x.beginPath(); x.moveTo(i, 0); x.lineTo(i, H); x.stroke(); }
+      for (let i = 0; i < H; i += 56) { x.beginPath(); x.moveTo(0, i); x.lineTo(W, i); x.stroke(); }
+
+      // radar (right side)
+      const C = [W - 320, H / 2], R = 200, N = vals.length;
+      const pt = (i, r) => { const a = (i / N) * 2 * Math.PI - Math.PI / 2; return [C[0] + r * Math.cos(a), C[1] + r * Math.sin(a)]; };
+      [0.25, 0.5, 0.75, 1].forEach(f => {
+        x.beginPath();
+        for (let i = 0; i <= N; i++) { const [px, py] = pt(i % N, R * f); i === 0 ? x.moveTo(px, py) : x.lineTo(px, py); }
+        x.strokeStyle = f === 1 ? "rgba(56,224,255,0.35)" : "rgba(56,224,255,0.12)";
+        x.lineWidth = 1.5; x.stroke();
+      });
+      // data polygon
+      x.beginPath();
+      vals.forEach((v, i) => { const [px, py] = pt(i, R * Math.max(v.pct, 4) / 100); i === 0 ? x.moveTo(px, py) : x.lineTo(px, py); });
+      x.closePath();
+      x.fillStyle = "rgba(56,224,255,0.18)"; x.fill();
+      x.shadowColor = "rgba(56,224,255,0.8)"; x.shadowBlur = 22;
+      x.strokeStyle = "#38e0ff"; x.lineWidth = 3.5; x.stroke();
+      x.shadowBlur = 0;
+      // labels
+      x.font = "600 19px 'Space Grotesk', sans-serif"; x.fillStyle = "#93a3c0"; x.textAlign = "center";
+      vals.forEach((v, i) => { const [px, py] = pt(i, R + 34); x.fillText(v.name, px, py + 6); });
+
+      // text (left side)
+      x.textAlign = "left";
+      x.font = "700 56px 'Space Grotesk', sans-serif";
+      x.fillStyle = "#e8eefb"; x.fillText("AirCrew", 80, 130);
+      x.fillStyle = "#38e0ff"; x.fillText("Jobs", 305, 130);
+      x.font = "600 30px 'Space Grotesk', sans-serif"; x.fillStyle = "#e8eefb";
+      x.fillText("My pilot aptitude radar", 80, 210);
+      const fmt = { spatial: v => `${v} pts`, sixpack: v => `${v} pts`, grid: v => `${v} cells`, reaction: v => `${v} ms`, memory: v => `${v} digits`, multitask: v => `${v} pts` };
+      x.font = "500 23px 'Inter', sans-serif";
+      vals.forEach((v, i) => {
+        x.fillStyle = "#93a3c0"; x.fillText(v.name, 80, 270 + i * 42);
+        x.fillStyle = v.raw !== undefined ? "#38e0ff" : "#5d6c8a"; x.textAlign = "right";
+        x.fillText(v.raw !== undefined ? fmt[v.key](v.raw) : "—", 430, 270 + i * 42);
+        x.textAlign = "left";
+      });
+      x.fillStyle = "#34e8a0"; x.font = "600 22px 'Space Grotesk', sans-serif";
+      x.fillText("Train free at aircrewjob.com", 80, 570);
+      x.fillStyle = "#38e0ff"; x.fillRect(0, H - 6, W, 6);
+
+      const fb = $("shareFb");
+      cv.toBlob(async blob => {
+        const file = new File([blob], "aircrewjobs-radar.png", { type: "image/png" });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({ files: [file], title: "My pilot aptitude radar", text: "Train free at aircrewjob.com ✈" });
+            fb.textContent = "✓ shared";
+            return;
+          } catch (e) { /* user cancelled — fall through to download */ }
+        }
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "aircrewjobs-radar.png";
+        a.click();
+        fb.textContent = "✓ image downloaded — post it in Chill Wings!";
+      }, "image/png");
+    }
+    document.getElementById("shareRadar").addEventListener("click", shareRadarCard);
 
     /* ============ INTERVIEW FLASHCARDS ============ */
     let hrCat = "", hrCurrent = null;

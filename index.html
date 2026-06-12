@@ -17,6 +17,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#05080f">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="stylesheet" href="assets/style.css">
   <style>
     /* ---- Hero ---- */
@@ -241,8 +244,9 @@
       animateTo(document.getElementById("statJobs"), jobs.length);
       animateTo(document.getElementById("statAirlines"), airlines.length);
       animateTo(document.getElementById("statContinents"), continentCount);
+      const newThisWeek = jobs.filter(j => j.posted <= 7).length;
       document.getElementById("heroEyebrow").innerHTML =
-        `Live · ${verifiedCount} verified vacancies from ${airlines.length}+ airlines`;
+        `Live · ${verifiedCount} verified vacancies` + (newThisWeek ? ` · ${newThisWeek} new this week` : "");
       document.getElementById("viewAllBtn").textContent = `View all ${jobs.length} →`;
 
       // ---- Radar blips from the freshest listings ----

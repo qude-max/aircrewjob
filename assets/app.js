@@ -48,7 +48,19 @@ function renderNav() {
         const isRecruiter = p?.role === "recruiter";
         const adminLink = p?.is_admin && Backend.mode === "supabase"
           ? `<a href="admin.html" class="btn btn-ghost btn-sm" title="Platform Admin">🛂 Admin</a>` : "";
-        el.innerHTML = `${adminLink}
+        // in-app alert bell: new listings since the last time you opened the job board
+        let bell = "";
+        if (!isRecruiter && typeof JOBS !== "undefined") {
+          const lastSeen = localStorage.getItem("acj_seen_at") || "2000-01-01";
+          const fresh = JOBS.filter(j => j.verified && j.added && j.added > lastSeen).length;
+          if (fresh > 0) {
+            bell = `<a href="jobs.html" class="btn btn-ghost btn-sm" title="${fresh} new listing${fresh > 1 ? "s" : ""} since your last visit" style="position:relative; padding:8px 12px">
+              🔔<span style="position:absolute; top:-5px; right:-5px; background:var(--accent); color:#03121a;
+                font-size:0.66rem; font-weight:700; min-width:17px; height:17px; border-radius:999px;
+                display:grid; place-items:center; font-family:var(--font-display)">${fresh}</span></a>`;
+          }
+        }
+        el.innerHTML = `${bell}${adminLink}
           <a href="${isRecruiter ? "recruiter.html" : "account.html"}" class="btn btn-ghost btn-sm" title="${user.email}" style="gap:8px">
             <span style="width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;
               background:rgba(56,224,255,0.15);color:var(--accent);font-weight:700;font-size:0.78rem">${initial}</span>
@@ -175,10 +187,18 @@ function initAnalytics() {
   document.head.appendChild(s);
 }
 
+/* PWA service worker — deployed site only */
+function initPWA() {
+  if (!("serviceWorker" in navigator)) return;
+  if (!location.hostname.endsWith(".vercel.app") && !location.hostname.includes("aircrewjob")) return;
+  navigator.serviceWorker.register("/sw.js").catch(() => {});
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderNav();
   renderFooter();
   initReveal();
   animateCounters();
   initAnalytics();
+  initPWA();
 });

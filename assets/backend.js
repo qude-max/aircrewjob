@@ -183,7 +183,9 @@ const Backend = (() => {
       }
       const removed = LS.get("removed_jobs", []);
       const edits = LS.get("job_edits", {});
-      const base = JOBS.filter(j => !removed.includes(j.id)).map(j => ({ ...j, ...(edits[j.id] || {}) }));
+      const daysSince = d => d ? Math.max(0, Math.floor((Date.now() - new Date(d)) / 86400000)) : 0;
+      const base = JOBS.filter(j => !removed.includes(j.id))
+        .map(j => ({ ...j, posted: daysSince(j.added), ...(edits[j.id] || {}) }));
       return [...LS.get("custom_jobs", []), ...base];
     },
     async mine() {
