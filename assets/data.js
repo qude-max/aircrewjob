@@ -46,8 +46,7 @@ const DOMAINS = {
   "Breeze Airways": "flybreeze.com",
   "Aegean Airlines": "aegeanair.com",
   "airBaltic": "airbaltic.com",
-  "Air India": "airindia.com",
-  "LOT Polish Airlines": "lot.com"
+  "Air India": "airindia.com"
 };
 
 /* Base coordinates for the job map — keyed by the exact `location` strings used in JOBS.
@@ -92,8 +91,7 @@ const BASES = {
   "Athens (ATH)":                     [37.94, 23.95],
   "Riga (RIG)":                       [56.92, 23.97],
   "Delhi (DEL)":                      [28.56, 77.10],
-  "Munich / Frankfurt":               [50.04, 8.56],    // Lufthansa — Frankfurt
-  "Warsaw (WAW)":                     [52.17, 20.97]
+  "Munich / Frankfurt":               [50.04, 8.56]     // Lufthansa — Frankfurt
 };
 
 const JOBS = [
@@ -432,12 +430,6 @@ const JOBS = [
     reqs: "Type-rated A320 Captains — full criteria on the official Aegean posting. Non-type-rated Captain route also open via the careers portal.",
     applyUrl: "https://jobs.aegeanair.com/job/Type-Rated-Captains-for-A320/1347735255/" },
 
-  /* ---- LOT Polish Airlines (lot.com) — verified 14 Jun 2026 ---- */
-  { id: 285, airline: "LOT Polish Airlines", role: "First Officer", aircraft: "B737 (rated / non-rated)", region: "Europe", location: "Warsaw (WAW)", type: "Direct Entry", minHours: 800, rated: false, posted: 0, added: "2026-06-14", verified: true,
-    salary: "LOT-funded type rating",
-    reqs: "'Pilot the Future' campaign — B737 First Officers from 800 hrs TT (incl. 500 hrs on aircraft >40 t) · EASA licence · ICAO English ≥4. Q400/E-jet and B787 FO routes plus cadets also recruited; LOT pays the type rating. Apply via the official LOT careers portal.",
-    applyUrl: "https://www.lot.com/us/en/careers" },
-
   /* ================= CABIN CREW — verified 11–14 Jun 2026 ================= */
   { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-11", verified: true,
     salary: "Tax-free + free accommodation + travel perks",
@@ -494,7 +486,19 @@ const JOBS = [
   { id: 314, airline: "flydubai", category: "crew", role: "Cabin Crew", aircraft: "flydubai cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
     salary: "≈ AED 12,775/mo package (tax-free + housing)",
     reqs: "Cabin crew intake (Apr 2026) · 21+ · 158 cm+ · high-school · fluent English · pass aeromedical. Apply via the official flydubai careers portal.",
-    applyUrl: "https://careers.flydubai.com/" }
+    applyUrl: "https://careers.flydubai.com/" },
+  { id: 315, airline: "Jet2", category: "crew", role: "Cabin Crew", aircraft: "B737 / A321neo cabins", region: "Europe", location: "UK bases", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing",
+    reqs: "Summer 2026 cabin crew recruitment across UK bases (incl. London Stansted) — no experience needed, industry-leading training. Apply via Jet2Careers.",
+    applyUrl: "https://jet2careers.com/careers-with-us/airline/cabin-crew/" },
+  { id: 316, airline: "IndiGo", category: "crew", role: "Cabin Crew", aircraft: "A320 / A321 cabins", region: "Asia-Pacific", location: "Indian bases", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing",
+    reqs: "India's largest airline — online + walk-in cabin crew drives (bulk intakes Mar–Apr & Sep–Oct). Per IndiGo criteria: female Indian nationals 18–27, 10+2, 155 cm+, fluent English & Hindi.",
+    applyUrl: "https://careers.goindigo.in" },
+  { id: 317, airline: "Virgin Australia", category: "crew", role: "Cabin Crew", aircraft: "B737 cabins", region: "Asia-Pacific", location: "Australian bases", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing",
+    reqs: "Live cabin crew openings & expressions of interest across Australian bases (Brisbane, Melbourne, Perth, Adelaide) — AU/NZ citizen or AU PR · 18+ · 180 cm reach.",
+    applyUrl: "https://careers.virginaustralia.com/en/job/507535/cabin-crew-expression-of-interest" }
 ];
 
 const AIRLINES = [
@@ -535,8 +539,7 @@ const AIRLINES = [
   { name: "Breeze Airways",     code: "MX", domain: "flybreeze.com",        country: "USA",          fleet: "A220-300, E190/E195",     pilots: 700,  bases: "Multiple US focus cities",    status: "hiring", note: "✓ Verified 14 Jun 2026: A220 First Officer hiring (1,500 hrs · US 121/135/military) with company-paid type rating, plus full- and part-time Flight Attendant intakes across many US bases. David Neeleman's startup — fast A220-driven upgrades." },
   { name: "Aegean Airlines",    code: "A3", domain: "aegeanair.com",        country: "Greece",       fleet: "A320neo family, A321neo, ATR 42/72", pilots: 1000, bases: "Athens, Thessaloniki",  status: "hiring", note: "✓ Verified 14 Jun 2026: full flight-deck intake on the official portal — non-rated FOs (A320/ATR, deadline 30 Jun), type-rated A320 FOs, and type-rated & non-rated A320 Captains, plus Athens-based Cabin Crew. Star Alliance, 60 A320/A321neo on order." },
   { name: "airBaltic",          code: "BT", domain: "airbaltic.com",        country: "Latvia",       fleet: "A220-300 (all-Airbus)",   pilots: 600,  bases: "Riga, Tampere, Tallinn, Vilnius", status: "hiring", note: "✓ Verified 14 Jun 2026: A220 Senior First Officers with fast-track command (Captain within ~12 months) — company-paid type rating, new 2026 pay deal, 13-on/10-off commuting roster. All-A220 fleet." },
-  { name: "Air India",          code: "AI", domain: "airindia.com",         country: "India",        fleet: "B777, B787, A350, A320neo", pilots: 3000, bases: "Delhi, Mumbai, Bengaluru",  status: "hiring", note: "✓ Verified 14 Jun 2026: Trainee Cabin Crew intake live (Delhi). Tata-owned, mid major-transformation with a huge Airbus/Boeing order book; mainline pilot reqs were not open on the portal at last check — watch careers.airindia.com." },
-  { name: "LOT Polish Airlines", code: "LO", domain: "lot.com",             country: "Poland",       fleet: "B737 MAX, B787, E170/190, Q400", pilots: 1100, bases: "Warsaw, Budapest",         status: "hiring", note: "✓ Verified 14 Jun 2026: active 'Pilot the Future' recruitment — B737 First Officers (800 hrs) plus Q400/E-jet & B787 routes and cadets; LOT funds the type rating. Apply via lot.com." }
+  { name: "Air India",          code: "AI", domain: "airindia.com",         country: "India",        fleet: "B777, B787, A350, A320neo", pilots: 3000, bases: "Delhi, Mumbai, Bengaluru",  status: "hiring", note: "✓ Verified 14 Jun 2026: Trainee Cabin Crew intake live (Delhi). Tata-owned, mid major-transformation with a huge Airbus/Boeing order book; mainline pilot reqs were not open on the portal at last check — watch careers.airindia.com." }
 ];
 
 const SALARIES = [

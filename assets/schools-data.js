@@ -75,7 +75,8 @@ const SCHOOLS = [
   { name: "Gulf Aviation Academy",           city: "Muharraq, Bahrain",         lat: 26.27,  lng: 50.63,   region: "Middle East",  auth: "Bahrain CAA + EASA", url: "https://www.gaa.aero",             note: "Gulf Air's training arm — ab initio, type ratings and cabin crew." },
   { name: "Civil Aviation Flight University of China", city: "Guanghan, China",  lat: 30.93,  lng: 104.32,  region: "Asia-Pacific", auth: "CAAC",          url: "https://www.cafuc.edu.cn",              note: "The world's largest pilot university (est. 1956) — primary trainer of China's airline pilots." },
   { name: "CAE Brussels",                   city: "Brussels, Belgium",         lat: 50.90,  lng: 4.48,    region: "Europe",       auth: "EASA",          url: "https://www.cae.com/civil-aviation/locations/cae-brussels/", note: "Formerly Sabena Flight Academy — EASA integrated ATPL with airline cadet contracts." },
-  { name: "Stapleford Flight Centre",       city: "Stapleford (Essex), UK",    lat: 51.65,  lng: 0.16,    region: "Europe",       auth: "UK CAA + EASA", url: "https://flysfc.com",                    note: "Family-run since 1969 — integrated & modular ATPL plus the only ATPL theory course inside the M25." }
+  { name: "Stapleford Flight Centre",       city: "Stapleford (Essex), UK",    lat: 51.65,  lng: 0.16,    region: "Europe",       auth: "UK CAA + EASA", url: "https://flysfc.com",                    note: "Family-run since 1969 — integrated & modular ATPL plus the only ATPL theory course inside the M25." },
+  { name: "Sevenair Academy",               city: "Ponte de Sor, Portugal",    lat: 39.21,  lng: -8.06,   region: "Europe",       auth: "EASA (ANAC) + Airbus Flight Academy", url: "https://www.sevenair.com",  note: "Airbus Flight Academy network — one of Europe's largest ATOs; ATPL, cadet & instructor courses." }
 ];
 
 const MEDICAL = [
@@ -124,5 +125,7 @@ const REGULATOR_LOCATORS = [
   { name: "Japan — JCAB",         url: "https://www.mlit.go.jp/en/koku/index.html", note: "Class 1 medicals via JCAB-designated aviation medical examiners — see the official examiner list." },
   { name: "Brazil — ANAC",        url: "https://www.gov.br/anac/pt-br", note: "CMA (medical certificate) via ANAC-credentialed examiners and clinics across Brazil." },
   { name: "South Africa — SACAA", url: "https://www.caa.co.za", note: "Find a Designated Aviation Medical Examiner (DAME) for Class 1 — initial and renewal." },
-  { name: "India — DGCA",         url: "https://www.dgca.gov.in", note: "Initial Class 1 at IAM Bengaluru / AFCME Delhi; renewals via DGCA-empanelled medical examiners." }
+  { name: "India — DGCA",         url: "https://www.dgca.gov.in", note: "Initial Class 1 at IAM Bengaluru / AFCME Delhi; renewals via DGCA-empanelled medical examiners." },
+  { name: "Thailand — CAAT",      url: "https://www.caat.or.th", note: "Class 1 via CAAT-approved aeromedical centres and examiners (initial & renewal)." },
+  { name: "Malaysia — CAAM",      url: "https://www.caam.gov.my", note: "Class 1 via CAAM-approved aviation medical examiners (initial & renewal)." }
 ];

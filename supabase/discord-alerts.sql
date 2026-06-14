@@ -1,15 +1,16 @@
 -- ============================================================
--- AirCrew Jobs — Discord new-job notifier ("Jobee" → #new-jobs)
+-- AirCrew Jobs — Discord new-job notifier ("Jobee")
 -- ------------------------------------------------------------
 -- Fires on INSERT into public.jobs and posts a Chill Wings embed.
+-- Routes by job category:
+--   • pilot jobs  -> #new-jobs        (webhook_pilot)
+--   • cabin crew  -> #cabin-crew-jobs (webhook_crew)
 -- Links point to AirCrew Jobs (jobs.html?job=ID) so traffic lands
--- on the site — where the "Apply on airline site" button lives —
--- instead of leaking straight to the airline's portal.
+-- on the site — where the "Apply on airline site" button lives.
 --
--- SECURITY: replace <WEBHOOK_URL> with your Discord webhook URL
--- before running (NO angle brackets — paste the bare https://… URL).
--- Do NOT commit the real URL — the repo is public.
--- The webhook lives only inside the database function.
+-- SECURITY: paste each bare https://… webhook URL below (NO angle
+-- brackets). Do NOT commit the real URLs — the repo is public; the
+-- webhooks live only inside the database function.
 --
 -- Deploy: paste into Supabase → SQL Editor → Run. The existing
 -- trigger calls this function by name, so no trigger change needed.
@@ -22,7 +23,10 @@ create or replace function public.notify_discord_new_job()
   set search_path to 'public'
 as $function$
 declare
-  webhook text := 'PASTE_YOUR_DISCORD_WEBHOOK_URL_HERE';   -- bare https://… (no < >)
+  webhook_pilot text := 'PASTE_YOUR_PILOT_WEBHOOK_URL_HERE';        -- #new-jobs
+  webhook_crew  text := 'PASTE_YOUR_CABIN_CREW_WEBHOOK_URL_HERE';   -- #cabin-crew-jobs
+  is_crew boolean := (new.category = 'crew');
+  webhook text := case when is_crew then webhook_crew else webhook_pilot end;
   job_url text := 'https://www.aircrewjob.com/jobs.html?job=' || new.id::text;
 begin
   if webhook like 'http%' then
@@ -30,7 +34,7 @@ begin
       url     := webhook,
       headers := '{"Content-Type": "application/json"}'::jsonb,
       body    := jsonb_build_object(
-        'content', '🆕 ' || case when new.category = 'crew' then '🛎️' else '✈️' end
+        'content', '🆕 ' || case when is_crew then '🛎️' else '✈️' end
                    || ' **' || new.role || ' — ' || new.aircraft || '** at **' || new.airline || '**',
         'embeds', jsonb_build_array(jsonb_build_object(
           'title', '📍 ' || new.location || ' · ' || new.type,
@@ -38,7 +42,7 @@ begin
           'description',
             coalesce(new.reqs, '') || E'\n\n💰 ' || coalesce(new.salary, 'See listing') ||
             E'\n\n🔗 [View & apply on AirCrew Jobs](' || job_url || ')',
-          'color', 3727615,
+          'color', case when is_crew then 16752540 else 3727615 end,   -- crew = rose, pilot = cyan
           'footer', jsonb_build_object(
             'text', case when new.verified
                     then '✓ Verified on the official portal · aircrewjob.com'
