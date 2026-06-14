@@ -220,6 +220,13 @@
           <div class="best" id="best-multitask"></div>
           <button class="btn btn-primary btn-sm" onclick="openGame('multitask')">Start →</button>
         </div>
+        <div class="card game-card">
+          <div class="icon">🎯</div>
+          <h3>Pursuit Tracking <span class="tier-badge">NEW</span></h3>
+          <p>Keep the ring on the drifting target for 30 seconds — the psychomotor "joystick" skill airlines screen for.</p>
+          <div class="best" id="best-tracking"></div>
+          <button class="btn btn-primary btn-sm" onclick="openGame('tracking')">Start →</button>
+        </div>
       </div>
     </div>
   </section>
@@ -301,18 +308,21 @@
       set("best-reaction", s.reaction, `${s.reaction} ms avg`);
       set("best-memory",   s.memory,   `${s.memory} digits`);
       set("best-multitask",s.multitask,`${s.multitask} pts`);
+      set("best-tracking", s.tracking, `${s.tracking} pts`);
     }
 
     const TITLES = {
       spatial: "🧭 Spatial Orientation", sixpack: "🛩️ Instrument Scan", grid: "🔲 Memory Grid",
-      reaction: "⚡ Reaction & Vigilance", memory: "🧠 Memory Span", multitask: "🎛️ Multitask Monitor"
+      reaction: "⚡ Reaction & Vigilance", memory: "🧠 Memory Span", multitask: "🎛️ Multitask Monitor",
+      tracking: "🎯 Pursuit Tracking"
     };
     function openGame(name) {
       $("gmOverlay").classList.add("open");
       stage().classList.remove("left");
       $("gmTitle").textContent = TITLES[name];
       ({ spatial: startSpatial, sixpack: startSixpack, grid: startGrid,
-         reaction: startReaction, memory: startMemory, multitask: startMultitask })[name]();
+         reaction: startReaction, memory: startMemory, multitask: startMultitask,
+         tracking: startTracking })[name]();
     }
     function closeGame() {
       cleanupFns.forEach(f => f()); cleanupFns = [];
@@ -331,7 +341,8 @@
       { key: "grid",     name: "Visual memory",norm: v => Math.min(100, (v - 2) * 14) },
       { key: "reaction", name: "Reaction",     norm: v => Math.max(0, Math.min(100, (450 - v) / 2.5)) },
       { key: "memory",   name: "Digit span",   norm: v => Math.min(100, (v - 2) * 14) },
-      { key: "multitask",name: "Multitasking", norm: v => Math.min(100, v / 4.5) }
+      { key: "multitask",name: "Multitasking", norm: v => Math.min(100, v / 4.5) },
+      { key: "tracking", name: "Tracking",     norm: v => Math.min(100, v / 10) }
     ];
     function skillValues() {
       const s = getScores();
@@ -355,7 +366,7 @@
           ${dataPts.map((p, i) => vals[i].pct > 0 ? `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#38e0ff"/>` : "").join("")}
           ${labels.join("")}
         </svg>`;
-      const fmt = { spatial: v => `${v} pts`, sixpack: v => `${v} pts`, grid: v => `${v} cells`, reaction: v => `${v} ms`, memory: v => `${v} digits`, multitask: v => `${v} pts` };
+      const fmt = { spatial: v => `${v} pts`, sixpack: v => `${v} pts`, grid: v => `${v} cells`, reaction: v => `${v} ms`, memory: v => `${v} digits`, multitask: v => `${v} pts`, tracking: v => `${v} pts` };
       $("skillRows").innerHTML = vals.map(v => `
         <div class="skill-row">
           <span class="nm">${v.name}</span>
@@ -406,7 +417,7 @@
       x.fillStyle = "#38e0ff"; x.fillText("Jobs", 305, 130);
       x.font = "600 30px 'Space Grotesk', sans-serif"; x.fillStyle = "#e8eefb";
       x.fillText("My pilot aptitude radar", 80, 210);
-      const fmt = { spatial: v => `${v} pts`, sixpack: v => `${v} pts`, grid: v => `${v} cells`, reaction: v => `${v} ms`, memory: v => `${v} digits`, multitask: v => `${v} pts` };
+      const fmt = { spatial: v => `${v} pts`, sixpack: v => `${v} pts`, grid: v => `${v} cells`, reaction: v => `${v} ms`, memory: v => `${v} digits`, multitask: v => `${v} pts`, tracking: v => `${v} pts` };
       x.font = "500 23px 'Inter', sans-serif";
       vals.forEach((v, i) => {
         x.fillStyle = "#93a3c0"; x.fillText(v.name, 80, 270 + i * 42);
@@ -844,6 +855,75 @@
           <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startMultitask()">Run it again →</button>`;
       }
       stats(); fireAlert(); newMath();
+    }
+
+    /* ---- Pursuit Tracking (psychomotor / hand-eye) ---- */
+    function startTracking() {
+      const DURATION = 30000, TOL = 46;
+      let raf = 0, running = false, startT = 0, lastT = 0, onMs = 0, mx = 0, my = 0, W = 0, H = 0;
+      const cfg = {
+        fx1: 0.55 + Math.random() * 0.45, fx2: 1.1 + Math.random() * 0.7,
+        fy1: 0.5 + Math.random() * 0.45, fy2: 0.9 + Math.random() * 0.7,
+        px: Math.random() * 6.28, py: Math.random() * 6.28
+      };
+      stage().innerHTML = `
+        <div id="trkField" style="position:relative; width:100%; max-width:520px; height:340px; margin:0 auto; border:1px solid var(--border); border-radius:14px; background:radial-gradient(circle at 50% 50%, rgba(56,224,255,0.05), transparent 72%); overflow:hidden; touch-action:none; cursor:crosshair">
+          <div id="trkTarget" style="position:absolute; left:50%; top:50%; width:30px; height:30px; margin:-15px 0 0 -15px; border-radius:50%; background:var(--accent); box-shadow:0 0 16px rgba(56,224,255,0.6); pointer-events:none"></div>
+          <div id="trkRing" style="position:absolute; left:50%; top:50%; width:56px; height:56px; margin:-28px 0 0 -28px; border:3px solid rgba(255,255,255,0.55); border-radius:50%; display:none; pointer-events:none"></div>
+          <div id="trkMsg" style="position:absolute; inset:0; display:grid; place-items:center; text-align:center; padding:0 24px; color:var(--text-dim); font-size:0.95rem">Click in the box, then keep the ring on the dot for 30&nbsp;seconds.</div>
+        </div>
+        <p style="margin-top:14px; font-size:0.85rem; color:var(--text-faint)">Anticipate the drift — smooth beats jerky. Trains the psychomotor / hand-eye skill behind CAE, cut-e &amp; COMPASS screenings.</p>`;
+      const field = $("trkField"), target = $("trkTarget"), ring = $("trkRing"), msg = $("trkMsg");
+      function pos(t) {
+        const aX = W * 0.40, aY = H * 0.40;
+        const x = W / 2 + aX * (0.62 * Math.sin(cfg.fx1 * t + cfg.px) + 0.38 * Math.sin(cfg.fx2 * t));
+        const y = H / 2 + aY * (0.62 * Math.sin(cfg.fy1 * t + cfg.py) + 0.38 * Math.cos(cfg.fy2 * t));
+        return [x, y];
+      }
+      function onMove(e) {
+        const r = field.getBoundingClientRect(), src = e.touches ? e.touches[0] : e;
+        mx = src.clientX - r.left; my = src.clientY - r.top;
+        ring.style.left = mx + "px"; ring.style.top = my + "px";
+      }
+      field.addEventListener("mousemove", onMove);
+      field.addEventListener("touchmove", onMove, { passive: true });
+      cleanupFns.push(() => { field.removeEventListener("mousemove", onMove); field.removeEventListener("touchmove", onMove); });
+      function loop(now) {
+        if (!startT) { startT = now; lastT = now; }
+        const t = (now - startT) / 1000, dt = now - lastT; lastT = now;
+        const [x, y] = pos(t);
+        target.style.left = x + "px"; target.style.top = y + "px";
+        const on = Math.hypot(mx - x, my - y) <= TOL;
+        if (on) onMs += dt;
+        ring.style.borderColor = on ? "#34e8a0" : "rgba(255,255,255,0.55)";
+        ring.style.boxShadow = on ? "0 0 18px rgba(52,232,160,0.6)" : "none";
+        target.style.boxShadow = on ? "0 0 24px rgba(52,232,160,0.75)" : "0 0 16px rgba(56,224,255,0.6)";
+        const elapsed = now - startT;
+        $("gmStats").innerHTML = `<span>Time left <b>${Math.max(0, (DURATION - elapsed) / 1000).toFixed(1)}s</b></span><span>On target <b>${elapsed > 0 ? Math.round(onMs / elapsed * 100) : 0}%</b></span>`;
+        if (elapsed >= DURATION) return finish();
+        raf = requestAnimationFrame(loop);
+      }
+      function begin() {
+        if (running) return;
+        running = true;
+        W = field.clientWidth; H = field.clientHeight; mx = W / 2; my = H / 2;
+        msg.style.display = "none"; ring.style.display = "block"; field.style.cursor = "none";
+        ring.style.left = mx + "px"; ring.style.top = my + "px";
+        raf = requestAnimationFrame(loop);
+        cleanupFns.push(() => cancelAnimationFrame(raf));
+      }
+      function finish() {
+        cancelAnimationFrame(raf);
+        const pct = Math.round(onMs / DURATION * 100), score = Math.round(onMs / DURATION * 1000);
+        setBest("tracking", score, (a, b) => a > b);
+        field.style.cursor = "";
+        stage().innerHTML = `<div class="digit-display">${pct}%</div>
+          <p style="margin:12px 0 6px">On target for ${(onMs / 1000).toFixed(1)}s of 30s · ${score} pts</p>
+          <p style="color:var(--text-faint); font-size:0.88rem">${pct >= 80 ? "Excellent — steady, anticipatory control. Assessment territory." : pct >= 60 ? "Good hands. Lead the target instead of chasing it." : "Keep practising — read the pattern and move with it, not after it."}</p>
+          <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startTracking()">Run it again →</button>`;
+      }
+      field.addEventListener("click", begin, { once: true });
+      $("gmStats").innerHTML = `<span>Time left <b>30.0s</b></span><span>On target <b>0%</b></span>`;
     }
 
     document.addEventListener("DOMContentLoaded", () => {
