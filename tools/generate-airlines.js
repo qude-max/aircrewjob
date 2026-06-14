@@ -19,7 +19,7 @@ const BASE = "https://www.aircrewjob.com";
 const src = fs.readFileSync(path.join(ROOT, "assets", "data.js"), "utf8");
 const ctx = {};
 new Function("ctx", src.replace(/^const /gm, "ctx.") + ";")(ctx);
-const { JOBS, AIRLINES, SALARIES, VERIFIED_DATE } = ctx;
+const { JOBS, AIRLINES, SALARIES, VERIFIED_DATE, DOMAINS } = ctx;
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -27,6 +27,57 @@ const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/
 
 const STATUS_LABEL = { hiring: "Actively hiring", paused: "Hiring paused", closed: "Not currently hiring" };
 const STATUS_CLASS = { hiring: "hiring", paused: "paused", closed: "closed" };
+
+/* ---- JobPosting structured data (schema.org) for Google Jobs eligibility ---- */
+const COUNTRY_ISO = {
+  "UAE": "AE", "Qatar": "QA", "Ireland": "IE", "UK": "GB", "Hungary": "HU",
+  "Spain": "ES", "Norway": "NO", "India": "IN", "Hong Kong": "HK", "Singapore": "SG",
+  "USA": "US", "Ethiopia": "ET", "Australia": "AU", "New Zealand": "NZ", "Türkiye": "TR",
+  "Saudi Arabia": "SA", "Canada": "CA", "Germany / UK": "DE", "Germany": "DE",
+  "Scandinavia": "SE", "Bahrain": "BH", "South Korea": "KR", "Kazakhstan": "KZ"
+};
+
+/* Pull a single city out of a location string, or null when it's multi-base / vague */
+function cityFromLocation(loc) {
+  if (!loc) return null;
+  const c = String(loc).replace(/\s*\([^)]*\)/g, "").trim();   // strip "(DXB)" etc.
+  if (/base|across|partner|academ|\bEU\b|\bME\b|\+|,|·|worldwide/i.test(c)) return null;
+  return c || null;
+}
+
+/* One JobPosting JSON-LD <script> block per opening */
+function jobPostingLd(j, a) {
+  const domain = (typeof DOMAINS !== "undefined" && DOMAINS[a.name]) || null;
+  const city = cityFromLocation(j.location);
+  const address = { "@type": "PostalAddress", addressCountry: COUNTRY_ISO[a.country] || a.country };
+  if (city) address.addressLocality = city;
+  const obj = {
+    "@context": "https://schema.org/",
+    "@type": "JobPosting",
+    title: `${j.role} – ${j.aircraft}`,
+    description:
+      `<p>${j.role} (${j.aircraft}) at ${a.name}, based ${j.location} · ${j.type}` +
+      `${j.minHours ? ` · from ${Number(j.minHours).toLocaleString()} hrs total time` : ""}.</p>` +
+      (j.reqs ? `<p>${j.reqs}</p>` : "") +
+      (j.salary ? `<p>Salary: ${j.salary}.</p>` : "") +
+      `<p>Apply via the airline's official careers portal. Listing verified ${VERIFIED_DATE} by AirCrew Jobs.</p>`,
+    datePosted: j.added,
+    employmentType: "FULL_TIME",
+    hiringOrganization: {
+      "@type": "Organization",
+      name: a.name,
+      ...(domain ? {
+        sameAs: `https://${domain}`,
+        logo: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`
+      } : {})
+    },
+    jobLocation: { "@type": "Place", address },
+    identifier: { "@type": "PropertyValue", name: "AirCrew Jobs", value: String(j.id) },
+    directApply: false
+  };
+  // < guards against any "</script>" sequence breaking out of the tag
+  return `  <script type="application/ld+json">${JSON.stringify(obj).replace(/</g, "\\u003c")}</script>`;
+}
 
 function jobCard(j) {
   const crew = j.category === "crew";
@@ -50,6 +101,7 @@ function page(a) {
   const pilotJobs = jobs.filter(j => (j.category || "pilot") === "pilot");
   const crewJobs = jobs.filter(j => j.category === "crew");
   const salary = SALARIES.find(s => s.airline === a.name);
+  const jobsLd = jobs.map(j => jobPostingLd(j, a)).join("\n");
 
   const title = `${a.name} Pilot${crewJobs.length ? " & Cabin Crew" : ""} Jobs 2026 — Requirements & Hiring Status`;
   const desc = `Is ${a.name} hiring in 2026? ${STATUS_LABEL[a.status]}. ${jobs.length ? jobs.length + " verified opening" + (jobs.length > 1 ? "s" : "") + " with requirements and direct apply links." : "Current recruitment status, fleet and bases."} Checked against the official careers portal.`;
@@ -86,7 +138,7 @@ function page(a) {
     h2.sec { font-size: 1.3rem; margin: 40px 0 16px; }
     .note-box { border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; color: var(--text-dim); font-size: 0.95rem; }
   </style>
-</head>
+${jobsLd ? jobsLd + "\n" : ""}</head>
 <body>
 
   <div class="container profile">
