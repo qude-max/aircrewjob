@@ -48,7 +48,10 @@ const DOMAINS = {
   "airBaltic": "airbaltic.com",
   "Air India": "airindia.com",
   "Challenge Airlines": "challenge-group.com",
-  "ZipAir Tokyo": "zipair.net"
+  "ZipAir Tokyo": "zipair.net",
+  "VistaJet": "vistajet.com",
+  "Norse Atlantic": "flynorse.com",
+  "Finnair": "finnair.com"
 };
 
 /* Base coordinates for the job map — keyed by the exact `location` strings used in JOBS.
@@ -95,7 +98,10 @@ const BASES = {
   "Delhi (DEL)":                      [28.56, 77.10],
   "Munich / Frankfurt":               [50.04, 8.56],    // Lufthansa — Frankfurt
   "Liège (LGG)":                      [50.64, 5.44],
-  "Tokyo Narita (NRT)":               [35.77, 140.39]
+  "Tokyo Narita (NRT)":               [35.77, 140.39],
+  "Global rotations (Vista)":         [35.85, 14.49],   // VistaJet — Malta AOC
+  "London Gatwick (LGW)":             [51.15, -0.18],
+  "Helsinki (HEL)":                   [60.32, 24.96]
 };
 
 const JOBS = [
@@ -446,6 +452,18 @@ const JOBS = [
     reqs: "Flight crew recruitment open ('Now hiring') — B787 First Officers and Captains for JAL's medium/long-haul LCC. Hours & licensing on the official ZipAir recruitment requirements sheet.",
     applyUrl: "https://www.zipairtokyo.com/en/recruit/" },
 
+  /* ---- VistaJet / Vista Global (vistaglobal.com) — VIP, verified 14 Jun 2026 ---- */
+  { id: 287, airline: "VistaJet", role: "First Officer", aircraft: "Global / Challenger (VIP)", region: "Europe", location: "Global rotations (Vista)", type: "Direct Entry", minHours: 2500, rated: false, posted: 0, added: "2026-06-14T19:30:00Z", verified: true,
+    salary: "Competitive + one-type roster, twice-yearly training",
+    reqs: "Global Express / Challenger First Officers · ~2,500 hrs TT · frozen/full ATPL · Class 1. Private aviation to 200+ countries; fly one type, keep seniority while advancing aircraft size across the Vista fleet.",
+    applyUrl: "https://vistaglobal.com/careers/pilot/" },
+
+  /* ---- Norse Atlantic Airways (careers.flynorse.com) — low-cost, verified 14 Jun 2026 ---- */
+  { id: 288, airline: "Norse Atlantic", role: "First Officer", aircraft: "B787", region: "Europe", location: "London Gatwick (LGW)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-14T19:45:00Z", verified: true,
+    salary: "See official listing — direct hire, union pre-hire deal",
+    reqs: "Boeing 787 First Officers, London Gatwick base — low-cost long-haul (transatlantic, Caribbean & Bangkok). Direct-hire by Norse; full criteria on the official Teamtailor careers portal.",
+    applyUrl: "https://careers.flynorse.com/jobs/6973041-boeing-787-first-officer" },
+
   /* ================= CABIN CREW — verified 11–14 Jun 2026 ================= */
   { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-11", verified: true,
     salary: "Tax-free + free accommodation + travel perks",
@@ -514,7 +532,11 @@ const JOBS = [
   { id: 317, airline: "Virgin Australia", category: "crew", role: "Cabin Crew", aircraft: "B737 cabins", region: "Asia-Pacific", location: "Australian bases", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14T18:00:00Z", verified: true,
     salary: "See official listing",
     reqs: "Live cabin crew openings & expressions of interest across Australian bases (Brisbane, Melbourne, Perth, Adelaide) — AU/NZ citizen or AU PR · 18+ · 180 cm reach.",
-    applyUrl: "https://careers.virginaustralia.com/en/job/507535/cabin-crew-expression-of-interest" }
+    applyUrl: "https://careers.virginaustralia.com/en/job/507535/cabin-crew-expression-of-interest" },
+  { id: 318, airline: "Finnair", category: "crew", role: "Cabin Crew", aircraft: "A350 / A330 / A320 cabins", region: "Europe", location: "Helsinki (HEL)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14T20:00:00Z", verified: true,
+    salary: "See official listing",
+    reqs: "2026 cabin crew intake (Helsinki base) — permanent & fixed-term; unpaid 6–9 week training from Jan 2026, on-site in Vantaa. Apply via Finnair's official careers form (no email applications).",
+    applyUrl: "https://company.finnair.com/en/careers/cabin-crew" }
 ];
 
 const AIRLINES = [
@@ -557,7 +579,10 @@ const AIRLINES = [
   { name: "airBaltic",          code: "BT", domain: "airbaltic.com",        country: "Latvia",       fleet: "A220-300 (all-Airbus)",   pilots: 600,  bases: "Riga, Tampere, Tallinn, Vilnius", status: "hiring", note: "✓ Verified 14 Jun 2026: A220 Senior First Officers with fast-track command (Captain within ~12 months) — company-paid type rating, new 2026 pay deal, 13-on/10-off commuting roster. All-A220 fleet." },
   { name: "Air India",          code: "AI", domain: "airindia.com",         country: "India",        fleet: "B777, B787, A350, A320neo", pilots: 3000, bases: "Delhi, Mumbai, Bengaluru",  status: "hiring", note: "✓ Verified 14 Jun 2026: Trainee Cabin Crew intake live (Delhi). Tata-owned, mid major-transformation with a huge Airbus/Boeing order book; mainline pilot reqs were not open on the portal at last check — watch careers.airindia.com." },
   { name: "Challenge Airlines", code: "X7", domain: "challenge-group.com",  country: "Belgium",      fleet: "B747-400F, B767F, B777F", pilots: 150, bases: "Liège (+ Tel Aviv, Malta)", status: "hiring", note: "✓ Verified 14 Jun 2026: B777 First Officers live on the official portal (1,000+ hrs CS-25, EASA ATPL/CPL). Fast-growing cargo group — pattern roster, business-class travel, 13th-month bonus." },
-  { name: "ZipAir Tokyo",       code: "ZG", domain: "zipair.net",           country: "Japan",        fleet: "B787-8",                  pilots: 150,  bases: "Tokyo Narita",                status: "hiring", note: "✓ Verified 14 Jun 2026: flight crew recruitment open ('Now hiring') — B787 First Officers & Captains for JAL's medium/long-haul low-cost arm." }
+  { name: "ZipAir Tokyo",       code: "ZG", domain: "zipair.net",           country: "Japan",        fleet: "B787-8",                  pilots: 150,  bases: "Tokyo Narita",                status: "hiring", note: "✓ Verified 14 Jun 2026: flight crew recruitment open ('Now hiring') — B787 First Officers & Captains for JAL's medium/long-haul low-cost arm." },
+  { name: "VistaJet",           code: "VJT", domain: "vistajet.com",        country: "Malta",        fleet: "Global 7500/6000, Challenger 350/650", pilots: 1400, bases: "Global (Malta/Austria/US AOCs)", status: "hiring", note: "✓ Verified 14 Jun 2026: VIP/business aviation — Global & Challenger First Officers (~2,500 hrs). Fly one type, twice-yearly training, keep seniority while moving up aircraft size; 200+ countries." },
+  { name: "Norse Atlantic",     code: "Z0", domain: "flynorse.com",         country: "Norway",       fleet: "B787-9",                  pilots: 250,  bases: "OSL, LGW, CDG, FCO, ATH",     status: "hiring", note: "✓ Verified 14 Jun 2026: B787 First Officers live (London Gatwick). Low-cost long-haul — transatlantic, Caribbean & Bangkok; direct-hire with union pre-hire agreements." },
+  { name: "Finnair",            code: "AY", domain: "finnair.com",          country: "Finland",      fleet: "A350, A330, A320 family, ATR", pilots: 1000, bases: "Helsinki",               status: "hiring", note: "✓ Verified 14 Jun 2026: 2026 cabin crew recruitment open (Helsinki). oneworld hub carrier between Europe and Asia; pilot intakes run periodically." }
 ];
 
 const SALARIES = [
