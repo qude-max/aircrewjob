@@ -38,7 +38,10 @@ const DOMAINS = {
   "DHL Aviation": "dhl.com",
   "SAS": "flysas.com",
   "Akasa Air": "akasaair.com",
-  "Gulf Air": "gulfair.com"
+  "Gulf Air": "gulfair.com",
+  "Air India Express": "airindiaexpress.com",
+  "Saudia": "saudia.com",
+  "Porter Airlines": "flyporter.com"
 };
 
 /* Base coordinates for the job map — keyed by the exact `location` strings used in JOBS.
@@ -73,7 +76,11 @@ const BASES = {
   "Mumbai (BOM)":                     [19.09, 72.87],
   "Bahrain (BAH)":                    [26.27, 50.63],
   "Australian bases":                 [-27.38, 153.12], // Virgin Australia — Brisbane
-  "NZ regional bases":                [-37.01, 174.79]  // Air NZ — Auckland
+  "NZ regional bases":                [-37.01, 174.79], // Air NZ — Auckland
+  "Indian bases (AI Express)":        [10.15, 76.40],   // Air India Express — Kochi hub
+  "Jeddah (JED)":                     [21.68, 39.16],
+  "Toronto (YYZ)":                    [43.68, -79.61],  // Porter E2 — Pearson
+  "Toronto (YTZ)":                    [43.63, -79.40]   // Porter Dash 8 — Billy Bishop
 };
 
 const JOBS = [
@@ -350,6 +357,28 @@ const JOBS = [
     reqs: "B787 Captains advertised — search 'pilot' in the official portal's Job Search for full per-role criteria.",
     applyUrl: "https://www.gulfair.com/careers" },
 
+  /* ---- Air India Express (careers.airindia.com) — verified 14 Jun 2026 ---- */
+  { id: 261, airline: "Air India Express", role: "First Officer", aircraft: "B737 (type-rated)", region: "Asia-Pacific", location: "Indian bases (AI Express)", type: "Rated", minHours: 200, rated: true, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing",
+    reqs: "Type-rated B737 P2 (First/Senior First Officer) · valid B737 co-pilot endorsement · 100+ hrs post line-release on B737 · Indian nationals/OCI · CPL/ATPL with current IR & PPC · Class 1 medical · max age 40 (45 ex-defence). Posted 17 May 2026.",
+    applyUrl: "https://careers.airindia.com/job/Gurugram-B737-Type-Rated-Co-Pilots-%28First-Officer-Senior-First-Officer%29-Guru/52871144/" },
+
+  /* ---- Saudia (careers.saudia.com) — verified 14 Jun 2026 ---- */
+  { id: 262, airline: "Saudia", role: "Cadet Pilot", aircraft: "Cadet Programme", region: "Middle East", location: "Jeddah (JED)", type: "Cadet", minHours: 240, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "Fully sponsored (Saudi nationals)",
+    reqs: "Saudi nationals only · valid GACA multi-engine CPL · 240 hrs TT (25 multi-engine) · GACA AIP test ≥80% · ICAO English ≥ Level 4 · GACA Class 1 medical · science-stream high school (80%+). Only flight-deck programme currently open at Saudia.",
+    applyUrl: "https://careers.saudia.com/job/Saudia-Cadet-Program-02/857159923/" },
+
+  /* ---- Porter Airlines (careers.flyporter.com) — verified 14 Jun 2026 ---- */
+  { id: 263, airline: "Porter Airlines", role: "First Officer", aircraft: "Embraer E195-E2", region: "Americas", location: "Toronto (YYZ)", type: "Direct Entry", minHours: 1000, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing (Porter pay scale)",
+    reqs: "Canadian work eligibility · CPL/ATPL with Group 1 IFR · interview offered from 500 hrs, conditional offer to ~1,000 hrs TT + IATRA/ATPL exams. Embraer E2 fleet, Toronto Pearson (YYZ) base.",
+    applyUrl: "https://careers.flyporter.com/jobs/4348?lang=en-us" },
+  { id: 264, airline: "Porter Airlines", role: "First Officer", aircraft: "De Havilland Dash 8-400", region: "Americas", location: "Toronto (YTZ)", type: "Direct Entry", minHours: 1000, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing (Porter pay scale)",
+    reqs: "Canadian work eligibility · CPL/ATPL with Group 1 IFR · Billy Bishop (YTZ) base · Destination Porter mentorship pathway pairs new FOs with experienced Porter pilots.",
+    applyUrl: "https://careers.flyporter.com/jobs/4844?lang=en-us" },
+
   /* ================= CABIN CREW — verified 11 Jun 2026 ================= */
   { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-11", verified: true,
     salary: "Tax-free + free accommodation + travel perks",
@@ -399,7 +428,10 @@ const AIRLINES = [
   { name: "SAS",                code: "SK", domain: "flysas.com",            country: "Scandinavia",  fleet: "A320neo, A330, A350",     pilots: 1500, bases: "CPH, OSL, ARN",               status: "hiring", note: "✓ Verified 12 Jun 2026: 'Experienced First Officer' posting live at Copenhagen. A350 growth (Seoul, Mumbai routes) accelerating intake; MPL cadet windows run periodically." },
   { name: "Akasa Air",          code: "QP", domain: "akasaair.com",          country: "India",        fleet: "B737 MAX (226 on order)", pilots: 900,  bases: "BOM, BLR, DEL",               status: "hiring", note: "✓ Verified 12 Jun 2026: recruiting CPL holders & B737-rated pilots; SkyCadet ab initio programme closes 24 Jun 2026. India's fastest-growing airline." },
   { name: "Gulf Air",           code: "GF", domain: "gulfair.com",           country: "Bahrain",      fleet: "B787, A320neo, A321",     pilots: 800,  bases: "Bahrain",                     status: "hiring", note: "✓ Verified 12 Jun 2026: B787 Captains advertised on the official portal. Tax-free package + housing + schooling for two children." },
-  { name: "Korean Air",         code: "KE", domain: "koreanair.com",         country: "South Korea",  fleet: "B777, B787, A350, B747",  pilots: 2800, bases: "Seoul",                       status: "closed", note: "Foreign pilot recruitment currently closed." }
+  { name: "Korean Air",         code: "KE", domain: "koreanair.com",         country: "South Korea",  fleet: "B777, B787, A350, B747",  pilots: 2800, bases: "Seoul",                       status: "closed", note: "Foreign pilot recruitment currently closed." },
+  { name: "Air India Express",  code: "IX", domain: "airindiaexpress.com",  country: "India",        fleet: "B737-800, B737-8 MAX",    pilots: 1500, bases: "Kochi, Calicut, Delhi",        status: "hiring", note: "✓ Verified 14 Jun 2026: recruiting type-rated B737 Co-Pilots (FO/SFO) with 100+ hrs on type — Indian nationals/OCI. Air India Group's fast-growing low-cost arm; large MAX order book driving intake." },
+  { name: "Saudia",             code: "SV", domain: "saudia.com",            country: "Saudi Arabia", fleet: "B787, A330, A320, B777",  pilots: 1500, bases: "Jeddah, Riyadh",               status: "paused", note: "✓ Verified 14 Jun 2026: only the Saudia Cadet Programme (Saudi nationals, GACA CPL + 240 hrs) is open on the careers portal. Direct-entry A320 Captain/FO windows run periodically amid Vision 2030 expansion — watch careers.saudia.com." },
+  { name: "Porter Airlines",    code: "PD", domain: "flyporter.com",        country: "Canada",       fleet: "Embraer E195-E2, Dash 8-400", pilots: 750, bases: "YYZ, YTZ, YOW",            status: "hiring", note: "✓ Verified 14 Jun 2026: live First Officer postings on both the Embraer E2 (YYZ) and Dash 8-400 (YTZ) fleets. Interviews from 500 hrs, conditional offer to ~1,000 hrs; Destination Porter mentorship for new pilots." }
 ];
 
 const SALARIES = [
