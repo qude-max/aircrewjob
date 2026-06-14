@@ -65,7 +65,15 @@ const SCHOOLS = [
   { name: "BAA Training Vietnam",           city: "Ho Chi Minh City, Vietnam", lat: 10.82,  lng: 106.63,  region: "Asia-Pacific", auth: "CAAV + EASA pathway", url: "https://www.baatraining.com",     note: "Growing SE-Asia campus serving Vietnamese carriers." },
   { name: "Alpha Aviation Group",           city: "Clark, Philippines",        lat: 15.19,  lng: 120.55,  region: "Asia-Pacific", auth: "CAAP (MPL/A320)", url: "https://www.alphaaviationgroup.com",  note: "MPL and A320 programmes feeding Philippine and regional carriers." },
   { name: "HM Aerospace",                   city: "Langkawi, Malaysia",        lat: 6.34,   lng: 99.73,   region: "Asia-Pacific", auth: "CAAM",          url: "https://www.hmaerospace.com",           note: "Malaysia's island academy — CPL/IR with airline tie-ups." },
-  { name: "Ardmore Flying School",          city: "Auckland, NZ",              lat: -37.03, lng: 174.97,  region: "Asia-Pacific", auth: "NZ CAA",        url: "https://www.ardmore.co.nz",             note: "One of NZ's longest-established commercial schools." }
+  { name: "Ardmore Flying School",          city: "Auckland, NZ",              lat: -37.03, lng: 174.97,  region: "Asia-Pacific", auth: "NZ CAA",        url: "https://www.ardmore.co.nz",             note: "One of NZ's longest-established commercial schools." },
+
+  /* ---- Added 14 Jun 2026 ---- */
+  { name: "CAE Oxford Aviation Academy",     city: "Oxford, UK",                lat: 51.83,  lng: -1.31,   region: "Europe",       auth: "UK CAA + EASA", url: "https://www.cae.com",                   note: "Global ab initio academy with airline cadet contracts (Oxford, Brussels, Amsterdam, Madrid)." },
+  { name: "Pan Am International Flight Academy", city: "Miami, FL, USA",         lat: 25.79,  lng: -80.29,  region: "Americas",     auth: "FAA (type ratings / ATP-CTP)", url: "https://panamacademy.com",   note: "Heir to Pan Am's training arm — type ratings, ATP-CTP and airline training in Boeing/Airbus full-flight sims." },
+  { name: "LIFT Academy (Republic Airways)", city: "Indianapolis, IN, USA",     lat: 39.72,  lng: -86.29,  region: "Americas",     auth: "FAA",           url: "https://rjet.com/about/lift-academy/",  note: "Airline-owned academy flying Diamond DA40/DA42 — a direct pathway to Republic Airways." },
+  { name: "OxfordSaudia Flight Academy",     city: "Dammam, Saudi Arabia",      lat: 26.47,  lng: 49.80,   region: "Middle East",  auth: "GACA + CAE",    url: "https://www.oxfordsaudia.com",          note: "CAE-authorised academy at King Fahd Int'l — ab initio for Saudi & international students." },
+  { name: "Gulf Aviation Academy",           city: "Muharraq, Bahrain",         lat: 26.27,  lng: 50.63,   region: "Middle East",  auth: "Bahrain CAA + EASA", url: "https://www.gaa.aero",             note: "Gulf Air's training arm — ab initio, type ratings and cabin crew." },
+  { name: "Civil Aviation Flight University of China", city: "Guanghan, China",  lat: 30.93,  lng: 104.32,  region: "Asia-Pacific", auth: "CAAC",          url: "https://www.cafuc.edu.cn",              note: "The world's largest pilot university (est. 1956) — primary trainer of China's airline pilots." }
 ];
 
 const MEDICAL = [
@@ -95,7 +103,13 @@ const MEDICAL = [
   { name: "GCAA / airline aeromedical centres",     city: "Dubai & Abu Dhabi, UAE", lat: 25.10, lng: 55.17, region: "Middle East", auth: "UAE GCAA — initial & renewal", url: "https://www.gcaa.gov.ae",              note: "UAE Class 1 via GCAA-approved AeMCs in Dubai & Abu Dhabi." },
   { name: "Institute of Aerospace Medicine (IAM)",  city: "Bengaluru, India",     lat: 12.95, lng: 77.66,  region: "Asia-Pacific", auth: "DGCA — initial Class 1",       url: "https://www.dgca.gov.in",              note: "Indian initial Class 1 (also AFCME New Delhi); renewals via DGCA-empanelled examiners." },
   { name: "Singapore Aeromedical Centre",           city: "Singapore",            lat: 1.34,  lng: 103.84, region: "Asia-Pacific", auth: "CAAS — initial & renewal",     url: "https://www.caas.gov.sg",              note: "CAAS Class 1 examinations." },
-  { name: "Institute for Aviation Medicine",        city: "Pretoria, South Africa", lat: -25.80, lng: 28.20, region: "Africa",     auth: "SACAA — initial & renewal",    url: "https://www.caa.co.za",                note: "South African initial Class 1." }
+  { name: "Institute for Aviation Medicine",        city: "Pretoria, South Africa", lat: -25.80, lng: 28.20, region: "Africa",     auth: "SACAA — initial & renewal",    url: "https://www.caa.co.za",                note: "South African initial Class 1." },
+
+  /* ---- Added 14 Jun 2026 ---- */
+  { name: "ANAC-authorised AeMC",                   city: "Lisbon, Portugal",     lat: 38.77, lng: -9.13,  region: "Europe",       auth: "EASA (ANAC) — initial & revalidation", url: "https://www.anac.pt",            note: "Portugal's initial Class 1 via ANAC-authorised aeromedical centre; revalidations by authorised AMEs." },
+  { name: "SHGM-authorised AeMCs",                  city: "Istanbul / Ankara, Türkiye", lat: 41.01, lng: 28.98, region: "Europe",  auth: "SHGM (Türkiye) — initial & renewal", url: "https://web.shgm.gov.tr/en/havacilik-isletmeleri/89-authorized-medical-institutions", note: "Türkiye's authorised aeromedical institutions for Class 1 (initial & renewal)." },
+  { name: "Hong Kong CAD — approved AMEs",          city: "Hong Kong",            lat: 22.31, lng: 113.92, region: "Asia-Pacific", auth: "HK CAD — initial & renewal",   url: "https://www.cad.gov.hk/english/aeromedical.html", note: "Class 1 via CAD-approved Aviation Medical Examiners (initial and renewal)." },
+  { name: "CAAC aviation medicine centres",         city: "Beijing & regional, China", lat: 39.90, lng: 116.40, region: "Asia-Pacific", auth: "CAAC — initial & renewal",  url: "http://www.caac.gov.cn",               note: "China Class 1 via CAAC-designated aviation medicine centres." }
 ];
 
 /* Regulators using a distributed examiner network — no single centre to pin */
