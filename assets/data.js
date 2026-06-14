@@ -41,7 +41,9 @@ const DOMAINS = {
   "Gulf Air": "gulfair.com",
   "Air India Express": "airindiaexpress.com",
   "Saudia": "saudia.com",
-  "Porter Airlines": "flyporter.com"
+  "Porter Airlines": "flyporter.com",
+  "Air Astana": "airastana.com",
+  "Breeze Airways": "flybreeze.com"
 };
 
 /* Base coordinates for the job map — keyed by the exact `location` strings used in JOBS.
@@ -80,7 +82,9 @@ const BASES = {
   "Indian bases (AI Express)":        [10.15, 76.40],   // Air India Express — Kochi hub
   "Jeddah (JED)":                     [21.68, 39.16],
   "Toronto (YYZ)":                    [43.68, -79.61],  // Porter E2 — Pearson
-  "Toronto (YTZ)":                    [43.63, -79.40]   // Porter Dash 8 — Billy Bishop
+  "Toronto (YTZ)":                    [43.63, -79.40],  // Porter Dash 8 — Billy Bishop
+  "Almaty (ALA)":                     [43.35, 77.04],
+  "US bases (Breeze)":                [40.79, -111.98]  // Breeze — Salt Lake City HQ
 };
 
 const JOBS = [
@@ -379,6 +383,26 @@ const JOBS = [
     reqs: "Canadian work eligibility · CPL/ATPL with Group 1 IFR · Billy Bishop (YTZ) base · Destination Porter mentorship pathway pairs new FOs with experienced Porter pilots.",
     applyUrl: "https://careers.flyporter.com/jobs/4844?lang=en-us" },
 
+  /* ---- Air Astana (job.airastana.com) — verified 14 Jun 2026 ---- */
+  { id: 271, airline: "Air Astana", role: "First Officer", aircraft: "A320 family (type-rated)", region: "Asia-Pacific", location: "Almaty (ALA)", type: "Rated", minHours: 1500, rated: true, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing — housing + medical",
+    reqs: "ICAO ATPL with type rating · 1,500 hrs TT · 500 hrs on type · Class 1 · ICAO English ≥4 · max age 45 · current LPC (type flown within 12 mo). Closing 31 Dec 2026. Recruitment is direct & free — never pay an agent.",
+    applyUrl: "https://job.airastana.com/en/Home/VacancyInfo/36e9f53d-10f4-54b5-ed00-63d7a8608d72" },
+  { id: 272, airline: "Air Astana", role: "First Officer", aircraft: "A320 family (non-rated)", region: "Asia-Pacific", location: "Almaty (ALA)", type: "Direct Entry", minHours: 400, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing — housing + medical",
+    reqs: "Current CPL with frozen ATPL · 400 hrs TT · 200 hrs multi-engine multi-crew · Class 1 · ICAO English ≥4 · max age 45. Closing 31 Dec 2026.",
+    applyUrl: "https://job.airastana.com/en/Home/VacancyInfo/b37e4923-2b57-b267-67e4-cf65dbcb655b" },
+  { id: 273, airline: "Air Astana", role: "Cadet Pilot", aircraft: "Ab Initio Programme", region: "Asia-Pacific", location: "Almaty (ALA)", type: "Cadet", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "Sponsored ab-initio training",
+    reqs: "Kazakhstan nationals aged 18–34 · strong physics & maths · fluent English · rolling selection into fully sponsored ab-initio training at top flight schools.",
+    applyUrl: "https://job.airastana.com/ab-initio/" },
+
+  /* ---- Breeze Airways (flybreeze.com / Greenhouse) — verified 14 Jun 2026 ---- */
+  { id: 274, airline: "Breeze Airways", role: "First Officer", aircraft: "A220-300 / E190", region: "Americas", location: "US bases (Breeze)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "≈ $105/flight hr (≈ $88k year 1)",
+    reqs: "1,500 hrs TT · FAA ATP or R-ATP eligible · prior US Part 121/135 or military · 500+ hrs fixed-wing multi-engine (jet preferred) · US work authorisation. Company-paid type rating on A220/E190.",
+    applyUrl: "https://job-boards.greenhouse.io/breezeairways/jobs/7764052003" },
+
   /* ================= CABIN CREW — verified 11 Jun 2026 ================= */
   { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-11", verified: true,
     salary: "Tax-free + free accommodation + travel perks",
@@ -395,7 +419,11 @@ const JOBS = [
   { id: 304, airline: "British Airways", category: "crew", role: "Cabin Crew", aircraft: "Talent Pool", region: "Europe", location: "London Heathrow", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-11", verified: true,
     salary: "See official listing",
     reqs: "Live talent-pool posting — register for upcoming Heathrow cabin crew intakes.",
-    applyUrl: "https://careers.ba.com/job/heathrow/cabin-crew-talent-pool/22348/94593554544" }
+    applyUrl: "https://careers.ba.com/job/heathrow/cabin-crew-talent-pool/22348/94593554544" },
+  { id: 305, airline: "Breeze Airways", category: "crew", role: "Cabin Crew", aircraft: "A220 / E190 cabins", region: "Americas", location: "US bases (Breeze)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing",
+    reqs: "Full- and part-time Flight Attendant intakes open across many US bases (Providence, Windsor Locks, Tampa, Fort Lauderdale, New Orleans, Akron & more) — apply via the official Breeze careers board.",
+    applyUrl: "https://job-boards.greenhouse.io/breezeairways/jobs/7766417003" }
 ];
 
 const AIRLINES = [
@@ -431,7 +459,9 @@ const AIRLINES = [
   { name: "Korean Air",         code: "KE", domain: "koreanair.com",         country: "South Korea",  fleet: "B777, B787, A350, B747",  pilots: 2800, bases: "Seoul",                       status: "closed", note: "Foreign pilot recruitment currently closed." },
   { name: "Air India Express",  code: "IX", domain: "airindiaexpress.com",  country: "India",        fleet: "B737-800, B737-8 MAX",    pilots: 1500, bases: "Kochi, Calicut, Delhi",        status: "hiring", note: "✓ Verified 14 Jun 2026: recruiting type-rated B737 Co-Pilots (FO/SFO) with 100+ hrs on type — Indian nationals/OCI. Air India Group's fast-growing low-cost arm; large MAX order book driving intake." },
   { name: "Saudia",             code: "SV", domain: "saudia.com",            country: "Saudi Arabia", fleet: "B787, A330, A320, B777",  pilots: 1500, bases: "Jeddah, Riyadh",               status: "paused", note: "✓ Verified 14 Jun 2026: only the Saudia Cadet Programme (Saudi nationals, GACA CPL + 240 hrs) is open on the careers portal. Direct-entry A320 Captain/FO windows run periodically amid Vision 2030 expansion — watch careers.saudia.com." },
-  { name: "Porter Airlines",    code: "PD", domain: "flyporter.com",        country: "Canada",       fleet: "Embraer E195-E2, Dash 8-400", pilots: 750, bases: "YYZ, YTZ, YOW",            status: "hiring", note: "✓ Verified 14 Jun 2026: live First Officer postings on both the Embraer E2 (YYZ) and Dash 8-400 (YTZ) fleets. Interviews from 500 hrs, conditional offer to ~1,000 hrs; Destination Porter mentorship for new pilots." }
+  { name: "Porter Airlines",    code: "PD", domain: "flyporter.com",        country: "Canada",       fleet: "Embraer E195-E2, Dash 8-400", pilots: 750, bases: "YYZ, YTZ, YOW",            status: "hiring", note: "✓ Verified 14 Jun 2026: live First Officer postings on both the Embraer E2 (YYZ) and Dash 8-400 (YTZ) fleets. Interviews from 500 hrs, conditional offer to ~1,000 hrs; Destination Porter mentorship for new pilots." },
+  { name: "Air Astana",         code: "KC", domain: "airastana.com",        country: "Kazakhstan",   fleet: "A320neo family, A321LR/XLR, B767, E190-E2", pilots: 700, bases: "Almaty, Astana",     status: "hiring", note: "✓ Verified 14 Jun 2026: live First Officer vacancies — rated (ATPL + type rating, 1,500 hrs) and non-rated (CPL/fATPL, 400 hrs) at Almaty, plus an ab-initio cadet programme for Kazakh nationals (18–34). Recruitment is direct and free — never pay an agent." },
+  { name: "Breeze Airways",     code: "MX", domain: "flybreeze.com",        country: "USA",          fleet: "A220-300, E190/E195",     pilots: 700,  bases: "Multiple US focus cities",    status: "hiring", note: "✓ Verified 14 Jun 2026: A220 First Officer hiring (1,500 hrs · US 121/135/military) with company-paid type rating, plus full- and part-time Flight Attendant intakes across many US bases. David Neeleman's startup — fast A220-driven upgrades." }
 ];
 
 const SALARIES = [
