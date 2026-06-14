@@ -43,7 +43,10 @@ const DOMAINS = {
   "Saudia": "saudia.com",
   "Porter Airlines": "flyporter.com",
   "Air Astana": "airastana.com",
-  "Breeze Airways": "flybreeze.com"
+  "Breeze Airways": "flybreeze.com",
+  "Aegean Airlines": "aegeanair.com",
+  "airBaltic": "airbaltic.com",
+  "Air India": "airindia.com"
 };
 
 /* Base coordinates for the job map — keyed by the exact `location` strings used in JOBS.
@@ -84,7 +87,11 @@ const BASES = {
   "Toronto (YYZ)":                    [43.68, -79.61],  // Porter E2 — Pearson
   "Toronto (YTZ)":                    [43.63, -79.40],  // Porter Dash 8 — Billy Bishop
   "Almaty (ALA)":                     [43.35, 77.04],
-  "US bases (Breeze)":                [40.79, -111.98]  // Breeze — Salt Lake City HQ
+  "US bases (Breeze)":                [40.79, -111.98], // Breeze — Salt Lake City HQ
+  "Athens (ATH)":                     [37.94, 23.95],
+  "Riga (RIG)":                       [56.92, 23.97],
+  "Delhi (DEL)":                      [28.56, 77.10],
+  "Munich / Frankfurt":               [50.04, 8.56]     // Lufthansa — Frankfurt
 };
 
 const JOBS = [
@@ -403,7 +410,27 @@ const JOBS = [
     reqs: "1,500 hrs TT · FAA ATP or R-ATP eligible · prior US Part 121/135 or military · 500+ hrs fixed-wing multi-engine (jet preferred) · US work authorisation. Company-paid type rating on A220/E190.",
     applyUrl: "https://job-boards.greenhouse.io/breezeairways/jobs/7764052003" },
 
-  /* ================= CABIN CREW — verified 11 Jun 2026 ================= */
+  /* ---- airBaltic (careers.airbaltic.com) — verified 14 Jun 2026 ---- */
+  { id: 281, airline: "airBaltic", role: "First Officer", aircraft: "A220-300", region: "Europe", location: "Riga (RIG)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "Company-paid A220 type rating · new 2026 pay deal",
+    reqs: "Senior First Officer (type-rated or non-rated) with fast-track command — upgrade to Captain within ~12 months (2,750 hrs CAT + 1,500 hrs on CS25). All-A220 fleet · 13-on/10-off commuting roster (commute from anywhere in Europe). Recruitment via official channels only.",
+    applyUrl: "https://careers.airbaltic.com/en/vacancies/pilots" },
+
+  /* ---- Aegean Airlines (jobs.aegeanair.com) — verified 14 Jun 2026 ---- */
+  { id: 282, airline: "Aegean Airlines", role: "First Officer", aircraft: "A320 / ATR 42-72 (non-rated)", region: "Europe", location: "Athens (ATH)", type: "Direct Entry", minHours: 70, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "14 salaries/yr + health & pension + loss-of-licence cover",
+    reqs: "EASA CPL(A) with ATPL theory (or ATPL) · valid ME IR · 70+ hrs PIC · MCC + Advanced UPRT · ICAO English ≥4 · Class 1 · unrestricted EU work right. ⏰ Deadline 30 Jun 2026.",
+    applyUrl: "https://jobs.aegeanair.com/job/Non-Type-Rated-First-Officers-A320-&-ATR-4272/1345969155/" },
+  { id: 283, airline: "Aegean Airlines", role: "First Officer", aircraft: "A320 (type-rated)", region: "Europe", location: "Athens (ATH)", type: "Rated", minHours: 500, rated: true, posted: 0, added: "2026-06-14", verified: true,
+    salary: "14 salaries/yr + health & pension",
+    reqs: "Type-rated A320 First Officers — full criteria on the official Aegean posting. Star Alliance member, 60 A320/A321neo on order.",
+    applyUrl: "https://jobs.aegeanair.com/job/Type-Rated-First-Officers-for-A320/1353411355/" },
+  { id: 284, airline: "Aegean Airlines", role: "Captain", aircraft: "A320 (type-rated)", region: "Europe", location: "Athens (ATH)", type: "Rated", minHours: 4000, rated: true, posted: 0, added: "2026-06-14", verified: true,
+    salary: "14 salaries/yr + health & pension",
+    reqs: "Type-rated A320 Captains — full criteria on the official Aegean posting. Non-type-rated Captain route also open via the careers portal.",
+    applyUrl: "https://jobs.aegeanair.com/job/Type-Rated-Captains-for-A320/1347735255/" },
+
+  /* ================= CABIN CREW — verified 11–14 Jun 2026 ================= */
   { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-11", verified: true,
     salary: "Tax-free + free accommodation + travel perks",
     reqs: "21+ · high-school (Grade 12) · fluent English · 1+ yr customer service · open days worldwide + online application.",
@@ -423,7 +450,43 @@ const JOBS = [
   { id: 305, airline: "Breeze Airways", category: "crew", role: "Cabin Crew", aircraft: "A220 / E190 cabins", region: "Americas", location: "US bases (Breeze)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
     salary: "See official listing",
     reqs: "Full- and part-time Flight Attendant intakes open across many US bases (Providence, Windsor Locks, Tampa, Fort Lauderdale, New Orleans, Akron & more) — apply via the official Breeze careers board.",
-    applyUrl: "https://job-boards.greenhouse.io/breezeairways/jobs/7766417003" }
+    applyUrl: "https://job-boards.greenhouse.io/breezeairways/jobs/7766417003" },
+  { id: 306, airline: "Air India", category: "crew", role: "Cabin Crew", aircraft: "Trainee Cabin Crew", region: "Asia-Pacific", location: "Delhi (DEL)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing",
+    reqs: "Trainee Cabin Crew intake (Req ID 18700) — Delhi base. Air India Group mainline cabin crew programme; full criteria on careers.airindia.com.",
+    applyUrl: "https://careers.airindia.com/job/Delhi-Trainee-Cabin-Crew-Nort/54047544/" },
+  { id: 307, airline: "Saudia", category: "crew", role: "Cabin Crew", aircraft: "Flight Attendant", region: "Middle East", location: "Jeddah (JED)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing",
+    reqs: "Flight Attendant intake (posted 22 May 2026) — full criteria on the official Saudia careers portal.",
+    applyUrl: "https://careers.saudia.com/job/Flight-Attendant-02/857071823/" },
+  { id: 308, airline: "Wizz Air", category: "crew", role: "Cabin Crew", aircraft: "A320 / A321 cabins", region: "Europe", location: "35+ bases EU & ME", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "From £23,450 (UK) — training allowance (HU/MT)",
+    reqs: "Year-round cabin crew recruitment across 30+ European bases — recruitment days plus Direct Entry Senior Cabin Crew. Apply via the official Wizz Air careers portal.",
+    applyUrl: "https://careers.wizzair.com/go/Cabin-Crew-Jobs/5258701/" },
+  { id: 309, airline: "Cathay Pacific", category: "crew", role: "Cabin Crew", aircraft: "Flight Attendant (HK-based)", region: "Asia-Pacific", location: "Hong Kong (HKG)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing + housing for overseas hires",
+    reqs: "Flight Attendant (Hong Kong-based) · 18+ · secondary education · fluent English · 208 cm arm reach. Apply direct — Cathay uses no recruitment agents.",
+    applyUrl: "https://careers.cathaypacific.com/en/careers/jobs/hong-kong/flight-attendant-based-in-hong-kong-hong-kong-recruitment-29373" },
+  { id: 310, airline: "Etihad Airways", category: "crew", role: "Cabin Crew", aircraft: "Etihad cabins", region: "Middle East", location: "Abu Dhabi (AUH)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "Tax-free + accommodation + travel perks",
+    reqs: "Cabin Crew recruitment for the Abu Dhabi hub — 'Journey 2030' fleet doubling. Apply via the official Etihad careers portal (open days worldwide).",
+    applyUrl: "https://careers.smartrecruiters.com/EtihadAirways5/cabin-crew" },
+  { id: 311, airline: "Lufthansa", category: "crew", role: "Cabin Crew", aircraft: "Short/medium-haul cabins", region: "Europe", location: "Munich / Frankfurt", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing",
+    reqs: "Cabin Crew Member (with or without flight experience) for Munich & Frankfurt bases · 18+ · EU work right · fluent German + good English.",
+    applyUrl: "https://lufthansagroup.careers/en/flight-attendant" },
+  { id: 312, airline: "Aegean Airlines", category: "crew", role: "Cabin Crew", aircraft: "Cabin Crew Member", region: "Europe", location: "Athens (ATH)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "14 salaries/yr + benefits",
+    reqs: "Cabin Crew Member (Athens base) — live on the official Aegean careers portal. Star Alliance 'Best Regional Airline in Europe'.",
+    applyUrl: "https://jobs.aegeanair.com/job/Cabin-Crew-Member-(Based-in-Athens)/1353551255/" },
+  { id: 313, airline: "Riyadh Air", category: "crew", role: "Cabin Crew", aircraft: "Inflight Experience Team", region: "Middle East", location: "Riyadh (RUH)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official listing",
+    reqs: "Cabin crew recruitment events worldwide + NAWAT programme for Saudi nationals — Saudi Arabia's new flag carrier. Apply only via official channels; fee-charging agents are scams.",
+    applyUrl: "https://www.riyadhair.com/en/careers/cabin-crew" },
+  { id: 314, airline: "flydubai", category: "crew", role: "Cabin Crew", aircraft: "flydubai cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "≈ AED 12,775/mo package (tax-free + housing)",
+    reqs: "Cabin crew intake (Apr 2026) · 21+ · 158 cm+ · high-school · fluent English · pass aeromedical. Apply via the official flydubai careers portal.",
+    applyUrl: "https://careers.flydubai.com/" }
 ];
 
 const AIRLINES = [
@@ -461,7 +524,10 @@ const AIRLINES = [
   { name: "Saudia",             code: "SV", domain: "saudia.com",            country: "Saudi Arabia", fleet: "B787, A330, A320, B777",  pilots: 1500, bases: "Jeddah, Riyadh",               status: "paused", note: "✓ Verified 14 Jun 2026: only the Saudia Cadet Programme (Saudi nationals, GACA CPL + 240 hrs) is open on the careers portal. Direct-entry A320 Captain/FO windows run periodically amid Vision 2030 expansion — watch careers.saudia.com." },
   { name: "Porter Airlines",    code: "PD", domain: "flyporter.com",        country: "Canada",       fleet: "Embraer E195-E2, Dash 8-400", pilots: 750, bases: "YYZ, YTZ, YOW",            status: "hiring", note: "✓ Verified 14 Jun 2026: live First Officer postings on both the Embraer E2 (YYZ) and Dash 8-400 (YTZ) fleets. Interviews from 500 hrs, conditional offer to ~1,000 hrs; Destination Porter mentorship for new pilots." },
   { name: "Air Astana",         code: "KC", domain: "airastana.com",        country: "Kazakhstan",   fleet: "A320neo family, A321LR/XLR, B767, E190-E2", pilots: 700, bases: "Almaty, Astana",     status: "hiring", note: "✓ Verified 14 Jun 2026: live First Officer vacancies — rated (ATPL + type rating, 1,500 hrs) and non-rated (CPL/fATPL, 400 hrs) at Almaty, plus an ab-initio cadet programme for Kazakh nationals (18–34). Recruitment is direct and free — never pay an agent." },
-  { name: "Breeze Airways",     code: "MX", domain: "flybreeze.com",        country: "USA",          fleet: "A220-300, E190/E195",     pilots: 700,  bases: "Multiple US focus cities",    status: "hiring", note: "✓ Verified 14 Jun 2026: A220 First Officer hiring (1,500 hrs · US 121/135/military) with company-paid type rating, plus full- and part-time Flight Attendant intakes across many US bases. David Neeleman's startup — fast A220-driven upgrades." }
+  { name: "Breeze Airways",     code: "MX", domain: "flybreeze.com",        country: "USA",          fleet: "A220-300, E190/E195",     pilots: 700,  bases: "Multiple US focus cities",    status: "hiring", note: "✓ Verified 14 Jun 2026: A220 First Officer hiring (1,500 hrs · US 121/135/military) with company-paid type rating, plus full- and part-time Flight Attendant intakes across many US bases. David Neeleman's startup — fast A220-driven upgrades." },
+  { name: "Aegean Airlines",    code: "A3", domain: "aegeanair.com",        country: "Greece",       fleet: "A320neo family, A321neo, ATR 42/72", pilots: 1000, bases: "Athens, Thessaloniki",  status: "hiring", note: "✓ Verified 14 Jun 2026: full flight-deck intake on the official portal — non-rated FOs (A320/ATR, deadline 30 Jun), type-rated A320 FOs, and type-rated & non-rated A320 Captains, plus Athens-based Cabin Crew. Star Alliance, 60 A320/A321neo on order." },
+  { name: "airBaltic",          code: "BT", domain: "airbaltic.com",        country: "Latvia",       fleet: "A220-300 (all-Airbus)",   pilots: 600,  bases: "Riga, Tampere, Tallinn, Vilnius", status: "hiring", note: "✓ Verified 14 Jun 2026: A220 Senior First Officers with fast-track command (Captain within ~12 months) — company-paid type rating, new 2026 pay deal, 13-on/10-off commuting roster. All-A220 fleet." },
+  { name: "Air India",          code: "AI", domain: "airindia.com",         country: "India",        fleet: "B777, B787, A350, A320neo", pilots: 3000, bases: "Delhi, Mumbai, Bengaluru",  status: "hiring", note: "✓ Verified 14 Jun 2026: Trainee Cabin Crew intake live (Delhi). Tata-owned, mid major-transformation with a huge Airbus/Boeing order book; mainline pilot reqs were not open on the portal at last check — watch careers.airindia.com." }
 ];
 
 const SALARIES = [
