@@ -223,7 +223,7 @@
         <div class="card game-card">
           <div class="icon">🎯</div>
           <h3>Pursuit Tracking <span class="tier-badge">NEW</span></h3>
-          <p>Keep the ring on the drifting target for 30 seconds — the psychomotor "joystick" skill airlines screen for.</p>
+          <p>Keep the ring on the drifting target for 30 seconds — easy, medium or hard. The psychomotor "joystick" skill airlines screen for.</p>
           <div class="best" id="best-tracking"></div>
           <button class="btn btn-primary btn-sm" onclick="openGame('tracking')">Start →</button>
         </div>
@@ -859,7 +859,13 @@
 
     /* ---- Pursuit Tracking (psychomotor / hand-eye) ---- */
     function startTracking() {
-      const DURATION = 30000, TOL = 46;
+      const DURATION = 30000;
+      const MODES = {
+        easy:   { tol: 60, amp: 0.34, sp: 0.72, w: 0.8,  label: "Easy" },
+        medium: { tol: 46, amp: 0.40, sp: 1.00, w: 1.0,  label: "Medium" },
+        hard:   { tol: 34, amp: 0.46, sp: 1.45, w: 1.25, label: "Hard" }
+      };
+      let M = MODES.medium;
       let raf = 0, running = false, startT = 0, lastT = 0, onMs = 0, mx = 0, my = 0, W = 0, H = 0;
       const cfg = {
         fx1: 0.55 + Math.random() * 0.45, fx2: 1.1 + Math.random() * 0.7,
@@ -870,14 +876,21 @@
         <div id="trkField" style="position:relative; width:100%; max-width:520px; height:340px; margin:0 auto; border:1px solid var(--border); border-radius:14px; background:radial-gradient(circle at 50% 50%, rgba(56,224,255,0.05), transparent 72%); overflow:hidden; touch-action:none; cursor:crosshair">
           <div id="trkTarget" style="position:absolute; left:50%; top:50%; width:30px; height:30px; margin:-15px 0 0 -15px; border-radius:50%; background:var(--accent); box-shadow:0 0 16px rgba(56,224,255,0.6); pointer-events:none"></div>
           <div id="trkRing" style="position:absolute; left:50%; top:50%; width:56px; height:56px; margin:-28px 0 0 -28px; border:3px solid rgba(255,255,255,0.55); border-radius:50%; display:none; pointer-events:none"></div>
-          <div id="trkMsg" style="position:absolute; inset:0; display:grid; place-items:center; text-align:center; padding:0 24px; color:var(--text-dim); font-size:0.95rem">Click in the box, then keep the ring on the dot for 30&nbsp;seconds.</div>
+          <div id="trkMsg" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center; padding:0 24px">
+            <span style="color:var(--text-dim); font-size:0.95rem">Pick a difficulty, then keep the ring on the dot for 30&nbsp;seconds.</span>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center">
+              <button class="btn btn-ghost btn-sm" data-mode="easy">Easy</button>
+              <button class="btn btn-primary btn-sm" data-mode="medium">Medium</button>
+              <button class="btn btn-ghost btn-sm" data-mode="hard">Hard</button>
+            </div>
+          </div>
         </div>
         <p style="margin-top:14px; font-size:0.85rem; color:var(--text-faint)">Anticipate the drift — smooth beats jerky. Trains the psychomotor / hand-eye skill behind CAE, cut-e &amp; COMPASS screenings.</p>`;
       const field = $("trkField"), target = $("trkTarget"), ring = $("trkRing"), msg = $("trkMsg");
       function pos(t) {
-        const aX = W * 0.40, aY = H * 0.40;
-        const x = W / 2 + aX * (0.62 * Math.sin(cfg.fx1 * t + cfg.px) + 0.38 * Math.sin(cfg.fx2 * t));
-        const y = H / 2 + aY * (0.62 * Math.sin(cfg.fy1 * t + cfg.py) + 0.38 * Math.cos(cfg.fy2 * t));
+        const aX = W * M.amp, aY = H * M.amp, s = M.sp;
+        const x = W / 2 + aX * (0.62 * Math.sin(cfg.fx1 * s * t + cfg.px) + 0.38 * Math.sin(cfg.fx2 * s * t));
+        const y = H / 2 + aY * (0.62 * Math.sin(cfg.fy1 * s * t + cfg.py) + 0.38 * Math.cos(cfg.fy2 * s * t));
         return [x, y];
       }
       function onMove(e) {
@@ -893,7 +906,7 @@
         const t = (now - startT) / 1000, dt = now - lastT; lastT = now;
         const [x, y] = pos(t);
         target.style.left = x + "px"; target.style.top = y + "px";
-        const on = Math.hypot(mx - x, my - y) <= TOL;
+        const on = Math.hypot(mx - x, my - y) <= M.tol;
         if (on) onMs += dt;
         ring.style.borderColor = on ? "#34e8a0" : "rgba(255,255,255,0.55)";
         ring.style.boxShadow = on ? "0 0 18px rgba(52,232,160,0.6)" : "none";
@@ -903,9 +916,9 @@
         if (elapsed >= DURATION) return finish();
         raf = requestAnimationFrame(loop);
       }
-      function begin() {
+      function begin(mode) {
         if (running) return;
-        running = true;
+        M = MODES[mode]; running = true;
         W = field.clientWidth; H = field.clientHeight; mx = W / 2; my = H / 2;
         msg.style.display = "none"; ring.style.display = "block"; field.style.cursor = "none";
         ring.style.left = mx + "px"; ring.style.top = my + "px";
@@ -914,15 +927,15 @@
       }
       function finish() {
         cancelAnimationFrame(raf);
-        const pct = Math.round(onMs / DURATION * 100), score = Math.round(onMs / DURATION * 1000);
+        const pct = Math.round(onMs / DURATION * 100), score = Math.round(onMs / DURATION * 1000 * M.w);
         setBest("tracking", score, (a, b) => a > b);
         field.style.cursor = "";
         stage().innerHTML = `<div class="digit-display">${pct}%</div>
-          <p style="margin:12px 0 6px">On target for ${(onMs / 1000).toFixed(1)}s of 30s · ${score} pts</p>
+          <p style="margin:12px 0 6px">On target ${(onMs / 1000).toFixed(1)}s of 30s · ${score} pts · ${M.label} mode</p>
           <p style="color:var(--text-faint); font-size:0.88rem">${pct >= 80 ? "Excellent — steady, anticipatory control. Assessment territory." : pct >= 60 ? "Good hands. Lead the target instead of chasing it." : "Keep practising — read the pattern and move with it, not after it."}</p>
           <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="startTracking()">Run it again →</button>`;
       }
-      field.addEventListener("click", begin, { once: true });
+      msg.querySelectorAll("button[data-mode]").forEach(b => b.addEventListener("click", () => begin(b.dataset.mode)));
       $("gmStats").innerHTML = `<span>Time left <b>30.0s</b></span><span>On target <b>0%</b></span>`;
     }
 
