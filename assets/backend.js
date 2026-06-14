@@ -165,7 +165,8 @@ const Backend = (() => {
       category: r.category || "pilot",
       verified: r.verified || false, applyUrl: r.apply_url || null, reqs: r.reqs || null,
       owner: r.posted_by || null,
-      posted: Math.max(0, Math.floor((Date.now() - new Date(r.posted_at)) / 86400000))
+      posted: Math.max(0, Math.floor((Date.now() - new Date(r.posted_at)) / 86400000)),
+      postedAt: new Date(r.posted_at).getTime()
     };
   }
   const canPost = () => {
@@ -185,7 +186,7 @@ const Backend = (() => {
       const edits = LS.get("job_edits", {});
       const daysSince = d => d ? Math.max(0, Math.floor((Date.now() - new Date(d)) / 86400000)) : 0;
       const base = JOBS.filter(j => !removed.includes(j.id))
-        .map(j => ({ ...j, posted: daysSince(j.added), ...(edits[j.id] || {}) }));
+        .map(j => ({ ...j, posted: daysSince(j.added), postedAt: new Date(j.added).getTime(), ...(edits[j.id] || {}) }));
       return [...LS.get("custom_jobs", []), ...base];
     },
     async mine() {
@@ -209,7 +210,7 @@ const Backend = (() => {
         return error ? { error: error.message } : { ok: true };
       }
       const custom = LS.get("custom_jobs", []);
-      custom.unshift({ ...job, id: Date.now(), posted: 0, verified: false, owner: currentUser.email });
+      custom.unshift({ ...job, id: Date.now(), posted: 0, postedAt: Date.now(), verified: false, owner: currentUser.email });
       LS.set("custom_jobs", custom);
       return { ok: true };
     },

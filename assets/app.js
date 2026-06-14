@@ -147,6 +147,25 @@ function animateCounters() {
 }
 
 function daysAgo(n) { return n === 0 ? "Today" : n === 1 ? "Yesterday" : `${n} days ago`; }
+/* Precise relative time from an epoch-ms timestamp. Listings carrying a real
+   posting time show "Just now / 12m ago / 3h ago"; date-only entries (midnight
+   UTC) fall back to day buckets so we never invent an hour we didn't record. */
+function timeAgo(ms) {
+  if (!ms) return "Recently";
+  let diff = Date.now() - ms; if (diff < 0) diff = 0;
+  const dateOnly = ms % 86400000 === 0;
+  if (!dateOnly) {
+    if (diff < 60000) return "Just now";
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+  }
+  const d = Math.floor(diff / 86400000);
+  if (d <= 0) return "Today";
+  if (d === 1) return "Yesterday";
+  if (d < 7) return `${d} days ago`;
+  if (d < 30) return `${Math.floor(d / 7)}w ago`;
+  return `${Math.floor(d / 30)}mo ago`;
+}
 
 /* HTML-escape user-generated content before inserting into innerHTML.
    Prevents stored XSS from recruiter posts, applicant notes, names, etc. */

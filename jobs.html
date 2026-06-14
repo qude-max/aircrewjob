@@ -495,7 +495,7 @@
           (!type || j.type === type) &&
           (maxH === null || j.minHours <= maxH) &&
           (!matchOnly || !prof || fitsProfile(j, prof)))
-        .sort((a, b) => a.posted - b.posted);
+        .sort((a, b) => (b.postedAt || 0) - (a.postedAt || 0) || b.id - a.id);
 
       els.resultCount.textContent = `${filtered.length} position${filtered.length === 1 ? "" : "s"} found`;
       updateMap(filtered);
@@ -527,7 +527,7 @@
             ${j.reqs ? `<div style="font-size:0.84rem; color:var(--text-faint); margin-top:10px">${esc(j.reqs)}</div>` : ""}
           </div>
           <div class="job-right">
-            <span class="job-posted">${j.posted <= 2 ? "🔥 " : ""}${daysAgo(j.posted)} ·
+            <span class="job-posted">${j.posted <= 2 ? "🔥 " : ""}${timeAgo(j.postedAt)} ·
               <a href="#" onclick="event.preventDefault(); reportJob(${JSON.stringify(j.id)})"
                  title="Closed? Broken link? Tell us." style="color:var(--text-faint); text-decoration:none">⚑ report</a></span>
             <span class="job-salary">${esc(j.salary)}</span>
