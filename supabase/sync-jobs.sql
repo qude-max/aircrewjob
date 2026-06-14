@@ -74,6 +74,8 @@ values
 (282, 'Aegean Airlines', 'First Officer', 'A320 / ATR 42-72 (non-rated)', 'Europe', 'Athens (ATH)', 'Direct Entry', 70, false, '14 salaries/yr + health & pension + loss-of-licence cover', true, 'https://jobs.aegeanair.com/job/Non-Type-Rated-First-Officers-A320-&-ATR-4272/1345969155/', 'EASA CPL(A) with ATPL theory (or ATPL) · valid ME IR · 70+ hrs PIC · MCC + Advanced UPRT · ICAO English ≥4 · Class 1 · unrestricted EU work right. ⏰ Deadline 30 Jun 2026.', 'pilot', '2026-06-14'::timestamptz),
 (283, 'Aegean Airlines', 'First Officer', 'A320 (type-rated)', 'Europe', 'Athens (ATH)', 'Rated', 500, true, '14 salaries/yr + health & pension', true, 'https://jobs.aegeanair.com/job/Type-Rated-First-Officers-for-A320/1353411355/', 'Type-rated A320 First Officers — full criteria on the official Aegean posting. Star Alliance member, 60 A320/A321neo on order.', 'pilot', '2026-06-14'::timestamptz),
 (284, 'Aegean Airlines', 'Captain', 'A320 (type-rated)', 'Europe', 'Athens (ATH)', 'Rated', 4000, true, '14 salaries/yr + health & pension', true, 'https://jobs.aegeanair.com/job/Type-Rated-Captains-for-A320/1347735255/', 'Type-rated A320 Captains — full criteria on the official Aegean posting. Non-type-rated Captain route also open via the careers portal.', 'pilot', '2026-06-14'::timestamptz),
+(285, 'Challenge Airlines', 'First Officer', 'B777 (cargo)', 'Europe', 'Liège (LGG)', 'Direct Entry', 1000, false, 'Competitive + 13th month + business-class travel', true, 'https://career.challenge-group.com/job/First-Officer-B777/697-en_GB', 'EASA ATPL or CPL · 1,000+ hrs on CS-25 · recent Boeing experience preferred (B777 a plus) · Class 1 · ICAO English ≥4. Cargo ops, pattern roster, Liège base. Posted 14 Apr 2026.', 'pilot', '2026-06-14'::timestamptz),
+(286, 'ZipAir Tokyo', 'First Officer', 'B787', 'Asia-Pacific', 'Tokyo Narita (NRT)', 'Direct Entry', 0, false, 'See official requirements', true, 'https://www.zipairtokyo.com/en/recruit/', 'Flight crew recruitment open (''Now hiring'') — B787 First Officers and Captains for JAL''s medium/long-haul LCC. Hours & licensing on the official ZipAir recruitment requirements sheet.', 'pilot', '2026-06-14'::timestamptz),
 (301, 'Emirates', 'Cabin Crew', 'A380 / B777 cabins', 'Middle East', 'Dubai (DXB)', 'Direct Entry', 0, false, 'Tax-free + free accommodation + travel perks', true, 'https://www.emiratesgroupcareers.com/cabin-crew/', '21+ · high-school (Grade 12) · fluent English · 1+ yr customer service · open days worldwide + online application.', 'crew', '2026-06-11'::timestamptz),
 (302, 'Qatar Airways', 'Cabin Crew', 'QR international fleet', 'Middle East', 'Doha (DOH)', 'Direct Entry', 0, false, 'Tax-free + furnished accommodation + medical', true, 'https://careers.qatarairways.com/global/JobDetail/Cabin-Crew-Recruitment-Doha-Qatar-2026/77216', 'Online application open · walk-in events worldwide (Nice, Bangkok, Tokyo & more on the portal).', 'crew', '2026-06-11'::timestamptz),
 (303, 'Singapore Airlines', 'Cabin Crew', 'SQ international fleet', 'Asia-Pacific', 'MY · KR · JP · TH · IN bases', 'Direct Entry', 0, false, 'See official listing', true, 'https://careers.singaporeair.com/sia/go/Cabin-Crew/689244/', 'Open now for Malaysia, South Korea, Japan, Thailand & India intakes (Singapore base currently closed) · video interview then in-person.', 'crew', '2026-06-11'::timestamptz),
@@ -99,7 +101,7 @@ on conflict (id) do update set
   category = excluded.category, posted_at = excluded.posted_at;
 
 -- remove verified listings that left the catalog (closed/withdrawn)
-delete from public.jobs where verified = true and id not in (101, 102, 103, 104, 111, 112, 113, 114, 115, 116, 117, 121, 131, 132, 133, 141, 142, 143, 151, 152, 161, 162, 163, 221, 222, 223, 224, 225, 226, 227, 228, 229, 171, 172, 181, 191, 201, 202, 211, 212, 233, 234, 241, 243, 244, 245, 251, 252, 253, 254, 255, 256, 261, 262, 263, 264, 271, 272, 273, 274, 281, 282, 283, 284, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317);
+delete from public.jobs where verified = true and id not in (101, 102, 103, 104, 111, 112, 113, 114, 115, 116, 117, 121, 131, 132, 133, 141, 142, 143, 151, 152, 161, 162, 163, 221, 222, 223, 224, 225, 226, 227, 228, 229, 171, 172, 181, 191, 201, 202, 211, 212, 233, 234, 241, 243, 244, 245, 251, 252, 253, 254, 255, 256, 261, 262, 263, 264, 271, 272, 273, 274, 281, 282, 283, 284, 285, 286, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317);
 
 -- keep the identity sequence clear of catalog ids (recruiter posts get ids >= 1000)
 select setval(pg_get_serial_sequence('public.jobs', 'id'),
@@ -107,7 +109,7 @@ select setval(pg_get_serial_sequence('public.jobs', 'id'),
 
 commit;
 
--- sanity check: should match data.js (81 verified listings)
+-- sanity check: should match data.js (83 verified listings)
 select count(*) filter (where verified) as verified_jobs,
        count(*) filter (where not verified) as recruiter_posts
 from public.jobs;

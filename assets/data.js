@@ -46,7 +46,9 @@ const DOMAINS = {
   "Breeze Airways": "flybreeze.com",
   "Aegean Airlines": "aegeanair.com",
   "airBaltic": "airbaltic.com",
-  "Air India": "airindia.com"
+  "Air India": "airindia.com",
+  "Challenge Airlines": "challenge-group.com",
+  "ZipAir Tokyo": "zipair.net"
 };
 
 /* Base coordinates for the job map — keyed by the exact `location` strings used in JOBS.
@@ -91,7 +93,9 @@ const BASES = {
   "Athens (ATH)":                     [37.94, 23.95],
   "Riga (RIG)":                       [56.92, 23.97],
   "Delhi (DEL)":                      [28.56, 77.10],
-  "Munich / Frankfurt":               [50.04, 8.56]     // Lufthansa — Frankfurt
+  "Munich / Frankfurt":               [50.04, 8.56],    // Lufthansa — Frankfurt
+  "Liège (LGG)":                      [50.64, 5.44],
+  "Tokyo Narita (NRT)":               [35.77, 140.39]
 };
 
 const JOBS = [
@@ -430,6 +434,18 @@ const JOBS = [
     reqs: "Type-rated A320 Captains — full criteria on the official Aegean posting. Non-type-rated Captain route also open via the careers portal.",
     applyUrl: "https://jobs.aegeanair.com/job/Type-Rated-Captains-for-A320/1347735255/" },
 
+  /* ---- Challenge Airlines (career.challenge-group.com) — verified 14 Jun 2026 ---- */
+  { id: 285, airline: "Challenge Airlines", role: "First Officer", aircraft: "B777 (cargo)", region: "Europe", location: "Liège (LGG)", type: "Direct Entry", minHours: 1000, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "Competitive + 13th month + business-class travel",
+    reqs: "EASA ATPL or CPL · 1,000+ hrs on CS-25 · recent Boeing experience preferred (B777 a plus) · Class 1 · ICAO English ≥4. Cargo ops, pattern roster, Liège base. Posted 14 Apr 2026.",
+    applyUrl: "https://career.challenge-group.com/job/First-Officer-B777/697-en_GB" },
+
+  /* ---- ZipAir Tokyo (zipairtokyo.com) — verified 14 Jun 2026 ---- */
+  { id: 286, airline: "ZipAir Tokyo", role: "First Officer", aircraft: "B787", region: "Asia-Pacific", location: "Tokyo Narita (NRT)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14", verified: true,
+    salary: "See official requirements",
+    reqs: "Flight crew recruitment open ('Now hiring') — B787 First Officers and Captains for JAL's medium/long-haul LCC. Hours & licensing on the official ZipAir recruitment requirements sheet.",
+    applyUrl: "https://www.zipairtokyo.com/en/recruit/" },
+
   /* ================= CABIN CREW — verified 11–14 Jun 2026 ================= */
   { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-11", verified: true,
     salary: "Tax-free + free accommodation + travel perks",
@@ -539,7 +555,9 @@ const AIRLINES = [
   { name: "Breeze Airways",     code: "MX", domain: "flybreeze.com",        country: "USA",          fleet: "A220-300, E190/E195",     pilots: 700,  bases: "Multiple US focus cities",    status: "hiring", note: "✓ Verified 14 Jun 2026: A220 First Officer hiring (1,500 hrs · US 121/135/military) with company-paid type rating, plus full- and part-time Flight Attendant intakes across many US bases. David Neeleman's startup — fast A220-driven upgrades." },
   { name: "Aegean Airlines",    code: "A3", domain: "aegeanair.com",        country: "Greece",       fleet: "A320neo family, A321neo, ATR 42/72", pilots: 1000, bases: "Athens, Thessaloniki",  status: "hiring", note: "✓ Verified 14 Jun 2026: full flight-deck intake on the official portal — non-rated FOs (A320/ATR, deadline 30 Jun), type-rated A320 FOs, and type-rated & non-rated A320 Captains, plus Athens-based Cabin Crew. Star Alliance, 60 A320/A321neo on order." },
   { name: "airBaltic",          code: "BT", domain: "airbaltic.com",        country: "Latvia",       fleet: "A220-300 (all-Airbus)",   pilots: 600,  bases: "Riga, Tampere, Tallinn, Vilnius", status: "hiring", note: "✓ Verified 14 Jun 2026: A220 Senior First Officers with fast-track command (Captain within ~12 months) — company-paid type rating, new 2026 pay deal, 13-on/10-off commuting roster. All-A220 fleet." },
-  { name: "Air India",          code: "AI", domain: "airindia.com",         country: "India",        fleet: "B777, B787, A350, A320neo", pilots: 3000, bases: "Delhi, Mumbai, Bengaluru",  status: "hiring", note: "✓ Verified 14 Jun 2026: Trainee Cabin Crew intake live (Delhi). Tata-owned, mid major-transformation with a huge Airbus/Boeing order book; mainline pilot reqs were not open on the portal at last check — watch careers.airindia.com." }
+  { name: "Air India",          code: "AI", domain: "airindia.com",         country: "India",        fleet: "B777, B787, A350, A320neo", pilots: 3000, bases: "Delhi, Mumbai, Bengaluru",  status: "hiring", note: "✓ Verified 14 Jun 2026: Trainee Cabin Crew intake live (Delhi). Tata-owned, mid major-transformation with a huge Airbus/Boeing order book; mainline pilot reqs were not open on the portal at last check — watch careers.airindia.com." },
+  { name: "Challenge Airlines", code: "X7", domain: "challenge-group.com",  country: "Belgium",      fleet: "B747-400F, B767F, B777F", pilots: 150, bases: "Liège (+ Tel Aviv, Malta)", status: "hiring", note: "✓ Verified 14 Jun 2026: B777 First Officers live on the official portal (1,000+ hrs CS-25, EASA ATPL/CPL). Fast-growing cargo group — pattern roster, business-class travel, 13th-month bonus." },
+  { name: "ZipAir Tokyo",       code: "ZG", domain: "zipair.net",           country: "Japan",        fleet: "B787-8",                  pilots: 150,  bases: "Tokyo Narita",                status: "hiring", note: "✓ Verified 14 Jun 2026: flight crew recruitment open ('Now hiring') — B787 First Officers & Captains for JAL's medium/long-haul low-cost arm." }
 ];
 
 const SALARIES = [
