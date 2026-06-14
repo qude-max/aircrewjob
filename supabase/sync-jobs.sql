@@ -74,6 +74,7 @@ values
 (282, 'Aegean Airlines', 'First Officer', 'A320 / ATR 42-72 (non-rated)', 'Europe', 'Athens (ATH)', 'Direct Entry', 70, false, '14 salaries/yr + health & pension + loss-of-licence cover', true, 'https://jobs.aegeanair.com/job/Non-Type-Rated-First-Officers-A320-&-ATR-4272/1345969155/', 'EASA CPL(A) with ATPL theory (or ATPL) · valid ME IR · 70+ hrs PIC · MCC + Advanced UPRT · ICAO English ≥4 · Class 1 · unrestricted EU work right. ⏰ Deadline 30 Jun 2026.', 'pilot', '2026-06-14'::timestamptz),
 (283, 'Aegean Airlines', 'First Officer', 'A320 (type-rated)', 'Europe', 'Athens (ATH)', 'Rated', 500, true, '14 salaries/yr + health & pension', true, 'https://jobs.aegeanair.com/job/Type-Rated-First-Officers-for-A320/1353411355/', 'Type-rated A320 First Officers — full criteria on the official Aegean posting. Star Alliance member, 60 A320/A321neo on order.', 'pilot', '2026-06-14'::timestamptz),
 (284, 'Aegean Airlines', 'Captain', 'A320 (type-rated)', 'Europe', 'Athens (ATH)', 'Rated', 4000, true, '14 salaries/yr + health & pension', true, 'https://jobs.aegeanair.com/job/Type-Rated-Captains-for-A320/1347735255/', 'Type-rated A320 Captains — full criteria on the official Aegean posting. Non-type-rated Captain route also open via the careers portal.', 'pilot', '2026-06-14'::timestamptz),
+(285, 'LOT Polish Airlines', 'First Officer', 'B737 (rated / non-rated)', 'Europe', 'Warsaw (WAW)', 'Direct Entry', 800, false, 'LOT-funded type rating', true, 'https://www.lot.com/us/en/careers', '''Pilot the Future'' campaign — B737 First Officers from 800 hrs TT (incl. 500 hrs on aircraft >40 t) · EASA licence · ICAO English ≥4. Q400/E-jet and B787 FO routes plus cadets also recruited; LOT pays the type rating. Apply via the official LOT careers portal.', 'pilot', '2026-06-14'::timestamptz),
 (301, 'Emirates', 'Cabin Crew', 'A380 / B777 cabins', 'Middle East', 'Dubai (DXB)', 'Direct Entry', 0, false, 'Tax-free + free accommodation + travel perks', true, 'https://www.emiratesgroupcareers.com/cabin-crew/', '21+ · high-school (Grade 12) · fluent English · 1+ yr customer service · open days worldwide + online application.', 'crew', '2026-06-11'::timestamptz),
 (302, 'Qatar Airways', 'Cabin Crew', 'QR international fleet', 'Middle East', 'Doha (DOH)', 'Direct Entry', 0, false, 'Tax-free + furnished accommodation + medical', true, 'https://careers.qatarairways.com/global/JobDetail/Cabin-Crew-Recruitment-Doha-Qatar-2026/77216', 'Online application open · walk-in events worldwide (Nice, Bangkok, Tokyo & more on the portal).', 'crew', '2026-06-11'::timestamptz),
 (303, 'Singapore Airlines', 'Cabin Crew', 'SQ international fleet', 'Asia-Pacific', 'MY · KR · JP · TH · IN bases', 'Direct Entry', 0, false, 'See official listing', true, 'https://careers.singaporeair.com/sia/go/Cabin-Crew/689244/', 'Open now for Malaysia, South Korea, Japan, Thailand & India intakes (Singapore base currently closed) · video interview then in-person.', 'crew', '2026-06-11'::timestamptz),
@@ -96,7 +97,7 @@ on conflict (id) do update set
   category = excluded.category, posted_at = excluded.posted_at;
 
 -- remove verified listings that left the catalog (closed/withdrawn)
-delete from public.jobs where verified = true and id not in (101, 102, 103, 104, 111, 112, 113, 114, 115, 116, 117, 121, 131, 132, 133, 141, 142, 143, 151, 152, 161, 162, 163, 221, 222, 223, 224, 225, 226, 227, 228, 229, 171, 172, 181, 191, 201, 202, 211, 212, 233, 234, 241, 243, 244, 245, 251, 252, 253, 254, 255, 256, 261, 262, 263, 264, 271, 272, 273, 274, 281, 282, 283, 284, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314);
+delete from public.jobs where verified = true and id not in (101, 102, 103, 104, 111, 112, 113, 114, 115, 116, 117, 121, 131, 132, 133, 141, 142, 143, 151, 152, 161, 162, 163, 221, 222, 223, 224, 225, 226, 227, 228, 229, 171, 172, 181, 191, 201, 202, 211, 212, 233, 234, 241, 243, 244, 245, 251, 252, 253, 254, 255, 256, 261, 262, 263, 264, 271, 272, 273, 274, 281, 282, 283, 284, 285, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314);
 
 -- keep the identity sequence clear of catalog ids (recruiter posts get ids >= 1000)
 select setval(pg_get_serial_sequence('public.jobs', 'id'),
@@ -104,7 +105,7 @@ select setval(pg_get_serial_sequence('public.jobs', 'id'),
 
 commit;
 
--- sanity check: should match data.js (78 verified listings)
+-- sanity check: should match data.js (79 verified listings)
 select count(*) filter (where verified) as verified_jobs,
        count(*) filter (where not verified) as recruiter_posts
 from public.jobs;

@@ -73,7 +73,9 @@ const SCHOOLS = [
   { name: "LIFT Academy (Republic Airways)", city: "Indianapolis, IN, USA",     lat: 39.72,  lng: -86.29,  region: "Americas",     auth: "FAA",           url: "https://rjet.com/about/lift-academy/",  note: "Airline-owned academy flying Diamond DA40/DA42 — a direct pathway to Republic Airways." },
   { name: "OxfordSaudia Flight Academy",     city: "Dammam, Saudi Arabia",      lat: 26.47,  lng: 49.80,   region: "Middle East",  auth: "GACA + CAE",    url: "https://www.oxfordsaudia.com",          note: "CAE-authorised academy at King Fahd Int'l — ab initio for Saudi & international students." },
   { name: "Gulf Aviation Academy",           city: "Muharraq, Bahrain",         lat: 26.27,  lng: 50.63,   region: "Middle East",  auth: "Bahrain CAA + EASA", url: "https://www.gaa.aero",             note: "Gulf Air's training arm — ab initio, type ratings and cabin crew." },
-  { name: "Civil Aviation Flight University of China", city: "Guanghan, China",  lat: 30.93,  lng: 104.32,  region: "Asia-Pacific", auth: "CAAC",          url: "https://www.cafuc.edu.cn",              note: "The world's largest pilot university (est. 1956) — primary trainer of China's airline pilots." }
+  { name: "Civil Aviation Flight University of China", city: "Guanghan, China",  lat: 30.93,  lng: 104.32,  region: "Asia-Pacific", auth: "CAAC",          url: "https://www.cafuc.edu.cn",              note: "The world's largest pilot university (est. 1956) — primary trainer of China's airline pilots." },
+  { name: "CAE Brussels",                   city: "Brussels, Belgium",         lat: 50.90,  lng: 4.48,    region: "Europe",       auth: "EASA",          url: "https://www.cae.com/civil-aviation/locations/cae-brussels/", note: "Formerly Sabena Flight Academy — EASA integrated ATPL with airline cadet contracts." },
+  { name: "Stapleford Flight Centre",       city: "Stapleford (Essex), UK",    lat: 51.65,  lng: 0.16,    region: "Europe",       auth: "UK CAA + EASA", url: "https://flysfc.com",                    note: "Family-run since 1969 — integrated & modular ATPL plus the only ATPL theory course inside the M25." }
 ];
 
 const MEDICAL = [
@@ -120,5 +122,7 @@ const REGULATOR_LOCATORS = [
   { name: "New Zealand — CAA NZ", url: "https://www.aviation.govt.nz/licensing-and-certification/medical-certification/", note: "Medical examiner directory for Class 1." },
   { name: "EASA states",          url: "https://www.easa.europa.eu/en/domains/aircrew-and-medical/aeromedical-centres", note: "Initial Class 1 must be at an AeMC (pins on the map); REVALIDATIONS can be done by any authorised AME in your state — see your authority's list." },
   { name: "Japan — JCAB",         url: "https://www.mlit.go.jp/en/koku/index.html", note: "Class 1 medicals via JCAB-designated aviation medical examiners — see the official examiner list." },
-  { name: "Brazil — ANAC",        url: "https://www.gov.br/anac/pt-br", note: "CMA (medical certificate) via ANAC-credentialed examiners and clinics across Brazil." }
+  { name: "Brazil — ANAC",        url: "https://www.gov.br/anac/pt-br", note: "CMA (medical certificate) via ANAC-credentialed examiners and clinics across Brazil." },
+  { name: "South Africa — SACAA", url: "https://www.caa.co.za", note: "Find a Designated Aviation Medical Examiner (DAME) for Class 1 — initial and renewal." },
+  { name: "India — DGCA",         url: "https://www.dgca.gov.in", note: "Initial Class 1 at IAM Bengaluru / AFCME Delhi; renewals via DGCA-empanelled medical examiners." }
 ];

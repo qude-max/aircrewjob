@@ -7,7 +7,8 @@
 -- instead of leaking straight to the airline's portal.
 --
 -- SECURITY: replace <WEBHOOK_URL> with your Discord webhook URL
--- before running. Do NOT commit the real URL — the repo is public.
+-- before running (NO angle brackets — paste the bare https://… URL).
+-- Do NOT commit the real URL — the repo is public.
 -- The webhook lives only inside the database function.
 --
 -- Deploy: paste into Supabase → SQL Editor → Run. The existing
@@ -21,7 +22,7 @@ create or replace function public.notify_discord_new_job()
   set search_path to 'public'
 as $function$
 declare
-  webhook text := '<WEBHOOK_URL>';
+  webhook text := 'PASTE_YOUR_DISCORD_WEBHOOK_URL_HERE';   -- bare https://… (no < >)
   job_url text := 'https://www.aircrewjob.com/jobs.html?job=' || new.id::text;
 begin
   if webhook like 'http%' then
