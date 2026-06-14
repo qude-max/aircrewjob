@@ -4,4 +4,4 @@ Disallow: /admin.html
 Disallow: /recruiter.html
 Disallow: /account.html
 Disallow: /auth.html
-Sitemap: https://aircrewjob.com/sitemap.xml
+Sitemap: https://www.aircrewjob.com/sitemap.xml

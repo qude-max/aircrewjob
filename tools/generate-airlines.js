@@ -13,7 +13,7 @@ const path = require("path");
 
 const ROOT = path.join(__dirname, "..");
 const OUT = path.join(ROOT, "airline");
-const BASE = "https://aircrewjob.com";
+const BASE = "https://www.aircrewjob.com";
 
 /* load data.js in a sandbox */
 const src = fs.readFileSync(path.join(ROOT, "assets", "data.js"), "utf8");
