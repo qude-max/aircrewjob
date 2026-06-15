@@ -198,6 +198,49 @@ function logoHTML(airline, cls = "job-logo", urlHint = null) {
 
 /* Vercel Web Analytics — only loads on the deployed site, never locally.
    Enable it once in Vercel: Project → Analytics → Enable. */
+/* ---- Google Ads conversion tracking ----
+   Fill a label in once you've created the matching conversion action in
+   Google Ads (Goals → Conversions → New). Format: "AW-18240351644/AbCd_efGh".
+   Until a label is set we still fire a named event so nothing is lost. */
+const ACJ_CONV = {
+  apply_click: "AW-18240351644/6Jk3CJK53b8cEJzb1vlD",   // "Apply on airline site" click-out
+  discord_join: "AW-18240351644/FHF9CLng3b8cEJzb1vlD",  // Chill Wings Discord join
+  job_alert: "AW-18240351644/7xyDCNLq3b8cEJzb1vlD"      // email job-alert signup
+};
+function trackConversion(name, params) {
+  if (typeof gtag !== "function") return;
+  const label = ACJ_CONV[name];
+  gtag("event", label ? "conversion" : name,
+       Object.assign({}, params || {}, label ? { send_to: label } : {}));
+}
+
+/* Wire any email job-alert form (.js-alert-form) to Backend.subscribe */
+function initJobAlerts() {
+  document.querySelectorAll(".js-alert-form").forEach(form => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const input = form.querySelector("input[name=email]");
+      const btn = form.querySelector("button");
+      const scope = form.closest(".container") || document;
+      const msg = scope.querySelector(".js-alert-msg");
+      if (btn) btn.disabled = true;
+      await Backend.ready;
+      const r = await Backend.subscribe.add(input.value, form.dataset.alertCat || "all");
+      if (btn) btn.disabled = false;
+      if (!msg) return;
+      if (r.error) {
+        msg.textContent = r.error;
+        msg.className = "alert-msg js-alert-msg err";
+      } else {
+        msg.textContent = "✓ You're on the list — new verified jobs will land in your inbox.";
+        msg.className = "alert-msg js-alert-msg ok";
+        if (input) input.value = "";
+        trackConversion("job_alert");
+      }
+    });
+  });
+}
+
 function initAnalytics() {
   if (!location.hostname.endsWith(".vercel.app") && !location.hostname.includes("aircrewjob")) return;
   const s = document.createElement("script");
@@ -218,7 +261,10 @@ function initPWA() {
    (count stays hidden) if not configured or unreachable. */
 function initCommunity() {
   if (typeof DISCORD_INVITE !== "undefined") {
-    document.querySelectorAll(".js-discord").forEach(a => { a.href = DISCORD_INVITE; });
+    document.querySelectorAll(".js-discord").forEach(a => {
+      a.href = DISCORD_INVITE;
+      a.addEventListener("click", () => trackConversion("discord_join"));
+    });
   }
   if (typeof DISCORD_GUILD_ID === "undefined" || !DISCORD_GUILD_ID) return;
   fetch("https://discord.com/api/guilds/" + DISCORD_GUILD_ID + "/widget.json")
@@ -239,6 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initAnalytics();
   initPWA();
   initCommunity();
+  initJobAlerts();
 });
 
 /* ---- Cookie consent banner (Google Consent Mode v2) ---- */

@@ -13,8 +13,8 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pilot Job Board — AirCrew Jobs</title>
-  <meta name="description" content="Live pilot vacancies worldwide. Filter by region, role, type and minimum hours.">
+  <title>Pilot & Cabin Crew Jobs — Verified Daily, Apply Direct | AirCrew Jobs</title>
+  <meta name="description" content="Verified pilot and cabin crew vacancies worldwide, direct from airline portals. Filter by region, role, type and hours. No agents, no fees — apply in one click.">
   <link rel="canonical" href="https://www.aircrewjob.com/jobs.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AirCrew Jobs">
@@ -130,6 +130,24 @@
     .modal-msg { font-size: 0.88rem; min-height: 1.3em; margin-top: 12px; }
     .modal-msg.err { color: var(--red); }
     .modal-msg.ok { color: var(--green); }
+
+    /* ---- Hero trust line + job-alert capture ---- */
+    .hero-stats { color: var(--text-faint); font-size: 0.9rem; margin-top: 12px; }
+    .hero-stats b { color: var(--accent); font-weight: 600; }
+    .hero-cta { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 20px; }
+    .alert-form { display: flex; gap: 8px; }
+    .alert-form .input { width: 230px; max-width: 62vw; }
+    .alert-btn {
+      font-family: var(--font-display); font-weight: 600; font-size: 0.9rem;
+      padding: 11px 20px; border-radius: 12px; cursor: pointer; border: none;
+      background: var(--accent); color: #05080f; white-space: nowrap; transition: filter 0.2s;
+    }
+    .alert-btn:hover { filter: brightness(1.08); }
+    .alert-btn[disabled] { opacity: 0.6; cursor: default; }
+    .alert-msg { font-size: 0.88rem; min-height: 1.2em; margin-top: 8px; }
+    .alert-msg.ok { color: var(--green); }
+    .alert-msg.err { color: var(--red); }
+    .hero-social { color: var(--green); font-size: 0.85rem; margin-top: 8px; }
   </style>
 </head>
 <body>
@@ -137,8 +155,18 @@
   <header class="page-hero">
     <div class="container">
       <span class="eyebrow">Job Board · Updated daily</span>
-      <h1 style="margin-top:20px">Flight deck <span class="gradient-text">vacancies</span></h1>
-      <p>From zero-hour cadetships to widebody commands. Filter, save, apply.</p>
+      <h1 style="margin-top:20px">Pilot &amp; cabin crew <span class="gradient-text">jobs</span></h1>
+      <p>Verified daily, direct from airline portals. No agents, no fees — apply in one click.</p>
+      <p class="hero-stats"><b data-stat-jobs>—</b> verified vacancies · <b data-stat-airlines>—</b> airlines · direct airline links · no agents</p>
+      <div class="hero-cta">
+        <form class="alert-form js-alert-form" data-alert-cat="all">
+          <input class="input" name="email" type="email" required autocomplete="email" placeholder="your@email.com" aria-label="Email for job alerts">
+          <button class="alert-btn" type="submit">🔔 Get job alerts</button>
+        </form>
+        <a class="trust-chip js-discord" href="index.html#newsletter" target="_blank" rel="noopener">💬 or join Chill Wings on Discord →</a>
+      </div>
+      <p class="alert-msg js-alert-msg" aria-live="polite"></p>
+      <p class="hero-social" data-discord-count style="display:none">● <span data-discord-online>—</span> aircrew online in Chill Wings now</p>
     </div>
   </header>
 
@@ -353,6 +381,12 @@
     let allJobs = [], savedIds = new Set(), appliedIds = new Set(), applyJob = null, matchOnly = false;
     let category = "pilot";
 
+    // Count a click-out to an airline's official application as a conversion
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest("a.js-apply-out");
+      if (a && typeof trackConversion === "function") trackConversion("apply_click", { airline: a.dataset.airline || "" });
+    });
+
     /* ---------- Map / List view (map is the default) ---------- */
     let view = localStorage.getItem("acj_jobs_view") || "list";
     let jobMap = null, mapMarkers = [];
@@ -452,8 +486,12 @@
       render();
       focusJobFromUrl();
 
-      // Source note — computed from the data so it can never go stale
+      // Hero trust line — live counts from the data so they never go stale
       const vAirlines = [...new Set(allJobs.filter(j => j.verified).map(j => j.airline))];
+      const vJobs = allJobs.filter(j => j.verified).length;
+      document.querySelectorAll("[data-stat-jobs]").forEach(el => el.textContent = vJobs);
+      document.querySelectorAll("[data-stat-airlines]").forEach(el => el.textContent = vAirlines.length);
+
       document.getElementById("sourceNote").innerHTML =
         `✓ Verified listings are sourced from the official careers portals of ${vAirlines.length} airlines
          (${vAirlines.map(esc).join(", ")}) — checked ${typeof VERIFIED_DATE !== "undefined" ? esc(VERIFIED_DATE) : "regularly"} and re-verified weekly.
@@ -523,7 +561,7 @@
       els.jobList.innerHTML = filtered.map((j, i) => {
         const applied = appliedIds.has(j.id);
         const applyBtn = safeUrl(j.applyUrl)
-          ? `<a class="btn btn-primary btn-sm" href="${safeUrl(j.applyUrl)}" target="_blank" rel="noopener">Apply on airline site ↗</a>`
+          ? `<a class="btn btn-primary btn-sm js-apply-out" data-airline="${esc(j.airline)}" href="${safeUrl(j.applyUrl)}" target="_blank" rel="noopener">Apply on airline site ↗</a>`
           : `<button class="btn btn-primary btn-sm" ${applied ? "disabled style='opacity:0.55'" : ""} onclick="openApply(${JSON.stringify(j.id)})">${applied ? "✓ Applied" : "Apply →"}</button>`;
         return `
         <div class="job-card" id="job-${j.id}" style="animation-delay:${Math.min(i * 40, 400)}ms">

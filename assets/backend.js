@@ -474,7 +474,27 @@ const Backend = (() => {
     }
   };
 
-  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, canPost };
+  /* ---------- job-alert subscribers (email capture) ---------- */
+  const subscribeApi = {
+    async add(email, category) {
+      email = (email || "").trim().toLowerCase();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { error: "Please enter a valid email address." };
+      if (mode === "supabase") {
+        const { error } = await sb.from("subscribers").insert({ email, category: category || "all" });
+        // a repeat signup (unique-email clash) is a success from the user's side
+        if (error && !/duplicate|unique|already exists/i.test(error.message)) return { error: error.message };
+        return { ok: true };
+      }
+      const list = LS.get("subscribers", []);
+      if (!list.some(s => s.email === email)) {
+        list.push({ email, category: category || "all", created: new Date().toISOString() });
+        LS.set("subscribers", list);
+      }
+      return { ok: true };
+    }
+  };
+
+  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, subscribe: subscribeApi, canPost };
 })();
 
 Backend.ready = Backend.init();
