@@ -79,6 +79,7 @@ values
 (287, 'VistaJet', 'First Officer', 'Global / Challenger (VIP)', 'Europe', 'Global rotations (Vista)', 'Direct Entry', 2500, false, 'Competitive + one-type roster, twice-yearly training', true, 'https://vistaglobal.com/careers/pilot/', 'Global Express / Challenger First Officers · ~2,500 hrs TT · frozen/full ATPL · Class 1. Private aviation to 200+ countries; fly one type, keep seniority while advancing aircraft size across the Vista fleet.', 'pilot', '2026-06-14T19:30:00Z'::timestamptz),
 (288, 'Norse Atlantic', 'First Officer', 'B787', 'Europe', 'London Gatwick (LGW)', 'Direct Entry', 1500, false, 'See official listing — direct hire, union pre-hire deal', true, 'https://careers.flynorse.com/jobs/6973041-boeing-787-first-officer', 'Boeing 787 First Officers, London Gatwick base — low-cost long-haul (transatlantic, Caribbean & Bangkok). Direct-hire by Norse; full criteria on the official Teamtailor careers portal.', 'pilot', '2026-06-14T19:45:00Z'::timestamptz),
 (289, 'NetJets', 'First Officer', 'Phenom 300 / Citation Latitude (VIP)', 'Americas', 'US — home-based (NetJets)', 'Direct Entry', 1500, false, 'From ~$100k yr 1 · 7-on/7-off · home-based', true, 'https://www.netjets.com/en-us/netjets-careers-pilot-jobs', 'FAA ATP (or R-ATP eligible) · 1,500 hrs TT · US work authorisation · light/midsize fleet (Phenom 300, Citation Latitude). World''s largest private-aviation operator — continuous monthly new-hire classes, company-paid type rating. Apply via the official NetJets careers portal.', 'pilot', '2026-06-15T10:00:00Z'::timestamptz),
+(290, 'Flexjet', 'First Officer', 'Phenom 300 / light jet (VIP)', 'Americas', 'US — home-based (Flexjet)', 'Direct Entry', 1500, false, 'Premium fractional pay · company-paid type rating', true, 'https://careers.flexjet.com/us/en/job/847/First-Officer-United-States', 'FAA ATP (or R-ATP eligible) · ~1,500 hrs TT · US work authorisation · light/midsize fleet (Phenom 300). Fractional/VIP operator with monthly new-hire classes and fast (~2-year) command upgrades; company-paid type rating.', 'pilot', '2026-06-15T11:00:00Z'::timestamptz),
 (301, 'Emirates', 'Cabin Crew', 'A380 / B777 cabins', 'Middle East', 'Dubai (DXB)', 'Direct Entry', 0, false, 'Tax-free + free accommodation + travel perks', true, 'https://www.emiratesgroupcareers.com/cabin-crew/', '21+ · high-school (Grade 12) · fluent English · 1+ yr customer service · open days worldwide + online application.', 'crew', '2026-06-11'::timestamptz),
 (302, 'Qatar Airways', 'Cabin Crew', 'QR international fleet', 'Middle East', 'Doha (DOH)', 'Direct Entry', 0, false, 'Tax-free + furnished accommodation + medical', true, 'https://careers.qatarairways.com/global/JobDetail/Cabin-Crew-Recruitment-Doha-Qatar-2026/77216', 'Online application open · walk-in events worldwide (Nice, Bangkok, Tokyo & more on the portal).', 'crew', '2026-06-11'::timestamptz),
 (303, 'Singapore Airlines', 'Cabin Crew', 'SQ international fleet', 'Asia-Pacific', 'MY · KR · JP · TH · IN bases', 'Direct Entry', 0, false, 'See official listing', true, 'https://careers.singaporeair.com/sia/go/Cabin-Crew/689244/', 'Open now for Malaysia, South Korea, Japan, Thailand & India intakes (Singapore base currently closed) · video interview then in-person.', 'crew', '2026-06-11'::timestamptz),
@@ -105,7 +106,7 @@ on conflict (id) do update set
   category = excluded.category, posted_at = excluded.posted_at;
 
 -- remove verified listings that left the catalog (closed/withdrawn)
-delete from public.jobs where verified = true and id not in (101, 102, 103, 104, 111, 112, 113, 114, 115, 116, 117, 121, 131, 132, 133, 141, 142, 143, 151, 152, 161, 162, 163, 221, 222, 223, 224, 225, 226, 227, 228, 229, 171, 172, 181, 191, 201, 202, 211, 212, 233, 234, 241, 243, 244, 245, 251, 252, 253, 254, 255, 256, 261, 262, 263, 264, 271, 272, 273, 274, 281, 282, 283, 284, 285, 286, 287, 288, 289, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318);
+delete from public.jobs where verified = true and id not in (101, 102, 103, 104, 111, 112, 113, 114, 115, 116, 117, 121, 131, 132, 133, 141, 142, 143, 151, 152, 161, 162, 163, 221, 222, 223, 224, 225, 226, 227, 228, 229, 171, 172, 181, 191, 201, 202, 211, 212, 233, 234, 241, 243, 244, 245, 251, 252, 253, 254, 255, 256, 261, 262, 263, 264, 271, 272, 273, 274, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318);
 
 -- keep the identity sequence clear of catalog ids (recruiter posts get ids >= 1000)
 select setval(pg_get_serial_sequence('public.jobs', 'id'),
@@ -113,7 +114,7 @@ select setval(pg_get_serial_sequence('public.jobs', 'id'),
 
 commit;
 
--- sanity check: should match data.js (87 verified listings)
+-- sanity check: should match data.js (88 verified listings)
 select count(*) filter (where verified) as verified_jobs,
        count(*) filter (where not verified) as recruiter_posts
 from public.jobs;

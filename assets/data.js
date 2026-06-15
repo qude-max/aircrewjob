@@ -52,7 +52,8 @@ const DOMAINS = {
   "VistaJet": "vistajet.com",
   "Norse Atlantic": "flynorse.com",
   "Finnair": "finnair.com",
-  "NetJets": "netjets.com"
+  "NetJets": "netjets.com",
+  "Flexjet": "flexjet.com"
 };
 
 /* Base coordinates for the job map — keyed by the exact `location` strings used in JOBS.
@@ -103,7 +104,8 @@ const BASES = {
   "Global rotations (Vista)":         [35.85, 14.49],   // VistaJet — Malta AOC
   "London Gatwick (LGW)":             [51.15, -0.18],
   "Helsinki (HEL)":                   [60.32, 24.96],
-  "US — home-based (NetJets)":        [39.99, -82.89]
+  "US — home-based (NetJets)":        [39.99, -82.89],
+  "US — home-based (Flexjet)":        [41.41, -81.85]
 };
 
 const JOBS = [
@@ -472,6 +474,12 @@ const JOBS = [
     reqs: "FAA ATP (or R-ATP eligible) · 1,500 hrs TT · US work authorisation · light/midsize fleet (Phenom 300, Citation Latitude). World's largest private-aviation operator — continuous monthly new-hire classes, company-paid type rating. Apply via the official NetJets careers portal.",
     applyUrl: "https://www.netjets.com/en-us/netjets-careers-pilot-jobs" },
 
+  /* ---- Flexjet (careers.flexjet.com) — VIP/business aviation, verified 15 Jun 2026 (user-confirmed) ---- */
+  { id: 290, airline: "Flexjet", role: "First Officer", aircraft: "Phenom 300 / light jet (VIP)", region: "Americas", location: "US — home-based (Flexjet)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-15T11:00:00Z", verified: true,
+    salary: "Premium fractional pay · company-paid type rating",
+    reqs: "FAA ATP (or R-ATP eligible) · ~1,500 hrs TT · US work authorisation · light/midsize fleet (Phenom 300). Fractional/VIP operator with monthly new-hire classes and fast (~2-year) command upgrades; company-paid type rating.",
+    applyUrl: "https://careers.flexjet.com/us/en/job/847/First-Officer-United-States" },
+
   /* ================= CABIN CREW — verified 11–14 Jun 2026 ================= */
   { id: 301, airline: "Emirates", category: "crew", role: "Cabin Crew", aircraft: "A380 / B777 cabins", region: "Middle East", location: "Dubai (DXB)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-11", verified: true,
     salary: "Tax-free + free accommodation + travel perks",
@@ -591,7 +599,8 @@ const AIRLINES = [
   { name: "VistaJet",           code: "VJT", domain: "vistajet.com",        country: "Malta",        fleet: "Global 7500/6000, Challenger 350/650", pilots: 1400, bases: "Global (Malta/Austria/US AOCs)", status: "hiring", note: "✓ Verified 14 Jun 2026: VIP/business aviation — Global & Challenger First Officers (~2,500 hrs). Fly one type, twice-yearly training, keep seniority while moving up aircraft size; 200+ countries." },
   { name: "Norse Atlantic",     code: "Z0", domain: "flynorse.com",         country: "Norway",       fleet: "B787-9",                  pilots: 250,  bases: "OSL, LGW, CDG, FCO, ATH",     status: "hiring", note: "✓ Verified 14 Jun 2026: B787 First Officers live (London Gatwick). Low-cost long-haul — transatlantic, Caribbean & Bangkok; direct-hire with union pre-hire agreements." },
   { name: "Finnair",            code: "AY", domain: "finnair.com",          country: "Finland",      fleet: "A350, A330, A320 family, ATR", pilots: 1000, bases: "Helsinki",               status: "hiring", note: "✓ Verified 14 Jun 2026: 2026 cabin crew recruitment open (Helsinki). oneworld hub carrier between Europe and Asia; pilot intakes run periodically." },
-  { name: "NetJets",            code: "1I", domain: "netjets.com",          country: "USA",          fleet: "Phenom 300, Citation Latitude/Longitude, Challenger 350/650, Global 7500", pilots: 3000, bases: "US — home-based", status: "hiring", note: "✓ Verified 15 Jun 2026: world's largest private-aviation operator — continuous First Officer hiring (1,500 hrs ATP, light/midsize fleet), 7-on/7-off roster, company-paid type rating." }
+  { name: "NetJets",            code: "1I", domain: "netjets.com",          country: "USA",          fleet: "Phenom 300, Citation Latitude/Longitude, Challenger 350/650, Global 7500", pilots: 3000, bases: "US — home-based", status: "hiring", note: "✓ Verified 15 Jun 2026: world's largest private-aviation operator — continuous First Officer hiring (1,500 hrs ATP, light/midsize fleet), 7-on/7-off roster, company-paid type rating." },
+  { name: "Flexjet",            code: "LXJ", domain: "flexjet.com",         country: "USA",          fleet: "Phenom 300, Praetor 500/600, Challenger 350, Gulfstream G650/G700", pilots: 2000, bases: "US — home-based (+ Europe)", status: "hiring", note: "✓ Verified 15 Jun 2026 (user-confirmed): First Officer (United States) live — light/midsize fleet, ~1,500 hrs ATP, company-paid type rating, monthly new-hire classes & fast command upgrades. Fractional/VIP operator." }
 ];
 
 const SALARIES = [
