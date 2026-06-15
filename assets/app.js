@@ -18,7 +18,7 @@ function renderNav() {
   const page = location.pathname.split("/").pop() || "index.html";
   const links = NAV_ITEMS.map(i =>
     `<li><a href="${i.href}" class="${i.href === page ? "active" : ""}">${i.label}</a></li>`
-  ).join("") + `<li><a href="${typeof DISCORD_INVITE !== "undefined" ? DISCORD_INVITE : "#"}" target="_blank" rel="noopener" style="color:var(--accent)">💬 Chill Wings</a></li>`;
+  ).join("");
   document.body.insertAdjacentHTML("afterbegin", `
     <nav class="main-nav">
       <div class="nav-inner">
