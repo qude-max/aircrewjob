@@ -217,6 +217,9 @@ function initPWA() {
    Needs DISCORD_GUILD_ID set + the server widget enabled. Fails silently
    (count stays hidden) if not configured or unreachable. */
 function initCommunity() {
+  if (typeof DISCORD_INVITE !== "undefined") {
+    document.querySelectorAll(".js-discord").forEach(a => { a.href = DISCORD_INVITE; });
+  }
   if (typeof DISCORD_GUILD_ID === "undefined" || !DISCORD_GUILD_ID) return;
   fetch("https://discord.com/api/guilds/" + DISCORD_GUILD_ID + "/widget.json")
     .then(r => (r.ok ? r.json() : null))

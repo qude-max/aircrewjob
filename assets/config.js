@@ -19,4 +19,4 @@ const DISCORD_INVITE = "https://discord.gg/NYdRP7d69p";
    Enable it: Discord → Server Settings → Widget → Enable Server Widget.
    Get the ID: Discord → Settings → Advanced → Developer Mode ON, then
    right-click your server → Copy Server ID. Leave "" to hide the count. */
-const DISCORD_GUILD_ID = "";
+const DISCORD_GUILD_ID = "1487767764775993346";
