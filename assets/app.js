@@ -18,7 +18,7 @@ function renderNav() {
   const page = location.pathname.split("/").pop() || "index.html";
   const links = NAV_ITEMS.map(i =>
     `<li><a href="${i.href}" class="${i.href === page ? "active" : ""}">${i.label}</a></li>`
-  ).join("");
+  ).join("") + `<li><a href="${typeof DISCORD_INVITE !== "undefined" ? DISCORD_INVITE : "#"}" target="_blank" rel="noopener" style="color:var(--accent)">💬 Chill Wings</a></li>`;
   document.body.insertAdjacentHTML("afterbegin", `
     <nav class="main-nav">
       <div class="nav-inner">
@@ -213,6 +213,21 @@ function initPWA() {
   navigator.serviceWorker.register("/sw.js").catch(() => {});
 }
 
+/* Live "aircrew online" count from the Discord server widget.
+   Needs DISCORD_GUILD_ID set + the server widget enabled. Fails silently
+   (count stays hidden) if not configured or unreachable. */
+function initCommunity() {
+  if (typeof DISCORD_GUILD_ID === "undefined" || !DISCORD_GUILD_ID) return;
+  fetch("https://discord.com/api/guilds/" + DISCORD_GUILD_ID + "/widget.json")
+    .then(r => (r.ok ? r.json() : null))
+    .then(d => {
+      if (!d || typeof d.presence_count !== "number") return;
+      document.querySelectorAll("[data-discord-online]").forEach(el => { el.textContent = d.presence_count.toLocaleString(); });
+      document.querySelectorAll("[data-discord-count]").forEach(el => { el.style.display = ""; });
+    })
+    .catch(() => {});
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderNav();
   renderFooter();
@@ -220,6 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
   animateCounters();
   initAnalytics();
   initPWA();
+  initCommunity();
 });
 
 /* ---- Cookie consent banner (Google Consent Mode v2) ---- */

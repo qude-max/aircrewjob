@@ -14,3 +14,9 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 /* Community — paste your Discord invite link here (one place, used site-wide) */
 const DISCORD_INVITE = "https://discord.gg/NYdRP7d69p";
+
+/* Optional — your Discord server ID, for the live "aircrew online" count.
+   Enable it: Discord → Server Settings → Widget → Enable Server Widget.
+   Get the ID: Discord → Settings → Advanced → Developer Mode ON, then
+   right-click your server → Copy Server ID. Leave "" to hide the count. */
+const DISCORD_GUILD_ID = "";
