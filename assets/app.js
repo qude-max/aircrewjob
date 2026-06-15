@@ -221,3 +221,32 @@ document.addEventListener("DOMContentLoaded", () => {
   initAnalytics();
   initPWA();
 });
+
+/* ---- Cookie consent banner (Google Consent Mode v2) ---- */
+(function () {
+  function init() {
+    var KEY = "acj_consent";
+    var gtag = window.gtag || function () { (window.dataLayer = window.dataLayer || []).push(arguments); };
+    try { if (localStorage.getItem(KEY)) return; } catch (e) { return; }
+    if (!document.body) return;
+    var bar = document.createElement("div");
+    bar.id = "acjConsent";
+    bar.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:99999;background:rgba(8,12,22,0.97);border-top:1px solid rgba(56,224,255,0.28);padding:14px 18px;display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;font-family:Inter,system-ui,sans-serif;box-shadow:0 -8px 30px rgba(0,0,0,0.45)";
+    bar.innerHTML =
+      '<span style="font-size:0.85rem;color:#c9d4e8;max-width:640px;line-height:1.5">We use cookies for analytics and to measure our ads. Accept or decline non-essential cookies. <a href="cookies.html" style="color:#38e0ff;text-decoration:none">Learn more</a>.</span>' +
+      '<span style="display:flex;gap:10px;flex-wrap:wrap">' +
+      '<button id="acjDecline" style="cursor:pointer;font:600 0.85rem Inter,sans-serif;padding:9px 18px;border-radius:9px;border:1px solid rgba(255,255,255,0.22);background:transparent;color:#c9d4e8">Decline</button>' +
+      '<button id="acjAccept" style="cursor:pointer;font:600 0.85rem Inter,sans-serif;padding:9px 18px;border-radius:9px;border:none;background:#38e0ff;color:#04121a">Accept</button>' +
+      '</span>';
+    document.body.appendChild(bar);
+    function choose(v) {
+      try { localStorage.setItem(KEY, v); } catch (e) {}
+      var s = v === "granted" ? "granted" : "denied";
+      gtag("consent", "update", { ad_storage: s, ad_user_data: s, ad_personalization: s, analytics_storage: s });
+      if (bar.parentNode) bar.parentNode.removeChild(bar);
+    }
+    document.getElementById("acjAccept").onclick = function () { choose("granted"); };
+    document.getElementById("acjDecline").onclick = function () { choose("denied"); };
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+})();
