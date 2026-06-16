@@ -52,6 +52,8 @@ const DOMAINS = {
   "VistaJet": "vistajet.com",
   "Norse Atlantic": "flynorse.com",
   "Finnair": "finnair.com",
+  "Eurowings": "eurowings.com",
+  "Air France": "airfrance.com",
   "NetJets": "netjets.com",
   "Flexjet": "flexjet.com"
 };
@@ -104,6 +106,8 @@ const BASES = {
   "Global rotations (Vista)":         [35.85, 14.49],   // VistaJet — Malta AOC
   "London Gatwick (LGW)":             [51.15, -0.18],
   "Helsinki (HEL)":                   [60.32, 24.96],
+  "Germany — DUS · BER · STR":        [51.29, 6.77],    // Eurowings — Düsseldorf hub
+  "Paris — Roissy-CDG":               [49.01, 2.55],    // Air France — CDG hub
   "US — home-based (NetJets)":        [39.99, -82.89],
   "US — home-based (Flexjet)":        [41.41, -81.85]
 };
@@ -541,18 +545,18 @@ const JOBS = [
     salary: "See official listing",
     reqs: "Summer 2026 cabin crew recruitment across UK bases (incl. London Stansted) — no experience needed, industry-leading training. Apply via Jet2Careers.",
     applyUrl: "https://jet2careers.com/careers-with-us/airline/cabin-crew/" },
-  { id: 316, airline: "IndiGo", category: "crew", role: "Cabin Crew", aircraft: "A320 / A321 cabins", region: "Asia-Pacific", location: "Indian bases", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14T17:32:00Z", verified: true,
-    salary: "See official listing",
-    reqs: "India's largest airline — online + walk-in cabin crew drives (bulk intakes Mar–Apr & Sep–Oct). Per IndiGo criteria: female Indian nationals 18–27, 10+2, 155 cm+, fluent English & Hindi.",
-    applyUrl: "https://careers.goindigo.in" },
-  { id: 317, airline: "Virgin Australia", category: "crew", role: "Cabin Crew", aircraft: "B737 cabins", region: "Asia-Pacific", location: "Australian bases", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14T18:00:00Z", verified: true,
-    salary: "See official listing",
-    reqs: "Live cabin crew openings & expressions of interest across Australian bases (Brisbane, Melbourne, Perth, Adelaide) — AU/NZ citizen or AU PR · 18+ · 180 cm reach.",
-    applyUrl: "https://careers.virginaustralia.com/en/job/507535/cabin-crew-expression-of-interest" },
-  { id: 318, airline: "Finnair", category: "crew", role: "Cabin Crew", aircraft: "A350 / A330 / A320 cabins", region: "Europe", location: "Helsinki (HEL)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-14T20:00:00Z", verified: true,
-    salary: "See official listing",
-    reqs: "2026 cabin crew intake (Helsinki base) — permanent & fixed-term; unpaid 6–9 week training from Jan 2026, on-site in Vantaa. Apply via Finnair's official careers form (no email applications).",
-    applyUrl: "https://company.finnair.com/en/careers/cabin-crew" }
+  { id: 320, airline: "Eurowings", role: "First Officer", aircraft: "A320 family", region: "Europe", location: "Germany — DUS · BER · STR", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-16T10:00:00Z", verified: true,
+    salary: "Type rating paid (non-rated) · Lufthansa Group benefits",
+    reqs: "EASA ATPL(A) or CPL(A) with ATPL credit (issued in Germany) · MEIR · MCC · UPRT · Class 1 medical · German B2 + English ICAO 4 · EU work rights. Non-type-rated welcome — Eurowings pays for the A320 type rating. Permanent, full-time.",
+    applyUrl: "https://www.career.aero/eurowings/en/job/apply-eurowings/id/3826" },
+  { id: 321, airline: "Air France", role: "Cadet Pilot", aircraft: "Ab Initio — Cadet Programme", region: "Europe", location: "Paris — Roissy-CDG", type: "Cadet", minHours: 0, rated: false, posted: 0, added: "2026-06-16T11:00:00Z", verified: true,
+    salary: "24-month training fully funded by Air France",
+    reqs: "Ab-initio cadet — must NOT hold a CPL(A) at registration close. Bac minimum · French C1 · EASA Class 2 medical · EEA national. Applications close 31 Jul 2026 (€200 fee, waived for French state-scholarship holders); TOEIC no longer required. Roissy-CDG.",
+    applyUrl: "https://recrutement.airfrance.com/offre-de-emploi/emploi-pilote-cadet-air-france-f-h_24920.aspx" },
+  { id: 322, airline: "Air France", role: "First Officer", aircraft: "A220 / A320 family (medium-haul)", region: "Europe", location: "Paris — Roissy-CDG", type: "Direct Entry", minHours: 200, rated: false, posted: 0, added: "2026-06-16T11:05:00Z", verified: true,
+    salary: "CDI (permanent) · starts Jan 2027",
+    reqs: "EASA ATPL or valid CPL/IRME + ATPL theory (EU ATO) · Class 1 medical · MCC · FCL.055 ≥5 · TOEIC ≥850 (<2 yrs) · EEA/Swiss national · fluent French (C2). Advanced UPRT + 70h PIC if no prior CS-25 type rating. Starts Jan 2027, Roissy-CDG.",
+    applyUrl: "https://recrutement.airfrance.com/offre-de-emploi/emploi-pilote-de-ligne-f-h_23622.aspx" }
 ];
 
 const AIRLINES = [
@@ -576,6 +580,8 @@ const AIRLINES = [
   { name: "Qantas",             code: "QF", domain: "qantas.com",            country: "Australia",    fleet: "B737, A330, B787, A350",  pilots: 3200, bases: "SYD, MEL, BNE, PER",          status: "paused", note: "✓ Verified 10 Jun 2026: Jetstar applications closed. Group virtual pilot info sessions 25 Jun, 8 Jul & 2 Sep 2026 — register via careers.qantas.com." },
   { name: "Delta Air Lines",    code: "DL", domain: "delta.com",             country: "USA",          fleet: "B737, A321, B767, A350",  pilots: 17500, bases: "ATL, MSP, DTW, SLC, NYC",    status: "hiring", note: "US major — check propel pathway and delta.com/careers for current FO windows. (Not yet verified by AirCrew Jobs.)" },
   { name: "Lufthansa",          code: "LH", domain: "lufthansa.com",         country: "Germany",      fleet: "A320, A350, B747, B787",  pilots: 5400, bases: "FRA, MUC",                    status: "hiring", note: "European legacy — cadet (Lufthansa Aviation Training) and rated DE windows. (Not yet verified by AirCrew Jobs.)" },
+  { name: "Eurowings",          code: "EW", domain: "eurowings.com",         country: "Germany",      fleet: "A320 family",             pilots: 1200, bases: "DUS, BER, STR, CGN, HAM",      status: "hiring", note: "✓ Verified 16 Jun 2026: First Officers A320 (type-rated & non-type-rated) at BER/DUS/STR — Eurowings pays the type rating for non-rated. Lufthansa Group value carrier." },
+  { name: "Air France",         code: "AF", domain: "airfrance.com",         country: "France",       fleet: "A220, A320 family, A350, B777, B787", pilots: 4000, bases: "Paris CDG, ORY", status: "hiring", note: "✓ Verified 16 Jun 2026: Cadet Pilot filière reopened — 24-month training fully funded by Air France, applications close 31 Jul 2026 — plus experienced line pilots (OPL, medium-haul). Air France-KLM flag carrier." },
   { name: "Turkish Airlines",   code: "TK", domain: "turkishairlines.com",   country: "Türkiye",      fleet: "B777, A330, A320, B787",  pilots: 5100, bases: "Istanbul",                    status: "paused", note: "✓ Checked 11 Jun 2026: no open cockpit postings on the careers portal right now. TK recruits in periodic waves (typically rated FOs 1,500 hrs on type, Captains 5,500 hrs, 3/1 commuting roster) — watch careers.turkishairlines.com." },
   { name: "Riyadh Air",         code: "RX", domain: "riyadhair.com",         country: "Saudi Arabia", fleet: "B787 (A321 on order)",    pilots: 400,  bases: "Riyadh",                      status: "hiring", note: "✓ Verified 11 Jun 2026: B787 DEC Captains & FOs for Saudi Arabia's new flag carrier. Apply only via official channels — fee-charging agents are scams." },
   { name: "Air Canada",         code: "AC", domain: "aircanada.com",         country: "Canada",       fleet: "B787, A220, B777, A321",  pilots: 4700, bases: "YYZ, YVR, YUL",               status: "hiring", note: "Strong hiring cycle post-CBA. (Not yet verified by AirCrew Jobs.)" },
@@ -598,7 +604,7 @@ const AIRLINES = [
   { name: "ZipAir Tokyo",       code: "ZG", domain: "zipair.net",           country: "Japan",        fleet: "B787-8",                  pilots: 150,  bases: "Tokyo Narita",                status: "hiring", note: "✓ Verified 14 Jun 2026: flight crew recruitment open ('Now hiring') — B787 First Officers & Captains for JAL's medium/long-haul low-cost arm." },
   { name: "VistaJet",           code: "VJT", domain: "vistajet.com",        country: "Malta",        fleet: "Global 7500/6000, Challenger 350/650", pilots: 1400, bases: "Global (Malta/Austria/US AOCs)", status: "hiring", note: "✓ Verified 14 Jun 2026: VIP/business aviation — Global & Challenger First Officers (~2,500 hrs). Fly one type, twice-yearly training, keep seniority while moving up aircraft size; 200+ countries." },
   { name: "Norse Atlantic",     code: "Z0", domain: "flynorse.com",         country: "Norway",       fleet: "B787-9",                  pilots: 250,  bases: "OSL, LGW, CDG, FCO, ATH",     status: "hiring", note: "✓ Verified 14 Jun 2026: B787 First Officers live (London Gatwick). Low-cost long-haul — transatlantic, Caribbean & Bangkok; direct-hire with union pre-hire agreements." },
-  { name: "Finnair",            code: "AY", domain: "finnair.com",          country: "Finland",      fleet: "A350, A330, A320 family, ATR", pilots: 1000, bases: "Helsinki",               status: "hiring", note: "✓ Verified 14 Jun 2026: 2026 cabin crew recruitment open (Helsinki). oneworld hub carrier between Europe and Asia; pilot intakes run periodically." },
+  { name: "Finnair",            code: "AY", domain: "finnair.com",          country: "Finland",      fleet: "A350, A330, A320 family, ATR", pilots: 1000, bases: "Helsinki",               status: "paused", note: "Checked 16 Jun 2026: the 2026 cabin crew round has closed — no live vacancies right now. oneworld hub between Europe and Asia; cabin crew & pilot intakes run periodically, so worth checking back." },
   { name: "NetJets",            code: "1I", domain: "netjets.com",          country: "USA",          fleet: "Phenom 300, Citation Latitude/Longitude, Challenger 350/650, Global 7500", pilots: 3000, bases: "US — home-based", status: "hiring", note: "✓ Verified 15 Jun 2026: world's largest private-aviation operator — continuous First Officer hiring (1,500 hrs ATP, light/midsize fleet), 7-on/7-off roster, company-paid type rating." },
   { name: "Flexjet",            code: "LXJ", domain: "flexjet.com",         country: "USA",          fleet: "Phenom 300, Praetor 500/600, Challenger 350, Gulfstream G650/G700", pilots: 2000, bases: "US — home-based (+ Europe)", status: "hiring", note: "✓ Verified 15 Jun 2026 (user-confirmed): First Officer (United States) live — light/midsize fleet, ~1,500 hrs ATP, company-paid type rating, monthly new-hire classes & fast command upgrades. Fractional/VIP operator." }
 ];
