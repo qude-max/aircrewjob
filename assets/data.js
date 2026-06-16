@@ -57,6 +57,8 @@ const DOMAINS = {
   "Lufthansa City Airlines": "lufthansacityairlines.com",
   "Discover Airlines": "discover-airlines.com",
   "ASL Airlines Belgium": "aslairlines.com",
+  "Condor": "condor.com",
+  "STARLUX Airlines": "starlux-airlines.com",
   "NetJets": "netjets.com",
   "Flexjet": "flexjet.com"
 };
@@ -115,6 +117,8 @@ const BASES = {
   "Munich · Frankfurt (LH City)":     [48.35, 11.79],   // Lufthansa City Airlines
   "Frankfurt · Munich (Discover)":    [50.04, 8.57],    // Discover Airlines
   "Liège (LGG)":                      [50.64, 5.44],    // ASL Airlines Belgium — cargo
+  "Germany — FRA · DUS · MUC · HAM":  [50.03, 8.57],    // Condor
+  "Taipei (TPE)":                     [25.08, 121.23],  // STARLUX Airlines — Taoyuan
   "US — home-based (NetJets)":        [39.99, -82.89],
   "US — home-based (Flexjet)":        [41.41, -81.85]
 };
@@ -599,7 +603,31 @@ const JOBS = [
   { id: 331, airline: "ASL Airlines Belgium", role: "First Officer", aircraft: "B737 (cargo)", region: "Europe", location: "Liège (LGG)", type: "Direct Entry", minHours: 500, rated: false, posted: 0, added: "2026-06-16T12:16:00Z", verified: true,
     salary: "Cargo short-haul · Liège base",
     reqs: "EASA ATPL or frozen ATPL / CPL ME-IR · MCC · Advanced UPRT · Class 1 medical · English LPE 4+ · able to reach Liège within 1 h for standby. B737 cargo (express/parcel) — Captain & FO via the ASL Belgium flight-crew application form.",
-    applyUrl: "https://cezanneondemand.intervieweb.it/aslaviationgroup/jobs/aslb__flying_staff_short_haul_22597/en/" }
+    applyUrl: "https://cezanneondemand.intervieweb.it/aslaviationgroup/jobs/aslb__flying_staff_short_haul_22597/en/" },
+  { id: 332, airline: "Etihad Airways", category: "crew", role: "Cabin Crew", aircraft: "A320 / A350 / B787 cabins", region: "Middle East", location: "Abu Dhabi (AUH)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-16T13:00:00Z", verified: true,
+    salary: "Tax-free up to AED 10,000/mo + housing, transport & medical",
+    reqs: "Min age 21 · min height 163 cm (no reach test) · high-school diploma · fluent English · willing to serve alcohol · able to swim with a flotation device · no visible tattoos. Tax-free pay + furnished Abu Dhabi accommodation, transport, worldwide medical, 30 days leave & annual home ticket. Global open days; 145+ nationalities.",
+    applyUrl: "https://jobs.smartrecruiters.com/EtihadAirways5/744000122443102-cabin-crew" },
+  { id: 333, airline: "Condor", role: "First Officer", aircraft: "A320 / A321", region: "Europe", location: "Germany — FRA · DUS · MUC · HAM", type: "Rated", minHours: 0, rated: true, posted: 0, added: "2026-06-16T13:30:00Z", verified: true,
+    salary: "Collective-agreement pay · 42 days' leave · permanent",
+    reqs: "EASA ATPL or CPL(IR) with ATPL theory, or MPL · valid A320 type rating · ~150 h post-LIFUS desirable · fluent German + English (LP4) · Class 1 medical · German residence/work rights. Bases FRA/DUS/MUC/HAM.",
+    applyUrl: "https://www.career.aero/condor/en/job/apply-basic/id/4228" },
+  { id: 334, airline: "Condor", role: "First Officer", aircraft: "A320 / A321", region: "Europe", location: "Germany — FRA · DUS · MUC · HAM", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-16T13:32:00Z", verified: true,
+    salary: "Collective-agreement pay · 42 days' leave · permanent",
+    reqs: "EASA ATPL or CPL(IR) with ATPL theory, or MPL · CS-25 type rating preferred (A320 holders prioritised) · fluent German + English (LP4) · Class 1 medical · German residence/work rights. Bases FRA/DUS/MUC/HAM.",
+    applyUrl: "https://www.career.aero/condor/en/job/apply-basic/id/4229" },
+  { id: 335, airline: "Condor", role: "Cadet Pilot", aircraft: "Ab Initio — CAP Programme", region: "Europe", location: "Germany — FRA · DUS · MUC · HAM", type: "Cadet", minHours: 0, rated: false, posted: 0, added: "2026-06-16T13:34:00Z", verified: true,
+    salary: "See official listing",
+    reqs: "Condor Ab Initio Pilot Programme (CAP) — zero-hours entry to the Condor flight deck via integrated ATPL training in Germany. See the listing for intake dates, financing and full criteria.",
+    applyUrl: "https://www.career.aero/condor/en/job/apply-basic/id/4280" },
+  { id: 336, airline: "STARLUX Airlines", role: "Captain", aircraft: "A320 / A330 / A350", region: "Asia-Pacific", location: "Taipei (TPE)", type: "Direct Entry", minHours: 3500, rated: false, posted: 0, added: "2026-06-16T13:40:00Z", verified: true,
+    salary: "Premium carrier — see listing",
+    reqs: "Captain — min 3,500 h total + 700 h PIC · EASA/ICAO/FAA/CAA ATPL · Class 1 medical · ICAO English Level 4+. Expat & domestic streams. Apply to the STARLUX pilot recruitment team (application form on the careers page).",
+    applyUrl: "https://careers.jx-starlux.com/Pilot/ExpPilot" },
+  { id: 337, airline: "STARLUX Airlines", role: "First Officer", aircraft: "A320 / A330 / A350", region: "Asia-Pacific", location: "Taipei (TPE)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-16T13:42:00Z", verified: true,
+    salary: "Premium carrier — see listing",
+    reqs: "First Officer — min 1,500 h total (expat) / 1,000 h (domestic) · ATPL (CPL accepted for domestic FO) + type rating · Class 1 medical · ICAO English Level 4+. Apply to the STARLUX pilot recruitment team.",
+    applyUrl: "https://careers.jx-starlux.com/Pilot/ExpPilot" }
 ];
 
 const AIRLINES = [
@@ -628,6 +656,8 @@ const AIRLINES = [
   { name: "Lufthansa City Airlines", code: "VL", domain: "lufthansacityairlines.com", country: "Germany", fleet: "A319, A320neo (A220 incoming)", pilots: 300, bases: "MUC, FRA", status: "hiring", note: "✓ Verified 16 Jun 2026: the Lufthansa Group's newest airline (Munich + Frankfurt from spring 2026) — Captains A220/A320, fast-track-to-command for experienced FOs, and A220 TRI/TRE instructors. Type rating for non-rated." },
   { name: "Discover Airlines",  code: "4Y", domain: "discover-airlines.com",  country: "Germany",      fleet: "A320 family, A330",       pilots: 700,  bases: "FRA, MUC",                   status: "hiring", note: "✓ Verified 16 Jun 2026: Lufthansa Group leisure carrier — A330 First Officers (from 1,500 h) and A320 Captains (from 2,500 h PIC). Permanent contracts, Frankfurt & Munich." },
   { name: "ASL Airlines Belgium", code: "3V", domain: "aslairlines.com",      country: "Belgium",      fleet: "B737-400/800F, B747F",    pilots: 250,  bases: "Liège (LGG)",                status: "hiring", note: "✓ Verified 16 Jun 2026: B737 First Officers & Captains at the Liège cargo base (express/parcel network). Part of ASL Aviation Holdings — 160+ aircraft across five airlines." },
+  { name: "Condor",             code: "DE", domain: "condor.com",            country: "Germany",      fleet: "A320neo family, A330neo", pilots: 1100, bases: "FRA, DUS, MUC, HAM",          status: "hiring", note: "✓ Verified 16 Jun 2026: A320 First Officers (type-rated & non-type-rated) plus the Condor Ab Initio Programme (CAP). German leisure carrier, 42 days' leave — requires fluent German." },
+  { name: "STARLUX Airlines",   code: "JX", domain: "starlux-airlines.com",  country: "Taiwan",       fleet: "A320neo, A330neo, A350",  pilots: 500,  bases: "Taipei (TPE)",               status: "hiring", note: "✓ Verified 16 Jun 2026: experienced Captains (3,500 h) and First Officers (1,500 h expat / 1,000 h domestic) — premium Taiwanese carrier. Apply via the STARLUX pilot recruitment team." },
   { name: "Turkish Airlines",   code: "TK", domain: "turkishairlines.com",   country: "Türkiye",      fleet: "B777, A330, A320, B787",  pilots: 5100, bases: "Istanbul",                    status: "paused", note: "✓ Checked 11 Jun 2026: no open cockpit postings on the careers portal right now. TK recruits in periodic waves (typically rated FOs 1,500 hrs on type, Captains 5,500 hrs, 3/1 commuting roster) — watch careers.turkishairlines.com." },
   { name: "Riyadh Air",         code: "RX", domain: "riyadhair.com",         country: "Saudi Arabia", fleet: "B787 (A321 on order)",    pilots: 400,  bases: "Riyadh",                      status: "hiring", note: "✓ Verified 11 Jun 2026: B787 DEC Captains & FOs for Saudi Arabia's new flag carrier. Apply only via official channels — fee-charging agents are scams." },
   { name: "Air Canada",         code: "AC", domain: "aircanada.com",         country: "Canada",       fleet: "B787, A220, B777, A321",  pilots: 4700, bases: "YYZ, YVR, YUL",               status: "hiring", note: "Strong hiring cycle post-CBA. (Not yet verified by AirCrew Jobs.)" },
