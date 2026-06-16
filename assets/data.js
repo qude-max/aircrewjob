@@ -109,6 +109,7 @@ const BASES = {
   "Athens (ATH)":                     [37.94, 23.95],
   "Riga (RIG)":                       [56.92, 23.97],
   "Delhi (DEL)":                      [28.56, 77.10],
+  "Bengaluru (BLR)":                  [13.20, 77.71],   // Akasa Air — cabin crew base
   "Munich / Frankfurt":               [50.04, 8.56],    // Lufthansa — Frankfurt
   "Liège (LGG)":                      [50.64, 5.44],
   "Tokyo Narita (NRT)":               [35.77, 140.39],
@@ -659,7 +660,11 @@ const JOBS = [
   { id: 346, airline: "AirAsia", category: "crew", role: "Cabin Crew", aircraft: "A320 / A321 cabins", region: "Asia-Pacific", location: "Kuala Lumpur (KUL)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-16T15:00:00Z", verified: true,
     salary: "Flying allowances + sales commission + flight perks",
     reqs: "No experience needed — 18+, secondary-school minimum, fluent English · min height 157 cm (F) / 170 cm (M), 210 cm arm reach. Recruitment days across Malaysia, the Philippines & ASEAN bases. World's leading low-cost carrier (Allstars).",
-    applyUrl: "https://careers.airasia.com/cabin-crew/" }
+    applyUrl: "https://careers.airasia.com/cabin-crew/" },
+  { id: 347, airline: "Akasa Air", category: "crew", role: "Cabin Crew", aircraft: "B737 MAX cabins", region: "Asia-Pacific", location: "Bengaluru (BLR)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-16T15:30:00Z", verified: true,
+    salary: "Freshers ₹18,000/mo · experienced ₹25,000/mo · Bengaluru base",
+    reqs: "India's youngest airline (B737 MAX) — freshers & experienced welcome. Online application + walk-in drives; 5-year contract, Bengaluru base, unlimited staff travel for you + 6 family members. Akasa charges no fees and uses no agents.",
+    applyUrl: "https://www.akasaair.com/careers-at-akasa-air/crew-careers-at-akasa-air" }
 ];
 
 const AIRLINES = [
