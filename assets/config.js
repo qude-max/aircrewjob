@@ -20,3 +20,8 @@ const DISCORD_INVITE = "https://discord.gg/NYdRP7d69p";
    Get the ID: Discord → Settings → Advanced → Developer Mode ON, then
    right-click your server → Copy Server ID. Leave "" to hide the count. */
 const DISCORD_GUILD_ID = "1487767764775993346";
+
+/* Community — Telegram job-alert channel (auto-posts every new verified job).
+   Paste your PUBLIC channel link here once created, e.g. "https://t.me/AircrewJobs".
+   Leave "" to hide the Telegram buttons site-wide. */
+const TELEGRAM_INVITE = "";

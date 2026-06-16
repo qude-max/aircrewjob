@@ -205,7 +205,8 @@ function logoHTML(airline, cls = "job-logo", urlHint = null) {
 const ACJ_CONV = {
   apply_click: "AW-18240351644/6Jk3CJK53b8cEJzb1vlD",   // "Apply on airline site" click-out
   discord_join: "AW-18240351644/FHF9CLng3b8cEJzb1vlD",  // Chill Wings Discord join
-  job_alert: "AW-18240351644/7xyDCNLq3b8cEJzb1vlD"      // email job-alert signup
+  job_alert: "AW-18240351644/7xyDCNLq3b8cEJzb1vlD",     // email job-alert signup
+  telegram_join: ""                                     // Telegram channel join  ← create + paste label
 };
 function trackConversion(name, params) {
   if (typeof gtag !== "function") return;
@@ -221,7 +222,7 @@ function initJobAlerts() {
       e.preventDefault();
       const input = form.querySelector("input[name=email]");
       const btn = form.querySelector("button");
-      const scope = form.closest(".container") || document;
+      const scope = form.closest(".js-alert-box") || form.closest(".container") || document;
       const msg = scope.querySelector(".js-alert-msg");
       if (btn) btn.disabled = true;
       await Backend.ready;
@@ -236,6 +237,8 @@ function initJobAlerts() {
         msg.className = "alert-msg js-alert-msg ok";
         if (input) input.value = "";
         trackConversion("job_alert");
+        try { localStorage.setItem("acj_nudge_off", "1"); } catch (e2) {}
+        setTimeout(() => { var n = document.getElementById("applyNudge"); if (n) n.style.display = "none"; }, 1600);
       }
     });
   });
@@ -264,6 +267,13 @@ function initCommunity() {
     document.querySelectorAll(".js-discord").forEach(a => {
       a.href = DISCORD_INVITE;
       a.addEventListener("click", () => trackConversion("discord_join"));
+    });
+  }
+  if (typeof TELEGRAM_INVITE !== "undefined" && TELEGRAM_INVITE) {
+    document.querySelectorAll(".js-telegram").forEach(a => {
+      a.href = TELEGRAM_INVITE;
+      a.style.display = "";
+      a.addEventListener("click", () => trackConversion("telegram_join"));
     });
   }
   if (typeof DISCORD_GUILD_ID === "undefined" || !DISCORD_GUILD_ID) return;
