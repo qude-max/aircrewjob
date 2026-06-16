@@ -89,7 +89,6 @@ values
 (307, 'Saudia', 'Cabin Crew', 'Flight Attendant', 'Middle East', 'Jeddah (JED)', 'Direct Entry', 0, false, 'See official listing', true, 'https://careers.saudia.com/job/Flight-Attendant-02/857071823/', 'Flight Attendant intake (posted 22 May 2026) — full criteria on the official Saudia careers portal.', 'crew', '2026-06-14T13:23:00Z'::timestamptz),
 (308, 'Wizz Air', 'Cabin Crew', 'A320 / A321 cabins', 'Europe', '35+ bases EU & ME', 'Direct Entry', 0, false, 'From £23,450 (UK) — training allowance (HU/MT)', true, 'https://careers.wizzair.com/go/Cabin-Crew-Jobs/5258701/', 'Year-round cabin crew recruitment across 30+ European bases — recruitment days plus Direct Entry Senior Cabin Crew. Apply via the official Wizz Air careers portal.', 'crew', '2026-06-14T13:51:00Z'::timestamptz),
 (309, 'Cathay Pacific', 'Cabin Crew', 'Flight Attendant (HK-based)', 'Asia-Pacific', 'Hong Kong (HKG)', 'Direct Entry', 0, false, 'See official listing + housing for overseas hires', true, 'https://careers.cathaypacific.com/en/careers/jobs/hong-kong/flight-attendant-based-in-hong-kong-hong-kong-recruitment-29373', 'Flight Attendant (Hong Kong-based) · 18+ · secondary education · fluent English · 208 cm arm reach. Apply direct — Cathay uses no recruitment agents.', 'crew', '2026-06-14T14:18:00Z'::timestamptz),
-(310, 'Etihad Airways', 'Cabin Crew', 'Etihad cabins', 'Middle East', 'Abu Dhabi (AUH)', 'Direct Entry', 0, false, 'Tax-free + accommodation + travel perks', true, 'https://careers.smartrecruiters.com/EtihadAirways5/cabin-crew', 'Cabin Crew recruitment for the Abu Dhabi hub — ''Journey 2030'' fleet doubling. Apply via the official Etihad careers portal (open days worldwide).', 'crew', '2026-06-14T14:46:00Z'::timestamptz),
 (311, 'Lufthansa', 'Cabin Crew', 'Short/medium-haul cabins', 'Europe', 'Munich / Frankfurt', 'Direct Entry', 0, false, 'See official listing', true, 'https://lufthansagroup.careers/en/flight-attendant', 'Cabin Crew Member (with or without flight experience) for Munich & Frankfurt bases · 18+ · EU work right · fluent German + good English.', 'crew', '2026-06-14T15:14:00Z'::timestamptz),
 (312, 'Aegean Airlines', 'Cabin Crew', 'Cabin Crew Member', 'Europe', 'Athens (ATH)', 'Direct Entry', 0, false, '14 salaries/yr + benefits', true, 'https://jobs.aegeanair.com/job/Cabin-Crew-Member-(Based-in-Athens)/1353551255/', 'Cabin Crew Member (Athens base) — live on the official Aegean careers portal. Star Alliance ''Best Regional Airline in Europe''.', 'crew', '2026-06-14T15:42:00Z'::timestamptz),
 (313, 'Riyadh Air', 'Cabin Crew', 'Inflight Experience Team', 'Middle East', 'Riyadh (RUH)', 'Direct Entry', 0, false, 'See official listing', true, 'https://www.riyadhair.com/en/careers/cabin-crew', 'Cabin crew recruitment events worldwide + NAWAT programme for Saudi nationals — Saudi Arabia''s new flag carrier. Apply only via official channels; fee-charging agents are scams.', 'crew', '2026-06-14T16:09:00Z'::timestamptz),
@@ -121,7 +120,7 @@ on conflict (id) do update set
   category = excluded.category, posted_at = excluded.posted_at;
 
 -- remove verified listings that left the catalog (closed/withdrawn)
-delete from public.jobs where verified = true and id not in (101, 102, 103, 104, 111, 112, 113, 114, 115, 116, 117, 121, 131, 132, 133, 141, 142, 143, 151, 152, 161, 162, 163, 221, 222, 223, 224, 225, 226, 227, 228, 229, 171, 172, 181, 191, 201, 202, 211, 212, 233, 234, 241, 243, 244, 245, 251, 252, 253, 254, 255, 256, 261, 262, 263, 264, 271, 272, 273, 274, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337);
+delete from public.jobs where verified = true and id not in (101, 102, 103, 104, 111, 112, 113, 114, 115, 116, 117, 121, 131, 132, 133, 141, 142, 143, 151, 152, 161, 162, 163, 221, 222, 223, 224, 225, 226, 227, 228, 229, 171, 172, 181, 191, 201, 202, 211, 212, 233, 234, 241, 243, 244, 245, 251, 252, 253, 254, 255, 256, 261, 262, 263, 264, 271, 272, 273, 274, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 301, 302, 303, 304, 305, 306, 307, 308, 309, 311, 312, 313, 314, 315, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337);
 
 -- keep the identity sequence clear of catalog ids (recruiter posts get ids >= 1000)
 select setval(pg_get_serial_sequence('public.jobs', 'id'),
@@ -129,7 +128,7 @@ select setval(pg_get_serial_sequence('public.jobs', 'id'),
 
 commit;
 
--- sanity check: should match data.js (103 verified listings)
+-- sanity check: should match data.js (102 verified listings)
 select count(*) filter (where verified) as verified_jobs,
        count(*) filter (where not verified) as recruiter_posts
 from public.jobs;
