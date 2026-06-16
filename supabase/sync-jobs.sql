@@ -118,7 +118,8 @@ values
 (342, 'Scoot', 'First Officer', 'A320 / B787', 'Asia-Pacific', 'Singapore (SIN)', 'Direct Entry', 1500, false, 'Singapore · Scoot LCC', true, 'https://careers.flyscoot.com/job-detail/R0004820', 'Direct Entry First Officer. 1,500 h fixed-wing on >5,700 kg · CAAS ICAO CPL(A)/ATPL(A) (foreign ATPL needs CAAS conversion) · ICAO English 4+ · meet CAAS vaccination requirements.', 'pilot', '2026-06-16T14:08:00Z'::timestamptz),
 (343, 'Scoot', 'Cabin Crew', 'A320 / B787 cabins', 'Asia-Pacific', 'Singapore (SIN)', 'Direct Entry', 0, false, 'Monthly gross + staff travel · S$4,000 sign-on (SG citizens/PRs)', true, 'https://careers.flyscoot.com/job-detail/R0005045', 'Cabin Crew based in Singapore — 2026 SG Assessment Centre intake. SG citizens & PRs receive a S$4,000 sign-on bonus + contract-renewal bonus. Unlimited staff travel; flies 70+ destinations. Singapore Airlines'' low-cost arm.', 'crew', '2026-06-16T14:10:00Z'::timestamptz),
 (344, 'Scoot', 'Cabin Crew', 'A320 / B787 cabins', 'Asia-Pacific', 'Singapore (SIN)', 'Direct Entry', 0, false, 'Monthly gross + unlimited staff travel · Singapore-based', true, 'https://careers.flyscoot.com/job-detail/R0005778', 'Cabin Crew based in Singapore — recruitment event in Tokyo, July 2026. Fly 70+ destinations; competitive monthly gross salary and unlimited staff travel perks for family & friends.', 'crew', '2026-06-16T14:12:00Z'::timestamptz),
-(345, 'Scoot', 'Cabin Crew', 'A320 / B787 cabins', 'Asia-Pacific', 'Singapore (SIN)', 'Direct Entry', 0, false, 'Part-time scheme · varying rosters · Singapore', true, 'https://careers.flyscoot.com/job-detail/R0005036', 'Cabin Crew (Part-Time Scheme) based in Singapore — flexible roster patterns for parents, students or returning crew. SG Assessment Centre. Competitive monthly gross salary + unlimited staff travel.', 'crew', '2026-06-16T14:14:00Z'::timestamptz)
+(345, 'Scoot', 'Cabin Crew', 'A320 / B787 cabins', 'Asia-Pacific', 'Singapore (SIN)', 'Direct Entry', 0, false, 'Part-time scheme · varying rosters · Singapore', true, 'https://careers.flyscoot.com/job-detail/R0005036', 'Cabin Crew (Part-Time Scheme) based in Singapore — flexible roster patterns for parents, students or returning crew. SG Assessment Centre. Competitive monthly gross salary + unlimited staff travel.', 'crew', '2026-06-16T14:14:00Z'::timestamptz),
+(346, 'AirAsia', 'Cabin Crew', 'A320 / A321 cabins', 'Asia-Pacific', 'Kuala Lumpur (KUL)', 'Direct Entry', 0, false, 'Flying allowances + sales commission + flight perks', true, 'https://careers.airasia.com/cabin-crew/', 'No experience needed — 18+, secondary-school minimum, fluent English · min height 157 cm (F) / 170 cm (M), 210 cm arm reach. Recruitment days across Malaysia, the Philippines & ASEAN bases. World''s leading low-cost carrier (Allstars).', 'crew', '2026-06-16T15:00:00Z'::timestamptz)
 on conflict (id) do update set
   airline = excluded.airline, role = excluded.role, aircraft = excluded.aircraft,
   region = excluded.region, location = excluded.location, type = excluded.type,
@@ -127,7 +128,7 @@ on conflict (id) do update set
   category = excluded.category, posted_at = excluded.posted_at;
 
 -- remove verified listings that left the catalog (closed/withdrawn)
-delete from public.jobs where verified = true and id not in (101, 102, 103, 104, 111, 112, 113, 114, 115, 116, 117, 121, 131, 132, 133, 141, 142, 143, 151, 152, 161, 162, 163, 221, 222, 223, 224, 225, 226, 227, 228, 229, 171, 172, 181, 191, 201, 202, 211, 212, 233, 234, 241, 243, 244, 245, 251, 252, 253, 254, 255, 256, 261, 262, 263, 264, 271, 272, 273, 274, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 301, 302, 303, 304, 305, 306, 307, 308, 309, 311, 312, 313, 314, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345);
+delete from public.jobs where verified = true and id not in (101, 102, 103, 104, 111, 112, 113, 114, 115, 116, 117, 121, 131, 132, 133, 141, 142, 143, 151, 152, 161, 162, 163, 221, 222, 223, 224, 225, 226, 227, 228, 229, 171, 172, 181, 191, 201, 202, 211, 212, 233, 234, 241, 243, 244, 245, 251, 252, 253, 254, 255, 256, 261, 262, 263, 264, 271, 272, 273, 274, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 301, 302, 303, 304, 305, 306, 307, 308, 309, 311, 312, 313, 314, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346);
 
 -- keep the identity sequence clear of catalog ids (recruiter posts get ids >= 1000)
 select setval(pg_get_serial_sequence('public.jobs', 'id'),
@@ -135,7 +136,7 @@ select setval(pg_get_serial_sequence('public.jobs', 'id'),
 
 commit;
 
--- sanity check: should match data.js (109 verified listings)
+-- sanity check: should match data.js (110 verified listings)
 select count(*) filter (where verified) as verified_jobs,
        count(*) filter (where not verified) as recruiter_posts
 from public.jobs;

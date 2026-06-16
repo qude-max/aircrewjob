@@ -16,6 +16,7 @@ const DOMAINS = {
   "easyJet": "easyjet.com",
   "Wizz Air": "wizzair.com",
   "Cathay Pacific": "cathaypacific.com",
+  "AirAsia": "airasia.com",
   "Singapore Airlines": "singaporeair.com",
   "United Airlines": "united.com",
   "Ethiopian Airlines": "ethiopianairlines.com",
@@ -85,6 +86,7 @@ const BASES = {
   "London City (LCY)":                [51.50, 0.05],
   "Edinburgh (EDI)":                  [55.95, -3.37],
   "Hong Kong (HKG)":                  [22.31, 113.92],
+  "Kuala Lumpur (KUL)":               [2.75, 101.71],   // AirAsia — Sepang
   "Singapore (SIN)":                  [1.36, 103.99],
   "MY · KR · JP · TH · IN bases":     [1.36, 103.99],   // SIA crew — Singapore HQ
   "Indian bases":                     [28.56, 77.10],   // IndiGo — Delhi hub
@@ -653,7 +655,11 @@ const JOBS = [
   { id: 345, airline: "Scoot", category: "crew", role: "Cabin Crew", aircraft: "A320 / B787 cabins", region: "Asia-Pacific", location: "Singapore (SIN)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-16T14:14:00Z", verified: true,
     salary: "Part-time scheme · varying rosters · Singapore",
     reqs: "Cabin Crew (Part-Time Scheme) based in Singapore — flexible roster patterns for parents, students or returning crew. SG Assessment Centre. Competitive monthly gross salary + unlimited staff travel.",
-    applyUrl: "https://careers.flyscoot.com/job-detail/R0005036" }
+    applyUrl: "https://careers.flyscoot.com/job-detail/R0005036" },
+  { id: 346, airline: "AirAsia", category: "crew", role: "Cabin Crew", aircraft: "A320 / A321 cabins", region: "Asia-Pacific", location: "Kuala Lumpur (KUL)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-16T15:00:00Z", verified: true,
+    salary: "Flying allowances + sales commission + flight perks",
+    reqs: "No experience needed — 18+, secondary-school minimum, fluent English · min height 157 cm (F) / 170 cm (M), 210 cm arm reach. Recruitment days across Malaysia, the Philippines & ASEAN bases. World's leading low-cost carrier (Allstars).",
+    applyUrl: "https://careers.airasia.com/cabin-crew/" }
 ];
 
 const AIRLINES = [
@@ -669,6 +675,7 @@ const AIRLINES = [
   { name: "Norwegian",          code: "DY", domain: "norwegian.com",         country: "Norway",       fleet: "B737 NG, B737 MAX",       pilots: 1000, bases: "OSL + Nordic bases",          status: "hiring", note: "✓ Verified 10 Jun 2026: 2 live FO vacancies at Gardermoen — rated B737 and experienced non-rated." },
   { name: "IndiGo",             code: "6E", domain: "goindigo.in",           country: "India",        fleet: "A320, A321, A350 (order)", pilots: 5000, bases: "DEL, BOM, BLR, HYD…",        status: "hiring", note: "✓ Verified 10 Jun 2026: rated A320 Captains & FOs + CAE cadet programme. World's largest A320-family operator, huge order book." },
   { name: "Cathay Pacific",     code: "CX", domain: "cathaypacific.com",     country: "Hong Kong",    fleet: "A321neo, A330, A350, B777, B747", pilots: 2900, bases: "Hong Kong",           status: "hiring", note: "✓ Verified 10 Jun 2026: FO Direct Entry open (1,500 hrs TT, 500 P1) plus year-round ~80-week sponsored Cadet Programme." },
+  { name: "AirAsia",            code: "AK", domain: "airasia.com",           country: "Malaysia",     fleet: "A320 family, A321neo",    pilots: 2000, bases: "Kuala Lumpur + ASEAN",          status: "hiring", note: "✓ Verified 16 Jun 2026: cabin crew recruitment across Malaysia, the Philippines & ASEAN bases — 18+, no experience needed. World's leading low-cost carrier (Allstars)." },
   { name: "Singapore Airlines", code: "SQ", domain: "singaporeair.com",      country: "Singapore",    fleet: "A350, B787, B777, A380",  pilots: 3100, bases: "Singapore",                   status: "hiring", note: "✓ Verified 10 Jun 2026: Ab Initio Cadet Pilot programme open (Singaporeans/PRs) — fully sponsored, 7-year bond." },
   { name: "United Airlines",    code: "UA", domain: "united.com",            country: "USA",          fleet: "B737, B787, B777, A321",  pilots: 16800, bases: "DEN, ORD, IAH, EWR, SFO",    status: "hiring", note: "✓ Verified 10 Jun 2026: FO applications open — 1,500 hrs TT, unrestricted ATP. $125.52/flight hr year 1. Aviate & military pathways too." },
   { name: "Ethiopian Airlines", code: "ET", domain: "ethiopianairlines.com", country: "Ethiopia",     fleet: "B737, B767, B777, B787, A350", pilots: 1500, bases: "Addis Ababa",            status: "hiring", note: "✓ Verified 10 Jun 2026: Expat Captains on B777/A350/B767/B737 plus non-rated B737 FOs and trainee pilots. Africa's largest carrier." },
