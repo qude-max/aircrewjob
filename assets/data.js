@@ -54,6 +54,9 @@ const DOMAINS = {
   "Finnair": "finnair.com",
   "Eurowings": "eurowings.com",
   "Air France": "airfrance.com",
+  "Lufthansa City Airlines": "lufthansacityairlines.com",
+  "Discover Airlines": "discover-airlines.com",
+  "ASL Airlines Belgium": "aslairlines.com",
   "NetJets": "netjets.com",
   "Flexjet": "flexjet.com"
 };
@@ -108,6 +111,10 @@ const BASES = {
   "Helsinki (HEL)":                   [60.32, 24.96],
   "Germany — DUS · BER · STR":        [51.29, 6.77],    // Eurowings — Düsseldorf hub
   "Paris — Roissy-CDG":               [49.01, 2.55],    // Air France — CDG hub
+  "Prague · Poland · Spain (EWL)":    [50.10, 14.26],   // Eurowings Europe — Prague
+  "Munich · Frankfurt (LH City)":     [48.35, 11.79],   // Lufthansa City Airlines
+  "Frankfurt · Munich (Discover)":    [50.04, 8.57],    // Discover Airlines
+  "Liège (LGG)":                      [50.64, 5.44],    // ASL Airlines Belgium — cargo
   "US — home-based (NetJets)":        [39.99, -82.89],
   "US — home-based (Flexjet)":        [41.41, -81.85]
 };
@@ -556,7 +563,43 @@ const JOBS = [
   { id: 322, airline: "Air France", role: "First Officer", aircraft: "A220 / A320 family (medium-haul)", region: "Europe", location: "Paris — Roissy-CDG", type: "Direct Entry", minHours: 200, rated: false, posted: 0, added: "2026-06-16T11:05:00Z", verified: true,
     salary: "CDI (permanent) · starts Jan 2027",
     reqs: "EASA ATPL or valid CPL/IRME + ATPL theory (EU ATO) · Class 1 medical · MCC · FCL.055 ≥5 · TOEIC ≥850 (<2 yrs) · EEA/Swiss national · fluent French (C2). Advanced UPRT + 70h PIC if no prior CS-25 type rating. Starts Jan 2027, Roissy-CDG.",
-    applyUrl: "https://recrutement.airfrance.com/offre-de-emploi/emploi-pilote-de-ligne-f-h_23622.aspx" }
+    applyUrl: "https://recrutement.airfrance.com/offre-de-emploi/emploi-pilote-de-ligne-f-h_23622.aspx" },
+  { id: 323, airline: "Eurowings", role: "Captain", aircraft: "A320 family", region: "Europe", location: "Prague · Poland · Spain (EWL)", type: "Direct Entry", minHours: 5000, rated: false, posted: 0, added: "2026-06-16T12:00:00Z", verified: true,
+    salary: "Contract + pay from day 1 of training · LH Group benefits",
+    reqs: "EASA ATPL(A) (German/Austrian licence appreciated), A320 type rating preferred · min 5,000 h on >19.5t + 1,000 h PIC · Class 1 medical · English ICAO 4 · EU work rights (Polish/Spanish residency for those WINGS patterns). Eurowings Europe, WINGS Pattern Basic/Balance.",
+    applyUrl: "https://www.career.aero/eurowings/en/job/apply-eurowings/id/3506" },
+  { id: 324, airline: "Eurowings", role: "First Officer", aircraft: "A320 family", region: "Europe", location: "Prague · Poland · Spain (EWL)", type: "Direct Entry", minHours: 4000, rated: false, posted: 0, added: "2026-06-16T12:02:00Z", verified: true,
+    salary: "Fast-track upgrade to Captain · pay from day 1 of training",
+    reqs: "Fast-Track Upgrade FO. EASA ATPL(A), A320 type rating preferred · min 4,000 h on >19.5t + 350 landings · active line flying within 24 mo · Class 1 medical · English ICAO 4 · EU work rights. Eurowings Europe, WINGS Pattern Basic/Balance.",
+    applyUrl: "https://www.career.aero/eurowings/en/job/apply-basic/id/3996" },
+  { id: 325, airline: "Eurowings", role: "First Officer", aircraft: "A320 family", region: "Europe", location: "Prague · Poland · Spain (EWL)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-16T12:04:00Z", verified: true,
+    salary: "Upgrade to Captain from 3,000 blh (demand-based) · pay from day 1 of training",
+    reqs: "EASA ATPL(A) or CPL(A) with ATPL credit or MPL(A) (no operator bonding) · MEIR · Advanced UPRT · MCC · Class 1 medical · English ICAO 4 · EU work rights (Czech residence/work permit). Prague WINGS Pattern — type rating provided for non-rated.",
+    applyUrl: "https://www.career.aero/eurowings/en/job/apply-eurowings/id/3505" },
+  { id: 326, airline: "Lufthansa City Airlines", role: "Captain", aircraft: "A220 / A320", region: "Europe", location: "Munich · Frankfurt (LH City)", type: "Direct Entry", minHours: 5000, rated: false, posted: 0, added: "2026-06-16T12:06:00Z", verified: true,
+    salary: "Permanent · type rating for non-rated · LH Group benefits",
+    reqs: "EASA ATPL(A), A220/A320 type rating preferred · min 5,000 h on CS-25 + 1,000 h PIC · Class 1 medical · Abitur/Fachhochschulreife · English ICAO 4 · EU work rights. The Lufthansa Group's newest airline (Munich + Frankfurt).",
+    applyUrl: "https://www.career.aero/site/de/job/apply-basic/id/4152" },
+  { id: 327, airline: "Lufthansa City Airlines", role: "First Officer", aircraft: "A320 (fast-track to command)", region: "Europe", location: "Munich · Frankfurt (LH City)", type: "Direct Entry", minHours: 4500, rated: false, posted: 0, added: "2026-06-16T12:08:00Z", verified: true,
+    salary: "Permanent · fast-track upgrade to Captain · part- or full-time",
+    reqs: "Experienced First Officers offered a fast-track upgrade to Captain. EASA ATPL(A), A320 type rating preferred · min 4,500 h on CS-25 · Class 1 medical · Abitur/Fachhochschulreife · English ICAO 4 · EU work rights. Munich + Frankfurt.",
+    applyUrl: "https://www.career.aero/site/de/job/apply-basic/id/4296" },
+  { id: 328, airline: "Lufthansa City Airlines", role: "Captain", aircraft: "A220 — TRI/TRE (instructor)", region: "Europe", location: "Munich · Frankfurt (LH City)", type: "Direct Entry", minHours: 5000, rated: false, posted: 0, added: "2026-06-16T12:10:00Z", verified: true,
+    salary: "Permanent · LH Group benefits",
+    reqs: "Type Rating Instructor/Examiner. EASA ATPL(A) + valid TRI/TRE (min TRI/r; A220 TRI/TRE preferred) + proven instructor experience · min 5,000 h on CS-25 + 1,000 h PIC · Class 1 medical · English ICAO 4 · EU work rights.",
+    applyUrl: "https://www.career.aero/site/de/job/apply-basic/id/4390" },
+  { id: 329, airline: "Discover Airlines", role: "First Officer", aircraft: "A330", region: "Europe", location: "Frankfurt · Munich (Discover)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-16T12:12:00Z", verified: true,
+    salary: "Permanent · 36–42 vacation days · LH Group ID travel",
+    reqs: "EASA ATPL(A) or MPL(A) (no operator bond) · IR-ME · min 1,500 h on CS-25 >5.7t · A330 type rating preferred · Class 1 medical · Hochschulreife · English ICAO 4 (German B2 preferred) · EU passport · reach FRA/MUC base within 90 min.",
+    applyUrl: "https://www.career.aero/site/de/job/apply-basic/id/4413" },
+  { id: 330, airline: "Discover Airlines", role: "Captain", aircraft: "A320", region: "Europe", location: "Frankfurt · Munich (Discover)", type: "Direct Entry", minHours: 2500, rated: false, posted: 0, added: "2026-06-16T12:14:00Z", verified: true,
+    salary: "Permanent · 36–42 vacation days · LH Group ID travel",
+    reqs: "EASA ATPL(A) · IR-ME · min 2,500 h PIC on CS-25 >5.7t · A320 type rating preferred · Class 1 medical · Hochschulreife · English ICAO 4 (German B2 preferred) · EU passport · reach FRA/MUC base within 90 min.",
+    applyUrl: "https://www.career.aero/site/de/job/apply-basic/id/4414" },
+  { id: 331, airline: "ASL Airlines Belgium", role: "First Officer", aircraft: "B737 (cargo)", region: "Europe", location: "Liège (LGG)", type: "Direct Entry", minHours: 500, rated: false, posted: 0, added: "2026-06-16T12:16:00Z", verified: true,
+    salary: "Cargo short-haul · Liège base",
+    reqs: "EASA ATPL or frozen ATPL / CPL ME-IR · MCC · Advanced UPRT · Class 1 medical · English LPE 4+ · able to reach Liège within 1 h for standby. B737 cargo (express/parcel) — Captain & FO via the ASL Belgium flight-crew application form.",
+    applyUrl: "https://cezanneondemand.intervieweb.it/aslaviationgroup/jobs/aslb__flying_staff_short_haul_22597/en/" }
 ];
 
 const AIRLINES = [
@@ -582,6 +625,9 @@ const AIRLINES = [
   { name: "Lufthansa",          code: "LH", domain: "lufthansa.com",         country: "Germany",      fleet: "A320, A350, B747, B787",  pilots: 5400, bases: "FRA, MUC",                    status: "hiring", note: "European legacy — cadet (Lufthansa Aviation Training) and rated DE windows. (Not yet verified by AirCrew Jobs.)" },
   { name: "Eurowings",          code: "EW", domain: "eurowings.com",         country: "Germany",      fleet: "A320 family",             pilots: 1200, bases: "DUS, BER, STR, CGN, HAM",      status: "hiring", note: "✓ Verified 16 Jun 2026: First Officers A320 (type-rated & non-type-rated) at BER/DUS/STR — Eurowings pays the type rating for non-rated. Lufthansa Group value carrier." },
   { name: "Air France",         code: "AF", domain: "airfrance.com",         country: "France",       fleet: "A220, A320 family, A350, B777, B787", pilots: 4000, bases: "Paris CDG, ORY", status: "hiring", note: "✓ Verified 16 Jun 2026: Cadet Pilot filière reopened — 24-month training fully funded by Air France, applications close 31 Jul 2026 — plus experienced line pilots (OPL, medium-haul). Air France-KLM flag carrier." },
+  { name: "Lufthansa City Airlines", code: "VL", domain: "lufthansacityairlines.com", country: "Germany", fleet: "A319, A320neo (A220 incoming)", pilots: 300, bases: "MUC, FRA", status: "hiring", note: "✓ Verified 16 Jun 2026: the Lufthansa Group's newest airline (Munich + Frankfurt from spring 2026) — Captains A220/A320, fast-track-to-command for experienced FOs, and A220 TRI/TRE instructors. Type rating for non-rated." },
+  { name: "Discover Airlines",  code: "4Y", domain: "discover-airlines.com",  country: "Germany",      fleet: "A320 family, A330",       pilots: 700,  bases: "FRA, MUC",                   status: "hiring", note: "✓ Verified 16 Jun 2026: Lufthansa Group leisure carrier — A330 First Officers (from 1,500 h) and A320 Captains (from 2,500 h PIC). Permanent contracts, Frankfurt & Munich." },
+  { name: "ASL Airlines Belgium", code: "3V", domain: "aslairlines.com",      country: "Belgium",      fleet: "B737-400/800F, B747F",    pilots: 250,  bases: "Liège (LGG)",                status: "hiring", note: "✓ Verified 16 Jun 2026: B737 First Officers & Captains at the Liège cargo base (express/parcel network). Part of ASL Aviation Holdings — 160+ aircraft across five airlines." },
   { name: "Turkish Airlines",   code: "TK", domain: "turkishairlines.com",   country: "Türkiye",      fleet: "B777, A330, A320, B787",  pilots: 5100, bases: "Istanbul",                    status: "paused", note: "✓ Checked 11 Jun 2026: no open cockpit postings on the careers portal right now. TK recruits in periodic waves (typically rated FOs 1,500 hrs on type, Captains 5,500 hrs, 3/1 commuting roster) — watch careers.turkishairlines.com." },
   { name: "Riyadh Air",         code: "RX", domain: "riyadhair.com",         country: "Saudi Arabia", fleet: "B787 (A321 on order)",    pilots: 400,  bases: "Riyadh",                      status: "hiring", note: "✓ Verified 11 Jun 2026: B787 DEC Captains & FOs for Saudi Arabia's new flag carrier. Apply only via official channels — fee-charging agents are scams." },
   { name: "Air Canada",         code: "AC", domain: "aircanada.com",         country: "Canada",       fleet: "B787, A220, B777, A321",  pilots: 4700, bases: "YYZ, YVR, YUL",               status: "hiring", note: "Strong hiring cycle post-CBA. (Not yet verified by AirCrew Jobs.)" },
