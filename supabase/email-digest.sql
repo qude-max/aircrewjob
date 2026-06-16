@@ -28,7 +28,8 @@ create or replace function public.send_daily_job_digest()
 as $function$
 declare
   api_key   text := 'PASTE_YOUR_RESEND_API_KEY_HERE';
-  from_addr text := 'AirCrew Jobs <alerts@aircrewjob.com>';   -- must be a Resend-verified domain
+  from_addr text := 'AirCrew Jobs <alerts@aircrewjob.com>';   -- MUST be your Resend-verified domain (not gmail)
+  reply_to  text := 'aircrewjobcontact@gmail.com';            -- replies + unsubscribes land in your Gmail
   s   record;
   j   record;
   rows text;
@@ -62,16 +63,17 @@ begin
         url     := 'https://api.resend.com/emails',
         headers := jsonb_build_object('Authorization', 'Bearer ' || api_key, 'Content-Type', 'application/json'),
         body    := jsonb_build_object(
-          'from',    from_addr,
-          'to',      s.email,
-          'subject', cnt || ' new verified aircrew job' || case when cnt > 1 then 's' else '' end || ' today ✈️',
-          'headers', jsonb_build_object('List-Unsubscribe', '<mailto:unsubscribe@aircrewjob.com?subject=unsubscribe>'),
+          'from',     from_addr,
+          'to',       s.email,
+          'reply_to', reply_to,
+          'subject',  cnt || ' new verified aircrew job' || case when cnt > 1 then 's' else '' end || ' today ✈️',
+          'headers',  jsonb_build_object('List-Unsubscribe', '<mailto:aircrewjobcontact@gmail.com?subject=unsubscribe>'),
           'html',
             '<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:auto;color:#0a1020">'
             || '<h2 style="font-size:18px;margin:0 0 6px">Today''s verified jobs on AirCrew Jobs</h2>'
             || '<p style="color:#52607a;font-size:14px;margin:0 0 18px">Every listing is checked on the airline''s official careers portal — apply direct, no agents, no fees.</p>'
             || rows
-            || '<p style="font-size:12px;color:#8a96ad;margin-top:18px">You signed up for job alerts at aircrewjob.com. To stop, reply "unsubscribe" or email unsubscribe@aircrewjob.com.</p>'
+            || '<p style="font-size:12px;color:#8a96ad;margin-top:18px">You signed up for job alerts at aircrewjob.com. To stop, reply "unsubscribe" or email aircrewjobcontact@gmail.com.</p>'
             || '</div>',
           'text', cnt || ' new verified aircrew jobs today — see https://www.aircrewjob.com/jobs.html'
         )
