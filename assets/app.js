@@ -259,6 +259,22 @@ function initPWA() {
   navigator.serviceWorker.register("/sw.js").catch(() => {});
 }
 
+/* Small floating Discord button, shown site-wide (kept out of the nav to avoid crowding) */
+function initFloatingDiscord() {
+  if (typeof DISCORD_INVITE === "undefined" || !DISCORD_INVITE) return;
+  if (document.querySelector(".acj-fab-discord")) return;
+  var st = document.createElement("style");
+  st.textContent = ".acj-fab-discord{position:fixed;left:18px;bottom:18px;z-index:1100;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#5865F2;color:#fff;box-shadow:0 6px 22px rgba(88,101,242,.45);transition:transform .2s,box-shadow .2s;}.acj-fab-discord:hover{transform:scale(1.08);box-shadow:0 8px 28px rgba(88,101,242,.6);}.acj-fab-discord svg{width:28px;height:28px;}@media(max-width:480px){.acj-fab-discord{width:46px;height:46px;left:12px;bottom:12px;}.acj-fab-discord svg{width:24px;height:24px;}}";
+  document.head.appendChild(st);
+  var a = document.createElement("a");
+  a.className = "acj-fab-discord js-discord";
+  a.href = DISCORD_INVITE; a.target = "_blank"; a.rel = "noopener";
+  a.title = "Join the Chill Wings crew on Discord";
+  a.setAttribute("aria-label", "Join Chill Wings on Discord");
+  a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.317 4.369A19.79 19.79 0 0 0 16.558 3c-.2.36-.43.85-.593 1.23a18.27 18.27 0 0 0-5.93 0A12.5 12.5 0 0 0 9.44 3a19.74 19.74 0 0 0-3.76 1.37C2.6 8.92 1.76 13.36 2.18 17.73a19.9 19.9 0 0 0 6.07 3.08c.49-.67.93-1.39 1.3-2.14-.71-.27-1.39-.6-2.03-.99.17-.13.34-.26.5-.4a14.2 14.2 0 0 0 12.06 0c.16.14.33.27.5.4-.64.39-1.32.72-2.03.99.37.75.81 1.47 1.3 2.14a19.84 19.84 0 0 0 6.07-3.08c.5-5.18-.84-9.58-3.41-13.36ZM8.52 15.33c-1.18 0-2.16-1.08-2.16-2.42s.95-2.42 2.16-2.42c1.21 0 2.18 1.1 2.16 2.42 0 1.34-.95 2.42-2.16 2.42Zm6.96 0c-1.18 0-2.16-1.08-2.16-2.42s.95-2.42 2.16-2.42c1.21 0 2.18 1.1 2.16 2.42 0 1.34-.95 2.42-2.16 2.42Z"/></svg>';
+  document.body.appendChild(a);
+}
+
 /* Live "aircrew online" count from the Discord server widget.
    Needs DISCORD_GUILD_ID set + the server widget enabled. Fails silently
    (count stays hidden) if not configured or unreachable. */
@@ -294,6 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
   animateCounters();
   initAnalytics();
   initPWA();
+  initFloatingDiscord();
   initCommunity();
   initJobAlerts();
 });
