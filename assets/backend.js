@@ -494,7 +494,21 @@ const Backend = (() => {
     }
   };
 
-  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, subscribe: subscribeApi, canPost };
+  /* ---------- apply click-out logging (anonymous, consent-free metric) ---------- */
+  const applyClicksApi = {
+    async log(jobId, airline) {
+      if (mode === "supabase") {
+        try { await sb.from("apply_clicks").insert({ job_id: jobId != null ? String(jobId) : null, airline: airline || null }); } catch (e) {}
+        return { ok: true };
+      }
+      const list = LS.get("apply_clicks", []);
+      list.push({ jobId, airline, created: new Date().toISOString() });
+      LS.set("apply_clicks", list);
+      return { ok: true };
+    }
+  };
+
+  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, subscribe: subscribeApi, applyClicks: applyClicksApi, canPost };
 })();
 
 Backend.ready = Backend.init();

@@ -471,6 +471,7 @@
       const a = e.target.closest("a.js-apply-out");
       if (!a) return;
       if (typeof trackConversion === "function") trackConversion("apply_click", { airline: a.dataset.airline || "" });
+      if (typeof Backend !== "undefined" && Backend.applyClicks) Backend.applyClicks.log(a.dataset.jobId, a.dataset.airline);
       try { if (localStorage.getItem("acj_nudge_off")) return; } catch (_) {}
       const n = document.getElementById("applyNudge");
       if (!n) return;
@@ -658,7 +659,7 @@
       els.jobList.innerHTML = filtered.map((j, i) => {
         const applied = appliedIds.has(j.id);
         const applyBtn = safeUrl(j.applyUrl)
-          ? `<a class="btn btn-primary btn-sm js-apply-out" data-airline="${esc(j.airline)}" href="${safeUrl(j.applyUrl)}" target="_blank" rel="noopener">Apply on airline site ↗</a>`
+          ? `<a class="btn btn-primary btn-sm js-apply-out" data-airline="${esc(j.airline)}" data-job-id="${esc(String(j.id))}" href="${safeUrl(j.applyUrl)}" target="_blank" rel="noopener">Apply on airline site ↗</a>`
           : `<button class="btn btn-primary btn-sm" ${applied ? "disabled style='opacity:0.55'" : ""} onclick="openApply(${JSON.stringify(j.id)})">${applied ? "✓ Applied" : "Apply →"}</button>`;
         return `
         <div class="job-card" id="job-${j.id}" style="animation-delay:${Math.min(i * 40, 400)}ms">
