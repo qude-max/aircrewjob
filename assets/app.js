@@ -109,6 +109,8 @@ function renderFooter() {
             <li><a href="privacy.html">Privacy & Data Protection</a></li>
             <li><a href="terms.html">Terms of Use</a></li>
             <li><a href="cookies.html">Cookies</a></li>
+            <li><a href="disclaimer.html">Disclaimer</a></li>
+            <li><a href="acceptable-use.html">Acceptable Use</a></li>
           </ul>
         </div>
       </div>
