@@ -40,6 +40,9 @@
     .trk-rm:hover { color: var(--red); }
     .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; }
     .empty { text-align: center; color: var(--text-faint); padding: 50px 20px; }
+    .trk-addrow { margin-bottom: 16px; }
+    .trk-add-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 560px) { .trk-add-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -55,6 +58,24 @@
   <section style="padding-top:10px">
     <div class="container trk-wrap">
       <div id="trkBanner" class="trk-banner" style="display:none"></div>
+
+      <div class="trk-addrow">
+        <button class="btn btn-primary btn-sm" id="addToggle">+ Add an application</button>
+      </div>
+      <form id="addForm" class="trk-card" style="display:none">
+        <div class="trk-add-grid">
+          <input class="input" id="addAirline" placeholder="Airline / company *" autocomplete="off">
+          <input class="input" id="addRole" placeholder="Role — e.g. First Officer" autocomplete="off">
+          <select class="trk-status" id="addStatus" style="width:100%"></select>
+          <input class="input" id="addDate" type="date">
+        </div>
+        <textarea class="trk-notes" id="addNotes" placeholder="Notes (optional) — applied via airline site, recruiter, walk-in…"></textarea>
+        <div style="display:flex; gap:8px; margin-top:10px">
+          <button class="btn btn-primary btn-sm" type="submit">Add to my list</button>
+          <button class="btn btn-ghost btn-sm" type="button" id="addCancel">Cancel</button>
+        </div>
+      </form>
+
       <div id="trkList"></div>
     </div>
   </section>
@@ -124,6 +145,34 @@
         render();
       }));
     }
+    // Manual add — also lets people log applications made off-platform (a magnet for external users)
+    (function () {
+      const sel = document.getElementById("addStatus");
+      sel.innerHTML = STATUSES.map(([v, label]) => `<option value="${v}">${label}</option>`).join("");
+      document.getElementById("addDate").value = new Date().toISOString().slice(0, 10);
+      const form = document.getElementById("addForm"), toggle = document.getElementById("addToggle");
+      toggle.addEventListener("click", () => { form.style.display = "block"; toggle.style.display = "none"; document.getElementById("addAirline").focus(); });
+      document.getElementById("addCancel").addEventListener("click", () => { form.style.display = "none"; toggle.style.display = "inline-flex"; });
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const airline = document.getElementById("addAirline").value.trim();
+        if (!airline) { document.getElementById("addAirline").focus(); return; }
+        await Backend.ready;
+        const dv = document.getElementById("addDate").value;
+        await Backend.tracker.add({
+          jobId: null, airline,
+          role: document.getElementById("addRole").value.trim() || "Application",
+          status: document.getElementById("addStatus").value,
+          appliedAt: dv ? new Date(dv).toISOString() : new Date().toISOString(),
+          notes: document.getElementById("addNotes").value.trim()
+        });
+        form.reset();
+        document.getElementById("addDate").value = new Date().toISOString().slice(0, 10);
+        form.style.display = "none"; toggle.style.display = "inline-flex";
+        render();
+      });
+    })();
+
     render();
   </script>
 </body>
