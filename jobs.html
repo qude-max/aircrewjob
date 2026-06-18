@@ -166,6 +166,15 @@
       color: var(--text); text-decoration: none; white-space: nowrap; transition: all 0.2s;
     }
     .tg-btn:hover { border-color: #29a9eb; color: #29a9eb; background: rgba(41,169,235,0.10); }
+    /* ---- WhatsApp button (primary channel for our mobile audience) ---- */
+    .wa-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-display); font-weight: 600; font-size: 0.9rem;
+      padding: 11px 18px; border-radius: 12px; cursor: pointer;
+      border: 1px solid #25D366; background: rgba(37,211,102,0.12);
+      color: #25D366; text-decoration: none; white-space: nowrap; transition: all 0.2s;
+    }
+    .wa-btn:hover { background: #25D366; color: #fff; }
     /* ---- Post-apply capture nudge (peak-intent) ---- */
     .apply-nudge {
       position: fixed; right: 18px; bottom: 18px; z-index: 1200;
@@ -201,6 +210,7 @@
           <button class="alert-btn" type="submit">🔔 Get job alerts</button>
         </form>
         <span class="sep">or</span>
+        <a class="wa-btn js-whatsapp" href="#" target="_blank" rel="noopener" style="display:none"><span aria-hidden="true">📲</span> Free job alerts on WhatsApp</a>
         <a class="discord-btn js-discord" href="index.html#newsletter" target="_blank" rel="noopener"><span aria-hidden="true">💬</span> Join Chill Wings</a>
         <a class="tg-btn js-telegram" href="#" target="_blank" rel="noopener" style="display:none"><span aria-hidden="true">📣</span> Telegram job alerts</a>
       </div>
@@ -450,6 +460,7 @@
       <input class="input" name="email" type="email" required autocomplete="email" placeholder="your@email.com" aria-label="Email for job alerts">
       <button class="alert-btn" type="submit">🔔 Alert me</button>
     </form>
+    <a class="wa-btn js-whatsapp" href="#" target="_blank" rel="noopener" style="display:none"><span aria-hidden="true">📲</span> Free job alerts on WhatsApp — one tap</a>
     <a class="discord-btn js-discord" href="index.html#newsletter" target="_blank" rel="noopener"><span aria-hidden="true">💬</span> Join Chill Wings</a>
     <a class="tg-btn js-telegram" href="#" target="_blank" rel="noopener" style="display:none"><span aria-hidden="true">📣</span> Telegram alerts</a>
     <p class="alert-msg js-alert-msg" aria-live="polite"></p>

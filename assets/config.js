@@ -25,3 +25,8 @@ const DISCORD_GUILD_ID = "1487767764775993346";
    Paste your PUBLIC channel link here once created, e.g. "https://t.me/AircrewJobs".
    Leave "" to hide the Telegram buttons site-wide. */
 const TELEGRAM_INVITE = "";
+
+/* Community — WhatsApp Channel (one-tap follow, no install/onboarding —
+   best fit for our mostly-mobile South-Asia audience). Paste the channel
+   share link here. Leave "" to hide the WhatsApp buttons site-wide. */
+const WHATSAPP_INVITE = "https://whatsapp.com/channel/0029VbCdabI7oQhYilhuxc2g";
