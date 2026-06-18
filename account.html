@@ -187,18 +187,19 @@
 
     async function unsave(id) { await Backend.saved.toggle(id); renderSaved(); }
 
+    const TRK_PILL = { applied: "submitted", interviewing: "interview", offer: "shortlisted", hired: "hired", not_hired: "rejected" };
     async function renderApps() {
-      const apps = await Backend.apps.list();
+      const apps = await Backend.tracker.list();
       document.getElementById("appsList").innerHTML = apps.length
         ? apps.map(a => `
             <div class="mini-job">
               <div>
-                <div class="t">${esc(a.job?.role) || "Position"} — ${esc(a.job?.aircraft)}</div>
-                <div class="s">${esc(a.job?.airline)} · applied ${new Date(a.created).toLocaleDateString()}</div>
+                <div class="t">${esc(a.role) || "Application"}</div>
+                <div class="s">${esc(a.airline)} · applied ${new Date(a.appliedAt).toLocaleDateString()}</div>
               </div>
-              <span class="status-pill ${esc(a.status)}">${esc(a.status)}</span>
-            </div>`).join("")
-        : `<div class="empty">No applications yet — your submitted applications will appear here.</div>`;
+              <span class="status-pill ${TRK_PILL[a.status] || "submitted"}">${esc((a.status || "applied").replace("_", " "))}</span>
+            </div>`).join("") + `<p style="margin-top:16px"><a href="tracker.html" style="color:var(--accent)">Open full tracker →</a></p>`
+        : `<div class="empty">No applications tracked yet. When you apply on the <a href="jobs.html" style="color:var(--accent)">job board</a>, tap "track it" — or <a href="tracker.html" style="color:var(--accent)">add one manually</a>.</div>`;
     }
 
     document.getElementById("profileForm").addEventListener("submit", async e => {
