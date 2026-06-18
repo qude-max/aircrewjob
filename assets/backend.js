@@ -508,7 +508,54 @@ const Backend = (() => {
     }
   };
 
-  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, subscribe: subscribeApi, applyClicks: applyClicksApi, canPost };
+  /* ---------- application tracker ("My Applications") ----------
+     Anonymous → localStorage. Signed-in → Supabase (synced across devices). */
+  const trackerApi = {
+    signedIn() { return mode === "supabase" && !!currentUser; },
+    async list() {
+      if (this.signedIn()) {
+        const { data } = await sb.from("tracked_applications").select("*").eq("user_id", currentUser.id).order("applied_at", { ascending: false });
+        return (data || []).map(r => ({ id: r.id, jobId: r.job_id, airline: r.airline, role: r.role, status: r.status, notes: r.notes || "", appliedAt: r.applied_at }));
+      }
+      return LS.get("tracker", []);
+    },
+    async add(item) {
+      if (this.signedIn()) {
+        const { data } = await sb.from("tracked_applications").insert({
+          user_id: currentUser.id, job_id: item.jobId != null ? String(item.jobId) : null,
+          airline: item.airline || null, role: item.role || null,
+          status: item.status || "applied", notes: item.notes || "",
+          applied_at: item.appliedAt || new Date().toISOString()
+        }).select().single();
+        return data ? { id: data.id, jobId: data.job_id, airline: data.airline, role: data.role, status: data.status, notes: data.notes || "", appliedAt: data.applied_at } : null;
+      }
+      const list = LS.get("tracker", []);
+      const row = { id: "l" + Date.now(), jobId: item.jobId, airline: item.airline, role: item.role, status: item.status || "applied", notes: item.notes || "", appliedAt: item.appliedAt || new Date().toISOString() };
+      list.unshift(row); LS.set("tracker", list); return row;
+    },
+    async update(id, patch) {
+      if (this.signedIn() && !String(id).startsWith("l")) {
+        const p = {}; if (patch.status !== undefined) p.status = patch.status; if (patch.notes !== undefined) p.notes = patch.notes;
+        await sb.from("tracked_applications").update(p).eq("id", id); return { ok: true };
+      }
+      const list = LS.get("tracker", []); const r = list.find(x => String(x.id) === String(id)); if (r) Object.assign(r, patch); LS.set("tracker", list); return { ok: true };
+    },
+    async remove(id) {
+      if (this.signedIn() && !String(id).startsWith("l")) { await sb.from("tracked_applications").delete().eq("id", id); return { ok: true }; }
+      LS.set("tracker", LS.get("tracker", []).filter(x => String(x.id) !== String(id))); return { ok: true };
+    },
+    /* one-time merge of any device-local items into the signed-in account */
+    async syncLocalUp() {
+      if (!this.signedIn()) return 0;
+      const local = LS.get("tracker", []);
+      if (!local.length) return 0;
+      for (const it of local) await this.add(it);
+      LS.set("tracker", []);
+      return local.length;
+    }
+  };
+
+  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, subscribe: subscribeApi, applyClicks: applyClicksApi, tracker: trackerApi, canPost };
 })();
 
 Backend.ready = Backend.init();
