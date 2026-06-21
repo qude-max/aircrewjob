@@ -11,6 +11,12 @@ const DOMAINS = {
   "Emirates": "emirates.com",
   "Etihad Airways": "etihad.com",
   "Qatar Airways": "qatarairways.com",
+  "Royal Jordanian": "rj.com",
+  "Envoy Air": "envoyair.com",
+  "Piedmont Airlines": "piedmont-airlines.com",
+  "PSA Airlines": "psaairlines.com",
+  "Republic Airways": "rjet.com",
+  "SkyWest Airlines": "skywest.com",
   "flydubai": "flydubai.com",
   "Ryanair": "ryanair.com",
   "easyJet": "easyjet.com",
@@ -72,6 +78,7 @@ const BASES = {
   "Dubai (DXB)":                      [25.25, 55.36],
   "Abu Dhabi (AUH)":                  [24.43, 54.65],
   "Doha (DOH)":                       [25.27, 51.61],
+  "Amman (AMM)":                      [31.72, 35.99],
   "Riyadh (RUH)":                     [24.96, 46.70],
   "Bases across Europe":              [53.43, -6.25],   // Ryanair — Dublin hub
   "EU training partners":             [53.43, -6.25],
@@ -106,6 +113,11 @@ const BASES = {
   "Toronto (YTZ)":                    [43.63, -79.40],  // Porter Dash 8 — Billy Bishop
   "Almaty (ALA)":                     [43.35, 77.04],
   "US bases (Breeze)":                [40.79, -111.98], // Breeze — Salt Lake City HQ
+  "US bases (Envoy · AA Eagle)":      [32.90, -97.04],  // Envoy — DFW
+  "US bases (Piedmont · AA Eagle)":   [35.21, -80.94],  // Piedmont — CLT
+  "US bases (PSA · AA Eagle)":        [35.21, -80.94],  // PSA — CLT
+  "US bases (Republic)":              [39.72, -86.29],  // Republic — Indianapolis
+  "US bases (SkyWest)":               [40.79, -111.98], // SkyWest — Salt Lake City
   "Athens (ATH)":                     [37.94, 23.95],
   "Riga (RIG)":                       [56.92, 23.97],
   "Delhi (DEL)":                      [28.56, 77.10],
@@ -407,6 +419,38 @@ const JOBS = [
     salary: "See official listing",
     reqs: "Type-rated B737 P2 (First/Senior First Officer) · valid B737 co-pilot endorsement · 100+ hrs post line-release on B737 · Indian nationals/OCI · CPL/ATPL with current IR & PPC · Class 1 medical · max age 40 (45 ex-defence). Posted 17 May 2026.",
     applyUrl: "https://careers.airindia.com/job/Gurugram-B737-Type-Rated-Co-Pilots-%28First-Officer-Senior-First-Officer%29-Guru/52871144/" },
+  { id: 348, airline: "Air India Express", role: "Captain", aircraft: "A320 (type-rated)", region: "Asia-Pacific", location: "Indian bases (AI Express)", type: "Rated", minHours: 100, rated: true, posted: 0, added: "2026-06-21T12:00:00Z", verified: true,
+    salary: "See official listing",
+    reqs: "Type-rated A320 PIC (Captain) · valid A320 PIC endorsement · 100+ PIC hrs on A320 family · Indian nationals/OCI · valid ATPL with current IR & PPC, FRTOL, RTR · Class 1 medical · ICAO English 4+ · max age 62. Posted 17 Jun 2026.",
+    applyUrl: "https://careers.airindia.com/job/Gurugram-A320-Type-Rated-Captains-%28PIC%29-Guru/56097544/" },
+  { id: 349, airline: "Air India Express", role: "First Officer", aircraft: "A320 (type-rated)", region: "Asia-Pacific", location: "Indian bases (AI Express)", type: "Rated", minHours: 500, rated: true, posted: 0, added: "2026-06-21T12:00:00Z", verified: true,
+    salary: "See official listing",
+    reqs: "Type-rated A320 P2 (First / Senior First Officer) · valid A320 co-pilot endorsement · 500+ hrs on A320 family post line-release · Indian nationals/OCI · CPL/ATPL with current IR & PPC · Class 1 medical · ICAO English 4+ · max age 40 (45 ex-defence). Posted 16 Jun 2026.",
+    applyUrl: "https://careers.airindia.com/job/Gurugram-A320-Type-Rated-Co-Pilots-%28First-Officer-Senior-First-Officer%29-Guru/52901044/" },
+  { id: 350, airline: "Royal Jordanian", category: "crew", role: "Cabin Crew", aircraft: "Flight Attendant", region: "Middle East", location: "Amman (AMM)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-06-21T12:00:00Z", verified: true,
+    salary: "See official listing",
+    reqs: "Direct-entry Flight Attendant (cabin crew) at the Amman base — ensuring passenger safety, comfort and service on board. Customer-focused, fluent English. Ref JB5462157, posted ~14 Jun 2026, applications open ~2 months. (Listing specifies male candidates.)",
+    applyUrl: "https://careers.royaljordanian.com/en/jordan/jobs/flight-attendant-male-5462157/" },
+  { id: 351, airline: "Envoy Air", role: "First Officer", aircraft: "Embraer E175", region: "Americas", location: "US bases (Envoy · AA Eagle)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-21T12:00:00Z", verified: true,
+    salary: "First-year FO pay + bonuses — see listing",
+    reqs: "First Officer · R-ATP/ATP eligible per FAA minimums (1,000–1,500 hrs) · FAA first-class medical · US work authorisation required. Envoy is wholly owned by American Airlines Group (American Eagle) — guaranteed flow to American. Continuous hiring, year-round class dates.",
+    applyUrl: "https://www.envoyair.com/careers/pilots/commercial-atp-rated-pilots/" },
+  { id: 352, airline: "Piedmont Airlines", role: "First Officer", aircraft: "Embraer E145", region: "Americas", location: "US bases (Piedmont · AA Eagle)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-21T12:00:00Z", verified: true,
+    salary: "First-year FO pay + bonuses — see listing",
+    reqs: "First Officer · R-ATP/ATP eligible per FAA minimums · FAA first-class medical · US work authorisation required. Piedmont is wholly owned by American Airlines Group (American Eagle) — guaranteed flow to American. Continuous hiring.",
+    applyUrl: "https://piedmont-airlines.com/pilots/" },
+  { id: 353, airline: "PSA Airlines", role: "First Officer", aircraft: "Bombardier CRJ700/900", region: "Americas", location: "US bases (PSA · AA Eagle)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-21T12:00:00Z", verified: true,
+    salary: "First-year FO pay + bonuses — see listing",
+    reqs: "First Officer · R-ATP/ATP eligible per FAA minimums · FAA first-class medical · US work authorisation required. PSA is wholly owned by American Airlines Group (American Eagle) — guaranteed flow to American. Continuous hiring + cadet pathway.",
+    applyUrl: "https://psaairlines.com/first-officers/" },
+  { id: 354, airline: "Republic Airways", role: "First Officer", aircraft: "Embraer E170/E175", region: "Americas", location: "US bases (Republic)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-21T12:00:00Z", verified: true,
+    salary: "First-year FO pay + bonuses — see listing",
+    reqs: "First Officer · R-ATP/ATP eligible per FAA minimums · FAA first-class medical · US work authorisation required. Republic flies as American Eagle, Delta Connection & United Express; LIFT Academy cadet pathway. Continuous hiring.",
+    applyUrl: "https://careers.rjet.com/airline-careers/pilot/" },
+  { id: 355, airline: "SkyWest Airlines", role: "First Officer", aircraft: "CRJ550/700/900 · E175", region: "Americas", location: "US bases (SkyWest)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-21T12:00:00Z", verified: true,
+    salary: "First-year FO pay + bonuses — see listing",
+    reqs: "First Officer (req 16071) · R-ATP/ATP eligible per FAA minimums · FAA first-class medical · US work authorisation required. SkyWest is the largest US regional, flying for Delta Connection, United Express, American Eagle & Alaska. Continuous hiring.",
+    applyUrl: "https://jobs.skywest.com/skywest-airlines/jobs/16071" },
 
   /* ---- Saudia (careers.saudia.com) — verified 14 Jun 2026 ---- */
   { id: 262, airline: "Saudia", role: "Cadet Pilot", aircraft: "Cadet Programme", region: "Middle East", location: "Jeddah (JED)", type: "Cadet", minHours: 240, rated: false, posted: 0, added: "2026-06-14T06:28:00Z", verified: true,
@@ -669,6 +713,12 @@ const JOBS = [
 
 const AIRLINES = [
   { name: "Emirates",           code: "EK", domain: "emirates.com",          country: "UAE",          fleet: "A380, B777, A350",        pilots: 4200, bases: "Dubai",                       status: "hiring", note: "✓ Verified 10 Jun 2026: recruiting DE Captains (7,000+ hrs), Accelerated Command (5,000+), FOs (2,000+) and UAE national cadets. Roadshows: Astana, Istanbul, Hong Kong, Singapore, Madrid, Lisbon (Jun–Aug)." },
+  { name: "Royal Jordanian",    code: "RJ", domain: "rj.com",                country: "Jordan",       fleet: "E175, A320, A321, B787",  pilots: 700,  bases: "Amman (AMM)",                status: "hiring", note: "✓ Verified 21 Jun 2026: live Flight Attendant (cabin crew) vacancy at Amman (ref JB5462157); cadet-pilot DLR screening info also published. oneworld member." },
+  { name: "Envoy Air",          code: "MQ", domain: "envoyair.com",          country: "USA",          fleet: "Embraer E175",            pilots: 3000, bases: "DFW, ORD, MIA, DCA…",         status: "hiring", note: "✓ Verified 21 Jun 2026: continuous First Officer hiring (R-ATP/ATP). Wholly owned by American Airlines Group (American Eagle) — guaranteed flow to American. US work authorisation required." },
+  { name: "Piedmont Airlines",  code: "PT", domain: "piedmont-airlines.com", country: "USA",          fleet: "Embraer E145",            pilots: 700,  bases: "CLT, PHL",                   status: "hiring", note: "✓ Verified 21 Jun 2026: First Officer hiring. American Eagle carrier wholly owned by American — guaranteed flow. US work authorisation required." },
+  { name: "PSA Airlines",       code: "OH", domain: "psaairlines.com",       country: "USA",          fleet: "Bombardier CRJ700/900",   pilots: 1800, bases: "CLT, DAY, DCA",              status: "hiring", note: "✓ Verified 21 Jun 2026: First Officer + cadet hiring. American Eagle carrier owned by American — guaranteed flow. US work authorisation required." },
+  { name: "Republic Airways",   code: "YX", domain: "rjet.com",             country: "USA",          fleet: "Embraer E170/E175",       pilots: 2500, bases: "IND, ORD, DCA, CMH",         status: "hiring", note: "✓ Verified 21 Jun 2026: First Officer hiring; flies American Eagle, Delta Connection & United Express. LIFT Academy cadet pathway. US work authorisation required." },
+  { name: "SkyWest Airlines",   code: "OO", domain: "skywest.com",          country: "USA",          fleet: "CRJ550/700/900, E175",    pilots: 5000, bases: "SLC, DEN, PHX, MSP…",        status: "hiring", note: "✓ Verified 21 Jun 2026: 2 live First Officer reqs. Largest US regional — flies for Delta, United, American & Alaska. US work authorisation required." },
   { name: "Etihad Airways",     code: "EY", domain: "etihad.com",            country: "UAE",          fleet: "B787, A350, B777, A380",  pilots: 1800, bases: "Abu Dhabi",                   status: "hiring", note: "✓ Verified 10 Jun 2026: 7 live flight-deck vacancies — A320 & widebody Captains and FOs, rated and non-rated. 'Journey 2030' plan to double the fleet." },
   { name: "Qatar Airways",      code: "QR", domain: "qatarairways.com",      country: "Qatar",        fleet: "B787, B777, A350, A380",  pilots: 3800, bases: "Doha",                        status: "paused", note: "✓ Verified 10 Jun 2026: only the MPL Cadet Programme (Qatari nationals) is open on the careers portal. Direct-entry windows open periodically — check back." },
   { name: "flydubai",           code: "FZ", domain: "flydubai.com",          country: "UAE",          fleet: "B737 NG, B737 MAX",       pilots: 1300, bases: "Dubai",                       status: "hiring", note: "✓ Verified 10 Jun 2026: recruiting Captains, FOs (rated & non-rated), Second Officers and ab initio cadets." },
