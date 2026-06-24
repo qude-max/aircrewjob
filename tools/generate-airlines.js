@@ -281,6 +281,60 @@ ${HEAD_GTAG}
 </html>`;
 }
 
+/* SEO landing page: a role / region / country facet listing matching jobs.
+   Links into the per-job pages; no JobPosting LD here (those pages own it). */
+function landingPage(def, allDefs) {
+  const nav = allDefs.map(d =>
+    `<a href="${d.slug}.html"${d.slug === def.slug ? ' class="cur"' : ""}>${esc(d.navLabel)}</a>`).join("");
+  const cards = def.jobs.map(jobCard).join("");
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+${HEAD_GTAG}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${esc(def.title)}</title>
+  <meta name="description" content="${esc(def.desc)}">
+  <link rel="canonical" href="${BASE}/${def.slug}.html">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AirCrew Jobs">
+  <meta property="og:title" content="${esc(def.title)}">
+  <meta property="og:description" content="${esc(def.desc)}">
+  <meta property="og:url" content="${BASE}/${def.slug}.html">
+  <meta property="og:image" content="${BASE}/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .lwrap { max-width: 860px; margin: 0 auto; padding: 130px 0 60px; }
+    .lnav { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 28px; }
+    .lnav a { font-size: 0.82rem; padding: 6px 13px; border: 1px solid var(--border); border-radius: 999px; color: var(--text-dim); text-decoration: none; transition: all 0.15s; }
+    .lnav a:hover { border-color: var(--accent); color: var(--accent); }
+    .lnav a.cur { background: rgba(56,224,255,0.1); border-color: var(--border-bright); color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="container lwrap">
+    <a href="jobs.html" style="color:var(--accent); text-decoration:none; font-family:var(--font-display); font-weight:600; font-size:0.9rem">← Full job board</a>
+    <h1 style="font-size:clamp(1.8rem,4.5vw,2.7rem); margin-top:18px">${esc(def.h1)} <span class="gradient-text">2026</span></h1>
+    <p style="margin-top:14px; font-size:1.05rem; color:var(--text-dim)">${esc(def.intro)} <b style="color:var(--text)">${def.jobs.length}</b> verified ${def.jobs.length === 1 ? "vacancy" : "vacancies"} below — each links to the airline's official application.</p>
+    <nav class="lnav">${nav}</nav>
+    ${cards || `<p style="color:var(--text-dim)">No openings in this category right now — see the <a href="jobs.html" style="color:var(--accent)">full board</a>.</p>`}
+    <p style="font-size:0.85rem; color:var(--text-faint); margin:36px 0 0">Listings verified against each airline's official careers portal. AirCrew Jobs is free for job-seekers — no agents, no fees. Browse the <a href="jobs.html" style="color:var(--accent)">full board</a> or the <a href="airlines.html" style="color:var(--accent)">airline directory</a>.</p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/config.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/backend.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>`;
+}
+
 function page(a) {
   const slug = slugify(a.name);
   const jobs = JOBS.filter(j => j.airline === a.name);
@@ -416,11 +470,54 @@ for (const g of GUIDES) {
 }
 console.log(`✓ ${staticGuideSlugs.length} guide pages`);
 
+/* ---- SEO landing pages: role / region / country facets → /<slug>.html ---- */
+const jobsCountry = {};
+JOBS.forEach(j => { const a = airlineByName[j.airline]; if (a) (jobsCountry[a.country] = jobsCountry[a.country] || []).push(j); });
+const REGION_LIST = ["Middle East", "Europe", "Asia-Pacific", "Americas"];
+const land = [];
+land.push({ slug: "cabin-crew-jobs", navLabel: "Cabin crew", h1: "Cabin Crew Jobs",
+  title: "Cabin Crew Jobs 2026 — Verified Airline Vacancies, Apply Direct | AirCrew Jobs",
+  desc: "Verified cabin crew & flight attendant jobs for 2026, updated daily. Apply direct on each airline's official site — no agents, no fees.",
+  intro: "Verified cabin crew and flight attendant vacancies, updated daily and linked straight to each airline's official application.",
+  jobs: JOBS.filter(j => j.category === "crew") });
+land.push({ slug: "first-officer-jobs", navLabel: "First officers", h1: "First Officer Jobs",
+  title: "First Officer Jobs 2026 — Verified Co-Pilot Vacancies | AirCrew Jobs",
+  desc: "Verified First Officer (co-pilot) jobs for 2026 — rated and non-rated, cadet to direct entry. Apply direct, no agents.",
+  intro: "Verified First Officer and co-pilot vacancies worldwide, from type-rated direct entry to low-hour entry.",
+  jobs: JOBS.filter(j => j.role === "First Officer") });
+land.push({ slug: "captain-jobs", navLabel: "Captains", h1: "Airline Captain Jobs",
+  title: "Captain Jobs 2026 — Direct Entry Airline Captain Vacancies | AirCrew Jobs",
+  desc: "Verified airline Captain (PIC) jobs for 2026 — direct entry and command. Apply direct on the official portal.",
+  intro: "Verified airline Captain and direct-entry command vacancies, linked to each carrier's official application.",
+  jobs: JOBS.filter(j => j.role === "Captain") });
+land.push({ slug: "cadet-pilot-jobs", navLabel: "Cadet programmes", h1: "Cadet Pilot Programmes",
+  title: "Cadet Pilot Programmes 2026 — Airline-Sponsored Training | AirCrew Jobs",
+  desc: "Airline cadet pilot programmes and ab-initio training routes for 2026 — zero-hour entry to the flight deck. Verified, apply direct.",
+  intro: "Airline cadet pilot programmes and sponsored ab-initio routes — the zero-hour path to an airline flight deck.",
+  jobs: JOBS.filter(j => /cadet/i.test(j.role) || j.type === "Cadet") });
+REGION_LIST.forEach(r => { const js = JOBS.filter(j => j.region === r); if (js.length >= 2) land.push({
+  slug: "aviation-jobs-" + slugify(r), navLabel: r, h1: `Aviation Jobs in ${r}`,
+  title: `Pilot & Cabin Crew Jobs in ${r} 2026 | AirCrew Jobs`,
+  desc: `Verified pilot and cabin crew vacancies across ${r}, updated daily — apply direct on each airline's official site.`,
+  intro: `Verified pilot and cabin crew vacancies with airlines across ${r}.`, jobs: js }); });
+Object.entries(jobsCountry).sort((a, b) => b[1].length - a[1].length).forEach(([c, js]) => { if (js.length >= 3) land.push({
+  slug: "aviation-jobs-" + slugify(c), navLabel: c, h1: `Aviation Jobs in ${c}`,
+  title: `Pilot & Cabin Crew Jobs in ${c} 2026 | AirCrew Jobs`,
+  desc: `Verified airline jobs with carriers based in ${c} — pilot and cabin crew roles with direct apply links, updated daily.`,
+  intro: `Verified jobs with airlines based in ${c} — pilot and cabin crew roles.`, jobs: js }); });
+const landSlugs = [];
+for (const def of land) {
+  fs.writeFileSync(path.join(ROOT, def.slug + ".html"), landingPage(def, land));
+  landSlugs.push(def.slug);
+}
+console.log(`✓ ${landSlugs.length} SEO landing pages`);
+
 /* regenerate sitemap.xml including airline pages */
 const corePages = ["/", "/jobs.html", "/airlines.html", "/schools.html", "/games.html", "/salaries.html", "/guides.html"];
 const urls = [
   ...corePages.map(p => BASE + p),
   ...staticGuideSlugs.map(g => `${BASE}/guide/${g}.html`),
+  ...landSlugs.map(s => `${BASE}/${s}.html`),
   ...slugs.map(s => `${BASE}/airline/${s}.html`),
   ...jobSlugs.map(s => `${BASE}/job/${s}.html`)
 ];
@@ -446,12 +543,18 @@ console.log(`\n${slugs.length} airline pages + sitemap.xml (${urls.length} URLs)
     if (j.salary) bits.push(esc(j.salary));
     return `        <li><a href="airline/${slug}.html">${esc(j.airline)} — ${esc(j.role)}, ${esc(j.aircraft)}</a> — ${bits.join(" · ")}. <a href="${esc(j.applyUrl)}" target="_blank" rel="noopener">Apply on airline site</a></li>`;
   }).join("\n");
+  const landingLinks = land.map(d => `        <li><a href="${d.slug}.html">${esc(d.h1)}</a> — ${d.jobs.length} verified</li>`).join("\n");
   const block =
 `  <noscript>
     <!-- JOBS_NOSCRIPT_START — auto-generated by tools/generate-airlines.js; do not edit by hand -->
     <section class="container" style="padding:40px 0">
       <h2>Verified pilot &amp; cabin crew vacancies (${VERIFIED_DATE})</h2>
       <p>The interactive map and filters need JavaScript. Every current verified opening is listed below, each linking to the airline's hiring page and its official application portal.</p>
+      <h3>Browse by role, region &amp; country</h3>
+      <ul>
+${landingLinks}
+      </ul>
+      <h3>All current openings</h3>
       <ul>
 ${items}
       </ul>
