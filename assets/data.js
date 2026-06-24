@@ -20,6 +20,7 @@ const DOMAINS = {
   "Endeavor Air": "endeavorair.com",
   "Air Wisconsin": "airwis.com",
   "GoJet Airlines": "gojetairlines.com",
+  "SolitAir": "solitairholding.com",
   "flydubai": "flydubai.com",
   "Ryanair": "ryanair.com",
   "easyJet": "easyjet.com",
@@ -79,6 +80,7 @@ const DOMAINS = {
    Multi-base entries pin at the airline's hub. */
 const BASES = {
   "Dubai (DXB)":                      [25.25, 55.36],
+  "Dubai (DWC)":                      [24.90, 55.16],
   "Abu Dhabi (AUH)":                  [24.43, 54.65],
   "Doha (DOH)":                       [25.27, 51.61],
   "Amman (AMM)":                      [31.72, 35.99],
@@ -469,6 +471,10 @@ const JOBS = [
     salary: "First-year FO pay + bonuses — see listing",
     reqs: "First Officer · R-ATP/ATP eligible per FAA minimums · FAA first-class medical · US work authorisation required. GoJet flies as United Express & Delta Connection (250+ daily flights). Continuous hiring.",
     applyUrl: "https://www.airlineapps.com/jobs/default.aspx?emp=GoJet_Airlines" },
+  { id: 359, airline: "SolitAir", role: "First Officer", aircraft: "Boeing 737-800F", region: "Middle East", location: "Dubai (DWC)", type: "Rated", minHours: 500, rated: true, posted: 0, added: "2026-06-24T13:00:00Z", verified: true,
+    salary: "See official listing",
+    reqs: "Type-rated B737 First Officer (cargo, B737-800F) · ICAO ATPL (Full) · valid B737 type + IR · last B737 flight within 12 months · 500 hrs on B737 family · Class 1 medical · ICAO English level 4 · max age 45. 5-stage selection (application, technical test, personality assessment, interview, sim). Posted Mar 2026.",
+    applyUrl: "https://www.solitairholding.careers/jobs/7344323-first-officer-boeing-737" },
 
   /* ---- Saudia (careers.saudia.com) — verified 14 Jun 2026 ---- */
   { id: 262, airline: "Saudia", role: "Cadet Pilot", aircraft: "Cadet Programme", region: "Middle East", location: "Jeddah (JED)", type: "Cadet", minHours: 240, rated: false, posted: 0, added: "2026-06-14T06:28:00Z", verified: true,
@@ -740,6 +746,7 @@ const AIRLINES = [
   { name: "Endeavor Air",       code: "9E", domain: "endeavorair.com",       country: "USA",          fleet: "Bombardier CRJ700/900",   pilots: 2200, bases: "MSP, DTW, NYC, ATL",         status: "hiring", note: "✓ Verified 24 Jun 2026: continuous First Officer hiring. Wholly owned by Delta — Propel Career Path guarantees flow to Delta. US work authorisation required." },
   { name: "Air Wisconsin",      code: "ZW", domain: "airwis.com",            country: "USA",          fleet: "Bombardier CRJ200",       pilots: 500,  bases: "ORD, DCA",                   status: "hiring", note: "✓ Verified 24 Jun 2026: First Officer hiring with company-paid ATP-CTP course and fast Captain upgrades. American Eagle regional. US work authorisation required." },
   { name: "GoJet Airlines",     code: "G7", domain: "gojetairlines.com",     country: "USA",          fleet: "Bombardier CRJ550/700",   pilots: 700,  bases: "ORD, IAD, RDU",              status: "hiring", note: "✓ Verified 24 Jun 2026: First Officer hiring; flies United Express & Delta Connection, 250+ daily flights. US work authorisation required." },
+  { name: "SolitAir",           code: "8J", domain: "solitairholding.com",   country: "UAE",          fleet: "Boeing 737-800F",         pilots: 60,   bases: "Dubai (DWC)",                status: "hiring", note: "✓ Verified 24 Jun 2026: live B737 First Officer vacancy — type-rated, 500 hrs B737, ICAO ATPL, current within 12 months, max age 45. New Dubai cargo carrier (B737-800F freighters) out of DWC, founded 2024." },
   { name: "Etihad Airways",     code: "EY", domain: "etihad.com",            country: "UAE",          fleet: "B787, A350, B777, A380",  pilots: 1800, bases: "Abu Dhabi",                   status: "hiring", note: "✓ Verified 10 Jun 2026: 7 live flight-deck vacancies — A320 & widebody Captains and FOs, rated and non-rated. 'Journey 2030' plan to double the fleet." },
   { name: "Qatar Airways",      code: "QR", domain: "qatarairways.com",      country: "Qatar",        fleet: "B787, B777, A350, A380",  pilots: 3800, bases: "Doha",                        status: "paused", note: "✓ Verified 10 Jun 2026: only the MPL Cadet Programme (Qatari nationals) is open on the careers portal. Direct-entry windows open periodically — check back." },
   { name: "flydubai",           code: "FZ", domain: "flydubai.com",          country: "UAE",          fleet: "B737 NG, B737 MAX",       pilots: 1300, bases: "Dubai",                       status: "hiring", note: "✓ Verified 10 Jun 2026: recruiting Captains, FOs (rated & non-rated), Second Officers and ab initio cadets." },
