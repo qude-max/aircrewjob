@@ -459,6 +459,31 @@ const Backend = (() => {
       };
     },
 
+    /* dashboard: all apply-click rows (no PII), paged so totals stay exact past 1k */
+    async applyClicks() {
+      if (mode !== "supabase") return LS.get("apply_clicks", []);
+      let all = [], from = 0; const size = 1000;
+      while (true) {
+        const { data, error } = await sb.from("apply_clicks")
+          .select("airline, job_id, created_at")
+          .order("created_at", { ascending: true })
+          .range(from, from + size - 1);
+        if (error || !data || !data.length) break;
+        all = all.concat(data);
+        if (data.length < size) break;
+        from += size;
+      }
+      return all;
+    },
+    /* dashboard: subscriber signup timestamps + category only — never emails */
+    async subscriberDates() {
+      if (mode !== "supabase") return [];
+      const { data } = await sb.from("subscribers")
+        .select("created_at, category")
+        .order("created_at", { ascending: true });
+      return data || [];
+    },
+
     async setRecruiterApproval(idOrEmail, approved) {
       if (mode === "supabase") {
         const { error } = await sb.from("profiles").update({ approved }).eq("id", idOrEmail);

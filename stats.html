@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) + Consent Mode v2 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18240351644"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+    try{if(localStorage.getItem('acj_consent')==='granted')gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});}catch(e){}
+    gtag("js", new Date());
+    gtag("config", "AW-18240351644");
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Stats — AirCrew Jobs</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .swrap { max-width: 1000px; margin: 0 auto; padding: 120px 0 60px; }
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 24px 0; }
+    @media (max-width: 760px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+    .kpi { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; background: var(--surface); }
+    .kpi .n { font-family: var(--font-display); font-weight: 700; font-size: 1.9rem; color: var(--text); }
+    .kpi .l { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-top: 4px; }
+    .kpi .d { font-size: 0.82rem; color: var(--green); margin-top: 6px; }
+    .panel { border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; background: var(--surface); margin-bottom: 18px; }
+    .panel h2 { font-size: 1.05rem; margin-bottom: 16px; }
+    .bars { display: flex; align-items: flex-end; gap: 3px; height: 150px; }
+    .bars .bar { flex: 1; background: linear-gradient(180deg, var(--accent), rgba(56,224,255,0.25)); border-radius: 3px 3px 0 0; min-height: 2px; position: relative; }
+    .bars .bar:hover::after { content: attr(data-t); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--bg-2); border: 1px solid var(--border-bright); padding: 3px 7px; border-radius: 6px; font-size: 0.72rem; white-space: nowrap; color: var(--text); }
+    .xlabels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-faint); margin-top: 8px; }
+    .rank { display: flex; flex-direction: column; gap: 9px; }
+    .rank-row { display: grid; grid-template-columns: 150px 1fr 48px; align-items: center; gap: 10px; font-size: 0.88rem; }
+    .rank-row .t { color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rank-row .track { background: var(--bg-2); border-radius: 6px; height: 12px; overflow: hidden; }
+    .rank-row .fill { background: var(--accent); height: 100%; border-radius: 6px; }
+    .rank-row .v { text-align: right; font-family: var(--font-display); font-weight: 600; color: var(--text); }
+    .split { display: flex; gap: 18px; flex-wrap: wrap; }
+    .split .seg { flex: 1; min-width: 130px; border-radius: var(--radius-sm); padding: 14px 16px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    #locked { text-align: center; padding: 80px 20px; }
+    .muted { color: var(--text-faint); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="container swrap">
+    <div id="locked" style="display:none">
+      <h1>🔒 Admin only</h1>
+      <p class="muted" style="margin:14px 0 22px">This dashboard shows private first-party data. Sign in with your admin account.</p>
+      <a href="auth.html" class="btn btn-primary">Sign in →</a>
+    </div>
+
+    <div id="dash" style="display:none">
+      <div class="topbar">
+        <div>
+          <span class="eyebrow">First-party · live</span>
+          <h1 style="margin-top:10px">Apply-click <span class="gradient-text">dashboard</span></h1>
+          <p class="muted" id="asof"></p>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="refresh">↻ Refresh</button>
+      </div>
+
+      <div class="kpis" id="kpis"></div>
+
+      <div class="panel">
+        <h2>📈 Apply-clicks per day (last 30 days)</h2>
+        <div class="bars" id="dayBars"></div>
+        <div class="xlabels" id="dayLabels"></div>
+      </div>
+
+      <div class="panel">
+        <h2>🏆 Top airlines by apply-clicks</h2>
+        <div class="rank" id="topAirlines"></div>
+      </div>
+
+      <div class="panel">
+        <h2>✈️ Pilot vs 🛎️ cabin crew (apply-clicks)</h2>
+        <div class="split" id="split"></div>
+        <p class="muted" style="margin-top:10px">Matched from the job each click came from. "Unknown" = the job has since been removed from the catalogue.</p>
+      </div>
+
+      <p class="muted">Reads live from Supabase each load — no screenshots needed. Subscriber emails are never loaded into this page (count only).</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/config.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/backend.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    const $ = id => document.getElementById(id);
+    const dayKey = d => new Date(d).toISOString().slice(0, 10);
+    const fmt = n => Number(n).toLocaleString();
+
+    // job_id -> category lookup from the catalogue (data.js JOBS global)
+    const CAT = {};
+    if (typeof JOBS !== "undefined") JOBS.forEach(j => { CAT[String(j.id)] = j.category === "crew" ? "crew" : "pilot"; });
+
+    async function load() {
+      await Backend.ready;
+      const user = Backend.auth.user();
+      const profile = Backend.auth.profile();
+      const isAdmin = Backend.mode === "demo" || (user && profile && profile.is_admin);
+      if (!isAdmin) { $("locked").style.display = "block"; $("dash").style.display = "none"; return; }
+      $("locked").style.display = "none"; $("dash").style.display = "block";
+
+      const [clicks, subs, stats] = await Promise.all([
+        Backend.admin.applyClicks(),
+        Backend.admin.subscriberDates(),
+        Backend.admin.stats()
+      ]);
+
+      const now = Date.now(), DAY = 86400000;
+      const since = days => clicks.filter(c => now - new Date(c.created_at).getTime() < days * DAY).length;
+      const subsSince = days => subs.filter(s => now - new Date(s.created_at).getTime() < days * DAY).length;
+
+      // KPI cards
+      $("kpis").innerHTML = [
+        ["Apply-clicks (all time)", fmt(clicks.length), since(1) + " today"],
+        ["Apply-clicks (7 days)", fmt(since(7)), Math.round(since(7) / 7) + "/day avg"],
+        ["Email subscribers", fmt(subs.length), "+" + subsSince(7) + " this week"],
+        ["Verified jobs live", fmt(stats.jobsVerified || 0), (typeof AIRLINES !== "undefined" ? AIRLINES.length : "") + " airlines"]
+      ].map(([l, n, d]) => `<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div><div class="d">${d}</div></div>`).join("");
+
+      // Daily bars — last 30 days
+      const counts = {};
+      clicks.forEach(c => { const k = dayKey(c.created_at); counts[k] = (counts[k] || 0) + 1; });
+      const dayArr = [];
+      for (let i = 29; i >= 0; i--) { const d = new Date(now - i * DAY); const k = d.toISOString().slice(0, 10); dayArr.push({ k, v: counts[k] || 0, d }); }
+      const max = Math.max(1, ...dayArr.map(x => x.v));
+      $("dayBars").innerHTML = dayArr.map(x =>
+        `<div class="bar" style="height:${Math.max(2, Math.round(x.v / max * 100))}%" data-t="${x.k}: ${x.v}"></div>`).join("");
+      $("dayLabels").innerHTML = `<span>${dayArr[0].d.toLocaleDateString(undefined,{day:"numeric",month:"short"})}</span><span>today</span>`;
+
+      // Top airlines
+      const byAir = {};
+      clicks.forEach(c => { const a = c.airline || "Unknown"; byAir[a] = (byAir[a] || 0) + 1; });
+      const ranked = Object.entries(byAir).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      const amax = Math.max(1, ...ranked.map(r => r[1]));
+      $("topAirlines").innerHTML = ranked.map(([a, v]) =>
+        `<div class="rank-row"><span class="t">${a}</span><span class="track"><span class="fill" style="width:${Math.round(v / amax * 100)}%"></span></span><span class="v">${fmt(v)}</span></div>`).join("");
+
+      // Pilot vs crew split
+      let pilot = 0, crew = 0, unknown = 0;
+      clicks.forEach(c => { const cat = CAT[String(c.job_id)]; if (cat === "crew") crew++; else if (cat === "pilot") pilot++; else unknown++; });
+      const total = pilot + crew + unknown || 1;
+      $("split").innerHTML = [
+        ["✈️ Pilot", pilot, "rgba(56,224,255,0.12)", "var(--accent)"],
+        ["🛎️ Cabin crew", crew, "rgba(255,107,129,0.12)", "var(--red)"],
+        ["❔ Unknown", unknown, "rgba(148,163,184,0.12)", "var(--text-faint)"]
+      ].map(([l, v, bg, col]) => `<div class="seg" style="background:${bg}"><div style="font-family:var(--font-display); font-weight:700; font-size:1.5rem; color:${col}">${fmt(v)}</div><div class="muted">${l} · ${Math.round(v / total * 100)}%</div></div>`).join("");
+
+      $("asof").textContent = "Updated " + new Date().toLocaleString();
+    }
+
+    $("refresh").addEventListener("click", load);
+    document.addEventListener("DOMContentLoaded", load);
+  </script>
+</body>
+</html>

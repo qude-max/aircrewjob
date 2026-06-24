@@ -17,6 +17,9 @@ const DOMAINS = {
   "PSA Airlines": "psaairlines.com",
   "Republic Airways": "rjet.com",
   "SkyWest Airlines": "skywest.com",
+  "Endeavor Air": "endeavorair.com",
+  "Air Wisconsin": "airwis.com",
+  "GoJet Airlines": "gojetairlines.com",
   "flydubai": "flydubai.com",
   "Ryanair": "ryanair.com",
   "easyJet": "easyjet.com",
@@ -118,6 +121,9 @@ const BASES = {
   "US bases (PSA · AA Eagle)":        [35.21, -80.94],  // PSA — CLT
   "US bases (Republic)":              [39.72, -86.29],  // Republic — Indianapolis
   "US bases (SkyWest)":               [40.79, -111.98], // SkyWest — Salt Lake City
+  "US bases (Endeavor · Delta)":      [44.88, -93.22],  // Endeavor — Minneapolis
+  "US bases (Air Wisconsin · AA)":    [41.97, -87.90],  // Air Wisconsin — Chicago O'Hare
+  "US bases (GoJet)":                 [41.97, -87.90],  // GoJet — Chicago
   "Athens (ATH)":                     [37.94, 23.95],
   "Riga (RIG)":                       [56.92, 23.97],
   "Delhi (DEL)":                      [28.56, 77.10],
@@ -451,6 +457,18 @@ const JOBS = [
     salary: "First-year FO pay + bonuses — see listing",
     reqs: "First Officer (req 16071) · R-ATP/ATP eligible per FAA minimums · FAA first-class medical · US work authorisation required. SkyWest is the largest US regional, flying for Delta Connection, United Express, American Eagle & Alaska. Continuous hiring.",
     applyUrl: "https://jobs.skywest.com/skywest-airlines/jobs/16071" },
+  { id: 356, airline: "Endeavor Air", role: "First Officer", aircraft: "Bombardier CRJ700/900", region: "Americas", location: "US bases (Endeavor · Delta)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-24T12:00:00Z", verified: true,
+    salary: "First-year FO pay + bonuses — see listing",
+    reqs: "First Officer · R-ATP/ATP eligible per FAA minimums · FAA first-class medical · US work authorisation required. Endeavor is wholly owned by Delta Air Lines — the Propel Career Path guarantees flow to Delta. Continuous hiring.",
+    applyUrl: "https://www.endeavorair.com/content/endeavor-air/en_us/careers/pilots.html" },
+  { id: 357, airline: "Air Wisconsin", role: "First Officer", aircraft: "Bombardier CRJ200", region: "Americas", location: "US bases (Air Wisconsin · AA)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-24T12:00:00Z", verified: true,
+    salary: "First-year FO pay + bonuses — see listing",
+    reqs: "First Officer · R-ATP/ATP eligible per FAA minimums · FAA first-class medical · US work authorisation required. American Eagle regional; company-paid ATP-CTP course and fast Captain upgrades. Continuous hiring.",
+    applyUrl: "https://www.airwis.com/careers/pilots" },
+  { id: 358, airline: "GoJet Airlines", role: "First Officer", aircraft: "Bombardier CRJ550/700", region: "Americas", location: "US bases (GoJet)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-06-24T12:00:00Z", verified: true,
+    salary: "First-year FO pay + bonuses — see listing",
+    reqs: "First Officer · R-ATP/ATP eligible per FAA minimums · FAA first-class medical · US work authorisation required. GoJet flies as United Express & Delta Connection (250+ daily flights). Continuous hiring.",
+    applyUrl: "https://www.airlineapps.com/jobs/default.aspx?emp=GoJet_Airlines" },
 
   /* ---- Saudia (careers.saudia.com) — verified 14 Jun 2026 ---- */
   { id: 262, airline: "Saudia", role: "Cadet Pilot", aircraft: "Cadet Programme", region: "Middle East", location: "Jeddah (JED)", type: "Cadet", minHours: 240, rated: false, posted: 0, added: "2026-06-14T06:28:00Z", verified: true,
@@ -719,6 +737,9 @@ const AIRLINES = [
   { name: "PSA Airlines",       code: "OH", domain: "psaairlines.com",       country: "USA",          fleet: "Bombardier CRJ700/900",   pilots: 1800, bases: "CLT, DAY, DCA",              status: "hiring", note: "✓ Verified 21 Jun 2026: First Officer + cadet hiring. American Eagle carrier owned by American — guaranteed flow. US work authorisation required." },
   { name: "Republic Airways",   code: "YX", domain: "rjet.com",             country: "USA",          fleet: "Embraer E170/E175",       pilots: 2500, bases: "IND, ORD, DCA, CMH",         status: "hiring", note: "✓ Verified 21 Jun 2026: First Officer hiring; flies American Eagle, Delta Connection & United Express. LIFT Academy cadet pathway. US work authorisation required." },
   { name: "SkyWest Airlines",   code: "OO", domain: "skywest.com",          country: "USA",          fleet: "CRJ550/700/900, E175",    pilots: 5000, bases: "SLC, DEN, PHX, MSP…",        status: "hiring", note: "✓ Verified 21 Jun 2026: 2 live First Officer reqs. Largest US regional — flies for Delta, United, American & Alaska. US work authorisation required." },
+  { name: "Endeavor Air",       code: "9E", domain: "endeavorair.com",       country: "USA",          fleet: "Bombardier CRJ700/900",   pilots: 2200, bases: "MSP, DTW, NYC, ATL",         status: "hiring", note: "✓ Verified 24 Jun 2026: continuous First Officer hiring. Wholly owned by Delta — Propel Career Path guarantees flow to Delta. US work authorisation required." },
+  { name: "Air Wisconsin",      code: "ZW", domain: "airwis.com",            country: "USA",          fleet: "Bombardier CRJ200",       pilots: 500,  bases: "ORD, DCA",                   status: "hiring", note: "✓ Verified 24 Jun 2026: First Officer hiring with company-paid ATP-CTP course and fast Captain upgrades. American Eagle regional. US work authorisation required." },
+  { name: "GoJet Airlines",     code: "G7", domain: "gojetairlines.com",     country: "USA",          fleet: "Bombardier CRJ550/700",   pilots: 700,  bases: "ORD, IAD, RDU",              status: "hiring", note: "✓ Verified 24 Jun 2026: First Officer hiring; flies United Express & Delta Connection, 250+ daily flights. US work authorisation required." },
   { name: "Etihad Airways",     code: "EY", domain: "etihad.com",            country: "UAE",          fleet: "B787, A350, B777, A380",  pilots: 1800, bases: "Abu Dhabi",                   status: "hiring", note: "✓ Verified 10 Jun 2026: 7 live flight-deck vacancies — A320 & widebody Captains and FOs, rated and non-rated. 'Journey 2030' plan to double the fleet." },
   { name: "Qatar Airways",      code: "QR", domain: "qatarairways.com",      country: "Qatar",        fleet: "B787, B777, A350, A380",  pilots: 3800, bases: "Doha",                        status: "paused", note: "✓ Verified 10 Jun 2026: only the MPL Cadet Programme (Qatari nationals) is open on the careers portal. Direct-entry windows open periodically — check back." },
   { name: "flydubai",           code: "FZ", domain: "flydubai.com",          country: "UAE",          fleet: "B737 NG, B737 MAX",       pilots: 1300, bases: "Dubai",                       status: "hiring", note: "✓ Verified 10 Jun 2026: recruiting Captains, FOs (rated & non-rated), Second Officers and ab initio cadets." },
