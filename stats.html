@@ -84,6 +84,12 @@
         <p class="muted" style="margin-top:10px">Matched from the job each click came from. "Unknown" = the job has since been removed from the catalogue.</p>
       </div>
 
+      <div class="panel">
+        <h2>📲 WhatsApp posts — copy &amp; paste</h2>
+        <p class="muted" style="margin-bottom:14px">Newest jobs first. Tap <b>Copy</b>, open your WhatsApp Channel, paste, send. (You send it — WhatsApp has no safe auto-post API.)</p>
+        <div class="rank" id="waPosts"></div>
+      </div>
+
       <p class="muted">Reads live from Supabase each load — no screenshots needed. Subscriber emails are never loaded into this page (count only).</p>
     </div>
   </div>
@@ -155,6 +161,23 @@
         ["🛎️ Cabin crew", crew, "rgba(255,107,129,0.12)", "var(--red)"],
         ["❔ Unknown", unknown, "rgba(148,163,184,0.12)", "var(--text-faint)"]
       ].map(([l, v, bg, col]) => `<div class="seg" style="background:${bg}"><div style="font-family:var(--font-display); font-weight:700; font-size:1.5rem; color:${col}">${fmt(v)}</div><div class="muted">${l} · ${Math.round(v / total * 100)}%</div></div>`).join("");
+
+      // WhatsApp copy-paste posts — newest jobs first, linking to the per-job page
+      const SITE = "https://www.aircrewjob.com";
+      const jslug = j => (j.airline + "-" + j.role + "-" + j.aircraft).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-" + j.id;
+      const recent = (typeof JOBS !== "undefined" ? [...JOBS] : []).sort((a, b) => new Date(b.added) - new Date(a.added)).slice(0, 12);
+      const waMsgs = recent.map(j => {
+        const emoji = j.category === "crew" ? "🛎️" : "✈️";
+        const hrs = j.minHours ? "Min " + Number(j.minHours).toLocaleString() + " hrs" : "No hours required";
+        return `${emoji} New job: ${j.role} — ${j.aircraft}\n${j.airline} · ${j.location}\n${hrs}\nApply free, no agents → ${SITE}/job/${jslug(j)}.html`;
+      });
+      $("waPosts").innerHTML = recent.map((j, i) =>
+        `<div class="rank-row" style="grid-template-columns:1fr 78px"><span class="t">${j.category === "crew" ? "🛎️" : "✈️"} ${j.airline} — ${j.role}</span><button class="btn btn-ghost btn-sm wa-copy" data-i="${i}">Copy</button></div>`).join("");
+      $("waPosts").querySelectorAll(".wa-copy").forEach(btn => btn.addEventListener("click", async () => {
+        const msg = waMsgs[btn.dataset.i];
+        try { await navigator.clipboard.writeText(msg); const o = btn.textContent; btn.textContent = "✓ Copied"; setTimeout(() => btn.textContent = o, 1500); }
+        catch (e) { window.prompt("Copy this message:", msg); }
+      }));
 
       $("asof").textContent = "Updated " + new Date().toLocaleString();
     }
