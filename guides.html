@@ -157,7 +157,7 @@
     function render() {
       const list = GUIDES.filter(g => !tagFilter || g.tag === tagFilter);
       document.getElementById("guideGrid").innerHTML = list.map((g, i) => `
-        <div class="card guide-card" style="animation-delay:${Math.min(i * 40, 320)}ms" onclick="location.href='guide.html?slug=${g.slug}'">
+        <div class="card guide-card" style="animation-delay:${Math.min(i * 40, 320)}ms" onclick="location.href='guide/${g.slug}.html'">
           <div class="guide-icon">${g.icon}</div>
           <div class="guide-meta">
             <span class="badge type">${g.tag}</span>

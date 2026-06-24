@@ -17,9 +17,11 @@ const BASE = "https://www.aircrewjob.com";
 
 /* load data.js in a sandbox */
 const src = fs.readFileSync(path.join(ROOT, "assets", "data.js"), "utf8");
+const guidesSrc = fs.readFileSync(path.join(ROOT, "assets", "guides-content.js"), "utf8");
 const ctx = {};
 new Function("ctx", src.replace(/^const /gm, "ctx.") + ";")(ctx);
-const { JOBS, AIRLINES, SALARIES, VERIFIED_DATE, DOMAINS } = ctx;
+new Function("ctx", guidesSrc.replace(/^const /gm, "ctx.") + ";")(ctx);
+const { JOBS, AIRLINES, SALARIES, VERIFIED_DATE, DOMAINS, GUIDES, GUIDE_CONTENT } = ctx;
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -64,6 +66,7 @@ function jobPostingLd(j, a) {
       (j.salary ? `<p>Salary: ${j.salary}.</p>` : "") +
       `<p>Apply via the airline's official careers portal. Listing verified ${VERIFIED_DATE} by AirCrew Jobs.</p>`,
     datePosted: j.added,
+    validThrough: new Date(Math.max(new Date(j.added).getTime() + 60 * 86400000, Date.now() + 30 * 86400000)).toISOString(),
     employmentType: "FULL_TIME",
     hiringOrganization: {
       "@type": "Organization",
@@ -94,7 +97,188 @@ function jobCard(j) {
           </div>
           <a class="btn btn-primary btn-sm" href="${esc(j.applyUrl)}" target="_blank" rel="noopener">Apply on airline site ↗</a>
         </div>
+        <p style="margin-top:10px"><a href="job/${jobSlug(j)}.html" style="color:var(--accent); font-size:0.85rem; text-decoration:none">Full details &amp; requirements →</a></p>
       </div>`;
+}
+
+/* shared <head> gtag + consent block */
+const HEAD_GTAG = `  <!-- Google tag (gtag.js) + Consent Mode v2 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18240351644"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+    try{if(localStorage.getItem('acj_consent')==='granted')gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});}catch(e){}
+    gtag("js", new Date());
+    gtag("config", "AW-18240351644");
+  </script>`;
+
+/* unique, stable URL slug for one opening */
+const jobSlug = j => `${slugify(j.airline + "-" + j.role + "-" + j.aircraft)}-${j.id}`;
+
+/* One crawlable static page per opening — single JobPosting LD + visible content.
+   This is what wins Google Jobs eligibility and ranks for long-tail queries. */
+function jobPage(j, a) {
+  const slug = jobSlug(j);
+  const aSlug = slugify(a.name);
+  const crew = j.category === "crew";
+  const title = `${j.role} – ${j.aircraft} at ${a.name} | AirCrew Jobs`;
+  const shortReq = j.reqs ? String(j.reqs).slice(0, 150).replace(/\s+\S*$/, "") + "…" : "";
+  const desc = `${a.name} is hiring a ${j.role} (${j.aircraft}), based ${j.location}. ${shortReq} Verified ${VERIFIED_DATE} against the official careers portal — apply direct, no agents.`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+${HEAD_GTAG}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="../">
+  <title>${esc(title)}</title>
+  <meta name="description" content="${esc(desc)}">
+  <link rel="canonical" href="${BASE}/job/${slug}.html">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AirCrew Jobs">
+  <meta property="og:title" content="${esc(title)}">
+  <meta property="og:description" content="${esc(desc)}">
+  <meta property="og:url" content="${BASE}/job/${slug}.html">
+  <meta property="og:image" content="${BASE}/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .jobwrap { max-width: 760px; margin: 0 auto; padding: 140px 0 60px; }
+    .crumb { font-size: 0.85rem; color: var(--text-faint); margin-bottom: 22px; }
+    .crumb a { color: var(--accent); text-decoration: none; }
+    .jfacts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 24px 0; }
+    .jfacts .fact { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 15px; background: var(--surface); }
+    .jfacts dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-faint); }
+    .jfacts dd { margin-top: 4px; font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; }
+    .jreq { color: var(--text-dim); font-size: 0.97rem; line-height: 1.7; margin: 8px 0 26px; }
+  </style>
+${jobPostingLd(j, a)}
+</head>
+<body>
+  <div class="container jobwrap">
+    <div class="crumb"><a href="index.html">Home</a> › <a href="airline/${aSlug}.html">${esc(a.name)}</a> › ${esc(j.role)}</div>
+    <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
+      <h1 style="font-size:clamp(1.6rem,4vw,2.4rem)">${crew ? "🛎️" : "✈️"} ${esc(j.role)} — ${esc(j.aircraft)}</h1>
+      ${j.verified ? `<span class="badge hiring">✓ Verified · official</span>` : `<span class="badge">Recruiter post</span>`}
+    </div>
+    <p style="margin-top:12px; font-size:1.1rem; color:var(--text)">${esc(a.name)} · ${esc(j.location)}</p>
+
+    <dl class="jfacts">
+      <div class="fact"><dt>Role</dt><dd>${esc(j.role)}</dd></div>
+      <div class="fact"><dt>Aircraft</dt><dd>${esc(j.aircraft)}</dd></div>
+      <div class="fact"><dt>Base</dt><dd>${esc(j.location)}</dd></div>
+      <div class="fact"><dt>Type</dt><dd>${esc(j.type)}</dd></div>
+      <div class="fact"><dt>Min hours</dt><dd>${j.minHours ? Number(j.minHours).toLocaleString() + " hrs" : "No hours required"}</dd></div>
+      <div class="fact"><dt>Salary</dt><dd>${esc(j.salary || "See listing")}</dd></div>
+    </dl>
+
+    ${j.reqs ? `<p class="jreq">${esc(j.reqs)}</p>` : ""}
+
+    ${j.applyUrl ? `<a class="btn btn-primary js-apply-out" data-airline="${esc(a.name)}" data-job-id="${esc(String(j.id))}" href="${esc(j.applyUrl)}" target="_blank" rel="noopener">Apply on ${esc(a.name)}'s official site ↗</a>` : ""}
+
+    <p style="font-size:0.85rem; color:var(--text-faint); margin-top:22px">
+      Listing verified ${VERIFIED_DATE} against ${esc(a.name)}'s official careers portal. AirCrew Jobs is independent and free for job-seekers — we never charge fees or use agents.
+      See more <a href="airline/${aSlug}.html" style="color:var(--accent)">${esc(a.name)} openings</a> or browse the full <a href="jobs.html" style="color:var(--accent)">job board</a>.
+    </p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/config.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/backend.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    document.querySelectorAll("a.js-apply-out").forEach(function(el){
+      el.addEventListener("click", function(){
+        if (typeof trackConversion === "function") trackConversion("apply_click", { airline: el.dataset.airline || "" });
+        if (typeof Backend !== "undefined" && Backend.applyClicks) Backend.applyClicks.log(el.dataset.jobId, el.dataset.airline);
+      });
+    });
+  </script>
+</body>
+</html>`;
+}
+
+/* One crawlable static page per guide — article body baked into HTML. */
+function guidePage(meta, content) {
+  const secs = (content.sections || []);
+  const title = `${meta.title} — AirCrew Jobs`;
+  const articleLd = {
+    "@context": "https://schema.org/",
+    "@type": "Article",
+    headline: meta.title,
+    description: meta.blurb,
+    author: { "@type": "Organization", name: "AirCrew Jobs" },
+    publisher: { "@type": "Organization", name: "AirCrew Jobs" }
+  };
+  const others = GUIDES.filter(g => g.slug !== meta.slug)
+    .sort((a, b) => (b.tag === meta.tag) - (a.tag === meta.tag)).slice(0, 2);
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+${HEAD_GTAG}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="../">
+  <title>${esc(title)}</title>
+  <meta name="description" content="${esc(meta.blurb)}">
+  <link rel="canonical" href="${BASE}/guide/${meta.slug}.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AirCrew Jobs">
+  <meta property="og:title" content="${esc(meta.title)}">
+  <meta property="og:description" content="${esc(meta.blurb)}">
+  <meta property="og:url" content="${BASE}/guide/${meta.slug}.html">
+  <meta property="og:image" content="${BASE}/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .gwrap { max-width: 760px; margin: 0 auto; padding: 140px 0 60px; }
+    .article-body h2 { font-size: 1.3rem; margin: 34px 0 12px; }
+    .article-body h2::before { content: "// "; color: var(--accent); font-weight: 700; }
+    .article-body p { margin-bottom: 16px; font-size: 1.02rem; line-height: 1.75; color: var(--text-dim); }
+    .article-body b, .article-body i { color: var(--text); }
+    .gtoc { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 20px; background: var(--surface); margin: 24px 0; }
+    .gtoc a { display: block; color: var(--accent); text-decoration: none; font-size: 0.92rem; padding: 3px 0; }
+    .gnext { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 40px; }
+    @media (max-width: 600px) { .gnext { grid-template-columns: 1fr; } }
+  </style>
+  <script type="application/ld+json">${JSON.stringify(articleLd).replace(/</g, "\\u003c")}</script>
+</head>
+<body>
+  <div class="container gwrap">
+    <a href="guides.html" style="color:var(--accent); text-decoration:none; font-family:var(--font-display); font-weight:600; font-size:0.9rem">← All guides</a>
+    <div style="margin-top:18px"><span style="font-size:1.6rem">${meta.icon}</span> <span class="badge type">${esc(meta.tag)}</span> <span class="badge">${esc(meta.time)} read</span></div>
+    <h1 style="font-size:clamp(1.8rem,4.5vw,2.6rem); margin-top:16px">${esc(meta.title)}</h1>
+    <p style="margin-top:14px; font-size:1.1rem; color:var(--text-dim)">${esc(meta.blurb)}</p>
+
+    <div class="gtoc"><b style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-faint)">In this guide</b>
+      ${secs.map((s, i) => `<a href="#s${i}">${esc(s.h)}</a>`).join("")}
+    </div>
+
+    <div class="article-body">
+      ${secs.map((s, i) => `<section id="s${i}"><h2>${esc(s.h)}</h2>${s.html}</section>`).join("\n      ")}
+    </div>
+
+    <div class="gnext">
+      ${others.map(g => `<a class="card" href="guide/${g.slug}.html" style="text-decoration:none; padding:18px"><div style="font-size:1.6rem; margin-bottom:8px">${g.icon}</div><div style="font-family:var(--font-display); font-weight:600; color:var(--text)">${esc(g.title)}</div><div style="font-size:0.85rem; color:var(--text-faint); margin-top:6px">${esc(g.blurb)}</div></a>`).join("")}
+    </div>
+
+    <p style="font-size:0.9rem; color:var(--text-dim); margin-top:36px">Ready to apply? Browse <a href="jobs.html" style="color:var(--accent)">verified pilot &amp; cabin crew jobs →</a></p>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>`;
 }
 
 function page(a) {
@@ -183,7 +367,7 @@ ${jobsLd ? jobsLd + "\n" : ""}</head>
     </div>` : ""}
 
     <h2 class="sec">Prepare for ${esc(a.name)} selection</h2>
-    <p style="color:var(--text-dim); font-size:0.95rem">Most carriers screen with aptitude testing and competency interviews. Train the underlying skills with our free <a href="games.html" style="color:var(--accent)">prep games</a> and read the <a href="guide.html?slug=interview-prep" style="color:var(--accent)">assessment guide</a>. Building hours or starting out? See the <a href="schools.html" style="color:var(--accent)">flight schools & Class 1 map</a>.</p>
+    <p style="color:var(--text-dim); font-size:0.95rem">Most carriers screen with aptitude testing and competency interviews. Train the underlying skills with our free <a href="games.html" style="color:var(--accent)">prep games</a> and read the <a href="guide/interview-prep.html" style="color:var(--accent)">assessment guide</a>. Building hours or starting out? See the <a href="schools.html" style="color:var(--accent)">flight schools & Class 1 map</a>.</p>
 
     <p style="font-size:0.8rem; color:var(--text-faint); margin:40px 0 60px">Listings verified against the airline's official careers portal on the date shown. ${esc(a.name)} names and logos belong to their owners; AirCrew Jobs is independent and not affiliated. Always confirm full criteria on the official site.</p>
   </div>
@@ -203,16 +387,42 @@ for (const a of AIRLINES) {
   const slug = slugify(a.name);
   fs.writeFileSync(path.join(OUT, slug + ".html"), page(a));
   slugs.push(slug);
-  console.log("✓", slug + ".html");
 }
+console.log(`✓ ${slugs.length} airline pages`);
+
+/* per-job static pages → /job/<slug>.html */
+const JOB_OUT = path.join(ROOT, "job");
+fs.mkdirSync(JOB_OUT, { recursive: true });
+const airlineByName = Object.fromEntries(AIRLINES.map(a => [a.name, a]));
+const jobSlugs = [];
+for (const j of JOBS) {
+  const a = airlineByName[j.airline];
+  if (!a) { console.warn("⚠ no airline entry for job", j.id, j.airline); continue; }
+  const slug = jobSlug(j);
+  fs.writeFileSync(path.join(JOB_OUT, slug + ".html"), jobPage(j, a));
+  jobSlugs.push(slug);
+}
+console.log(`✓ ${jobSlugs.length} per-job pages`);
+
+/* per-guide static pages → /guide/<slug>.html */
+const GUIDE_OUT = path.join(ROOT, "guide");
+fs.mkdirSync(GUIDE_OUT, { recursive: true });
+const staticGuideSlugs = [];
+for (const g of GUIDES) {
+  const content = GUIDE_CONTENT[g.slug];
+  if (!content) { console.warn("⚠ no content for guide", g.slug); continue; }
+  fs.writeFileSync(path.join(GUIDE_OUT, g.slug + ".html"), guidePage(g, content));
+  staticGuideSlugs.push(g.slug);
+}
+console.log(`✓ ${staticGuideSlugs.length} guide pages`);
 
 /* regenerate sitemap.xml including airline pages */
 const corePages = ["/", "/jobs.html", "/airlines.html", "/schools.html", "/games.html", "/salaries.html", "/guides.html"];
-const guideSlugs = ctx.GUIDES.map(g => g.slug);
 const urls = [
   ...corePages.map(p => BASE + p),
-  ...guideSlugs.map(g => `${BASE}/guide.html?slug=${g}`),
-  ...slugs.map(s => `${BASE}/airline/${s}.html`)
+  ...staticGuideSlugs.map(g => `${BASE}/guide/${g}.html`),
+  ...slugs.map(s => `${BASE}/airline/${s}.html`),
+  ...jobSlugs.map(s => `${BASE}/job/${s}.html`)
 ];
 const today = new Date().toISOString().slice(0, 10);
 const xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
