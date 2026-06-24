@@ -38,7 +38,8 @@ const COUNTRY_ISO = {
   "Saudi Arabia": "SA", "Canada": "CA", "Germany / UK": "DE", "Germany": "DE",
   "Scandinavia": "SE", "Bahrain": "BH", "South Korea": "KR", "Kazakhstan": "KZ",
   "Greece": "GR", "Latvia": "LV", "Poland": "PL", "Belgium": "BE", "Japan": "JP",
-  "Malta": "MT", "Finland": "FI", "France": "FR", "Taiwan": "TW", "Malaysia": "MY"
+  "Malta": "MT", "Finland": "FI", "France": "FR", "Taiwan": "TW", "Malaysia": "MY",
+  "Luxembourg": "LU"
 };
 
 /* Pull a single city out of a location string, or null when it's multi-base / vague */
