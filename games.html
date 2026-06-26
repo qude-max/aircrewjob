@@ -987,6 +987,14 @@
       var s = document.createElement("section"); s.id = id; s.style.cssText = "padding-top:0; scroll-margin-top:90px";
       s.innerHTML = '<div class="container">' + inner + '</div>'; apt.parentNode.insertBefore(s, apt.nextSibling);
     }
+    function activeBadge(daysLeft) {
+      var hero = document.querySelector(".page-hero .container") || document.querySelector(".page-hero");
+      if (!hero || document.getElementById("tcActive")) return;
+      var d = document.createElement("div"); d.id = "tcActive";
+      d.style.cssText = "margin-top:16px; display:inline-block; padding:8px 16px; border-radius:999px; background:rgba(52,232,160,0.12); color:var(--green); font-family:var(--font-display); font-weight:600; font-size:0.88rem";
+      d.textContent = "✓ Training Centre unlocked — " + daysLeft + " day" + (daysLeft === 1 ? "" : "s") + " left on your pass";
+      hero.appendChild(d);
+    }
     function showLocked(signedIn, buyUrl, paid) {
       var cta = signedIn
         ? (CHECKOUT ? '<a class="btn btn-primary" id="tcBuy" href="' + buyUrl + '" target="_blank" rel="noopener">🔓 Unlock everything — ' + PRICE + '</a>'
@@ -1032,7 +1040,7 @@
 
         if (ok && st.active) {
           try { localStorage.setItem(CACHE, String(new Date(st.expiresAt).getTime())); } catch (e) {}
-          if (renderedFull) insertAfterApt("tcActive", '<p style="text-align:center; color:var(--green); font-weight:600">✓ Full Training Centre unlocked — ' + st.daysLeft + ' day' + (st.daysLeft === 1 ? "" : "s") + ' left on your pass.</p>');
+          if (renderedFull) activeBadge(st.daysLeft);
           else location.replace("games.html");   // upgrade: reload once so it renders full from the start
           return;
         }
