@@ -580,7 +580,22 @@ const Backend = (() => {
     }
   };
 
-  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, subscribe: subscribeApi, applyClicks: applyClicksApi, tracker: trackerApi, canPost };
+  /* Training Centre paid access (read-only; granted by the Stripe webhook) */
+  const prepApi = {
+    async status() {
+      if (mode !== "supabase" || !currentUser) return { active: false, daysLeft: 0, expiresAt: null, signedIn: mode === "supabase" && !!currentUser };
+      const { data } = await sb.from("prep_access").select("expires_at").eq("user_id", currentUser.id).maybeSingle();
+      const exp = data && data.expires_at ? new Date(data.expires_at).getTime() : 0;
+      const active = exp > Date.now();
+      return { active, signedIn: true, expiresAt: data ? data.expires_at : null, daysLeft: active ? Math.ceil((exp - Date.now()) / 86400000) : 0 };
+    },
+    checkoutUrl(baseUrl) {
+      if (!baseUrl || mode !== "supabase" || !currentUser) return baseUrl || "";
+      return baseUrl + (baseUrl.indexOf("?") >= 0 ? "&" : "?") + "client_reference_id=" + encodeURIComponent(currentUser.id);
+    }
+  };
+
+  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, subscribe: subscribeApi, applyClicks: applyClicksApi, tracker: trackerApi, prep: prepApi, canPost };
 })();
 
 Backend.ready = Backend.init();

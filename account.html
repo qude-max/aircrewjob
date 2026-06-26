@@ -128,6 +128,12 @@
         <div id="appsList"><div class="empty">Loading…</div></div>
       </div>
 
+      <!-- Training Centre pass -->
+      <div class="card">
+        <h3 style="margin-bottom:18px">🎓 Training Centre</h3>
+        <div id="prepStatus"><div class="empty">Loading…</div></div>
+      </div>
+
     </div>
   </section>
 
@@ -168,6 +174,19 @@
 
       renderSaved();
       renderApps();
+      renderPrep();
+    }
+
+    async function renderPrep() {
+      const el = document.getElementById("prepStatus");
+      if (!el) return;
+      let st = { active: false, daysLeft: 0 };
+      try { st = await Backend.prep.status(); } catch (e) {}
+      el.innerHTML = st.active
+        ? `<p style="font-size:0.95rem">✅ <b style="color:var(--green)">Active pass</b> — <b>${st.daysLeft}</b> day${st.daysLeft === 1 ? "" : "s"} left.</p>
+           <p style="margin-top:12px"><a class="btn btn-ghost btn-sm" href="games.html">Open the Training Centre →</a></p>`
+        : `<p class="empty">No active pass. Unlock the full interview bank, scenarios, knowledge checks and all aptitude games for 2 months.</p>
+           <p style="margin-top:12px"><a class="btn btn-primary btn-sm" href="games.html">Unlock the Training Centre →</a></p>`;
     }
 
     async function renderSaved() {

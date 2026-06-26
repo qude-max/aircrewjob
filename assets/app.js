@@ -89,7 +89,7 @@ function renderFooter() {
             <li><a href="jobs.html">Job Board</a></li>
             <li><a href="tracker.html">My Applications</a></li>
             <li><a href="schools.html">Schools & Class 1 Map</a></li>
-            <li><a href="games.html">Aptitude Prep Games</a></li>
+            <li><a href="games.html">Training Centre</a></li>
             <li><a href="salaries.html">Salary Explorer</a></li>
             <li><a href="guides.html">Career Guides</a></li>
             <li><a href="account.html">My Account</a></li>

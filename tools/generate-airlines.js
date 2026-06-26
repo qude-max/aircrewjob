@@ -513,6 +513,7 @@ for (const def of land) {
 }
 console.log(`✓ ${landSlugs.length} SEO landing pages`);
 
+
 /* regenerate sitemap.xml including airline pages */
 const corePages = ["/", "/jobs.html", "/airlines.html", "/schools.html", "/games.html", "/salaries.html", "/guides.html"];
 const urls = [

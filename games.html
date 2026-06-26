@@ -957,5 +957,98 @@
       mcqInit();
     });
   </script>
+
+  <!-- ============ Training Centre paywall: free samples + Stripe unlock ============ -->
+  <script>
+  (function () {
+    var FREE_GAMES = ["spatial", "sixpack"];      // 2 free aptitude games; rest locked
+    var FREE_HR = 3, FREE_SCN = 1, FREE_MCQ = ["a320"];
+    var CHECKOUT = (typeof PREP_CHECKOUT_URL !== "undefined") ? PREP_CHECKOUT_URL : "";
+    var PRICE = (typeof PREP_PRICE !== "undefined") ? PREP_PRICE : "";
+    var CACHE = "acj_prep_exp";   // last-known pass expiry (ms) — for an instant, flicker-free decision
+    function cachedActive() { try { return (parseInt(localStorage.getItem(CACHE) || "0", 10) || 0) > Date.now(); } catch (e) { return false; } }
+
+    // full counts (captured before any truncation, for the copy)
+    var nHR = (typeof HR_QUESTIONS !== "undefined") ? HR_QUESTIONS.length : 0;
+    var nSCN = (typeof SCENARIOS !== "undefined") ? SCENARIOS.length : 0;
+    var nMCQ = (typeof MCQ !== "undefined") ? Object.keys(MCQ).length : 0;
+
+    // Decide synchronously from the cache so the very first render is correct (no re-render → no double-binding).
+    var renderedFull = cachedActive();
+    if (!renderedFull) {
+      try { if (typeof HR_QUESTIONS !== "undefined") HR_QUESTIONS.length = Math.min(HR_QUESTIONS.length, FREE_HR); } catch (e) {}
+      try { if (typeof SCENARIOS !== "undefined") SCENARIOS.length = Math.min(SCENARIOS.length, FREE_SCN); } catch (e) {}
+      try { if (typeof MCQ !== "undefined") Object.keys(MCQ).forEach(function (k) { if (FREE_MCQ.indexOf(k) < 0) delete MCQ[k]; }); } catch (e) {}
+    }
+    window.__tcUnlock = function () { var u = document.getElementById("tcUnlock"); if (u) u.scrollIntoView({ behavior: "smooth" }); };
+
+    function insertAfterApt(id, inner) {
+      var apt = document.getElementById("aptitude"); if (!apt || document.getElementById(id)) return;
+      var s = document.createElement("section"); s.id = id; s.style.cssText = "padding-top:0; scroll-margin-top:90px";
+      s.innerHTML = '<div class="container">' + inner + '</div>'; apt.parentNode.insertBefore(s, apt.nextSibling);
+    }
+    function showLocked(signedIn, buyUrl, paid) {
+      var cta = signedIn
+        ? (CHECKOUT ? '<a class="btn btn-primary" id="tcBuy" href="' + buyUrl + '" target="_blank" rel="noopener">🔓 Unlock everything — ' + PRICE + '</a>'
+                    : '<span style="color:var(--text-faint)">🔒 Checkout coming soon</span>')
+        : '<a class="btn btn-primary" href="auth.html">Sign in to unlock — ' + PRICE + '</a><p style="font-size:0.8rem; color:var(--text-faint); margin-top:10px">A free account keeps your pass on every device.</p>';
+      var paidMsg = (paid && signedIn) ? '<p style="color:var(--amber); margin-bottom:10px">Payment received — activating. If it doesn\'t unlock shortly, refresh this page.</p>' : '';
+      insertAfterApt("tcUnlock", '<div class="card" style="text-align:center; border-color:var(--border-bright); background:rgba(124,140,255,0.07); padding:28px">' + paidMsg +
+        '<h2 style="font-size:1.4rem; margin-bottom:8px">🔓 Unlock the full Training Centre</h2>' +
+        '<p style="color:var(--text-dim); max-width:600px; margin:0 auto 16px">You\'re on the free samples. Unlock every aptitude game, the full ' + nHR + '-question interview bank, all decision scenarios and the complete A320 / B737 / ATPL knowledge checks — 60-day pass.</p>' + cta + '</div>');
+      var buy = document.getElementById("tcBuy");
+      if (buy && typeof trackConversion === "function") buy.addEventListener("click", function () { trackConversion("tc_checkout"); });
+      document.querySelectorAll("#aptitude .game-card").forEach(function (card) {
+        var btn = card.querySelector("button"); if (!btn) return;
+        var m = (btn.getAttribute("onclick") || "").match(/openGame\('([^']+)'\)/);
+        if (m && FREE_GAMES.indexOf(m[1]) < 0) { btn.setAttribute("onclick", "window.__tcUnlock()"); btn.textContent = "🔒 Unlock"; card.style.opacity = "0.65"; }
+      });
+      function note(sec, text) {
+        var s = document.getElementById(sec); if (!s || !s.querySelector(".container")) return;
+        var p = document.createElement("p"); p.style.cssText = "text-align:center; margin-top:16px";
+        p.innerHTML = '<a href="#tcUnlock" style="color:var(--accent); font-weight:600">🔒 ' + text + '</a>';
+        p.querySelector("a").addEventListener("click", function (e) { e.preventDefault(); window.__tcUnlock(); });
+        s.querySelector(".container").appendChild(p);
+      }
+      if (nHR > FREE_HR) note("interview", "+ " + (nHR - FREE_HR) + " more interview questions — unlock the full bank");
+      if (nSCN > FREE_SCN) note("scenarios", "+ " + (nSCN - FREE_SCN) + " more decision scenarios — unlock");
+      if (nMCQ > FREE_MCQ.length) note("knowledge", "+ B737 & ATPL knowledge banks — unlock");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      (async function () {
+        var paid = false; try { paid = new URLSearchParams(location.search).get("prep_paid") === "1"; } catch (e) {}
+        await Backend.ready;
+        var signedIn = false; try { signedIn = !!Backend.auth.user(); } catch (e) {}
+        var st = { active: false, daysLeft: 0, expiresAt: null }, ok = false;
+        try { st = await Backend.prep.status(); ok = true; } catch (e) {}
+
+        // just paid? the webhook may take a few seconds — show a spinner and poll
+        if (paid && signedIn && ok && !st.active) {
+          insertAfterApt("tcProc", '<p style="text-align:center; color:var(--amber)">⏳ Payment received — activating your 2-month pass…</p>');
+          for (var i = 0; i < 6 && !st.active; i++) { await new Promise(function (r) { setTimeout(r, 2500); }); try { st = await Backend.prep.status(); } catch (e) {} }
+          var pp = document.getElementById("tcProc"); if (pp) pp.remove();
+        }
+
+        if (ok && st.active) {
+          try { localStorage.setItem(CACHE, String(new Date(st.expiresAt).getTime())); } catch (e) {}
+          if (renderedFull) insertAfterApt("tcActive", '<p style="text-align:center; color:var(--green); font-weight:600">✓ Full Training Centre unlocked — ' + st.daysLeft + ' day' + (st.daysLeft === 1 ? "" : "s") + ' left on your pass.</p>');
+          else location.replace("games.html");   // upgrade: reload once so it renders full from the start
+          return;
+        }
+        if (ok) {  // confirmed: no active pass
+          try { localStorage.removeItem(CACHE); } catch (e) {}
+          if (renderedFull) { location.replace("games.html"); return; }   // downgrade (expired): reload to samples
+          var buyUrl = (Backend.prep && Backend.prep.checkoutUrl) ? Backend.prep.checkoutUrl(CHECKOUT) : CHECKOUT;
+          showLocked(signedIn, buyUrl, paid);
+        } else if (!renderedFull) {
+          // status check failed (offline) and we're showing samples — show the locked CTA as the safe default
+          var bu = (Backend.prep && Backend.prep.checkoutUrl) ? Backend.prep.checkoutUrl(CHECKOUT) : CHECKOUT;
+          showLocked(signedIn, bu, paid);
+        }
+      })();
+    });
+  })();
+  </script>
 </body>
 </html>

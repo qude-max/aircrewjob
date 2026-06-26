@@ -30,3 +30,12 @@ const TELEGRAM_INVITE = "";
    best fit for our mostly-mobile South-Asia audience). Paste the channel
    share link here. Leave "" to hide the WhatsApp buttons site-wide. */
 const WHATSAPP_INVITE = "https://whatsapp.com/channel/0029VbCdabI7oQhYilhuxc2g";
+
+/* Monetization — Training Centre (games.html) premium unlock. One-time S$5 for a
+   60-day pass, tied to the user's account (secure: a Stripe webhook → Supabase
+   Edge Function writes the access; users can't self-grant). Requires login.
+   Stripe one-time Payment Link; set its success URL to:
+     https://www.aircrewjob.com/games.html?prep_paid=1
+   The site appends ?client_reference_id=<userId> so the webhook knows who paid. */
+const PREP_CHECKOUT_URL = "https://buy.stripe.com/6oU00k2zlbDy4pWdFZ28803";
+const PREP_PRICE = "S$5 · 2-month pass";
