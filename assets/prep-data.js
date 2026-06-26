@@ -52,7 +52,27 @@ const HR_QUESTIONS = [
   { cat: "Teamwork", q: "What kind of crew member are you on a bad day?",
     hints: ["Honest self-awareness beats perfection — name your real failure mode", "Then show the mitigation: how do you catch yourself, what do you tell the other pilot?", "Bonus: invite monitoring — 'I brief my colleague to call it out'"] },
   { cat: "Motivation", q: "Why should we choose you over the hundreds of other applicants with similar hours?",
-    hints: ["Not a hardware question — they have your logbook. It's a self-awareness question", "One or two SPECIFIC differentiators with evidence, not a list of adjectives", "Land it with fit: why you + this airline specifically works"] }
+    hints: ["Not a hardware question — they have your logbook. It's a self-awareness question", "One or two SPECIFIC differentiators with evidence, not a list of adjectives", "Land it with fit: why you + this airline specifically works"] },
+  { cat: "Safety", q: "Tell me about a time you raised a safety concern when it would have been easier to stay quiet.",
+    hints: ["This is the speak-up / assertiveness test — bring a real example", "Show graduated, professional escalation (PACE), not a one-off heroic shout", "End with the outcome — and that you'd do it again"] },
+  { cat: "Adaptability", q: "Describe a time a plan changed at the last minute and how you adjusted.",
+    hints: ["Flexibility without losing the safety/standards thread", "Concrete re-planning actions, not just 'I stayed calm'", "Tie it to ops reality — weather, slots, tech: every sector shifts"] },
+  { cat: "Command potential", q: "What makes a good captain — and where do you already show those qualities?",
+    hints: ["Decision-making, communication, setting tone, inviting input (authority gradient)", "Give evidence from your own life, even non-aviation", "Command is about the team's performance, not 'being the boss'"] },
+  { cat: "Error management", q: "You spot a mistake you made that nobody else has noticed. What do you do?",
+    hints: ["Immediate, voluntary disclosure — speed and honesty score highest", "Contain/fix it, tell the right person, log it if required", "Just culture: the lesson outranks the blame"] },
+  { cat: "Customer & professionalism", q: "A nervous passenger is visibly distressed before pushback. How do you help?",
+    hints: ["Empathy and calm reassurance without over-promising", "Practical steps, involving cabin crew per procedure", "Balance genuine care with keeping the operation moving"] },
+  { cat: "Teamwork", q: "Tell me about a time you received tough feedback. How did you take it?",
+    hints: ["Non-defensive listening — they're testing ego vs growth mindset", "What you actually changed afterwards (verifiable behaviour)", "A thank-the-messenger attitude is vital in a monitored cockpit"] },
+  { cat: "Stress & workload", q: "When several things are urgent at once, how do you decide what to do first?",
+    hints: ["A real model — aviate, navigate, communicate transfers anywhere", "Say what you'd DROP or delegate, and why that's safe", "Show you verbalise and bring the other crew member in"] },
+  { cat: "Motivation", q: "What's the biggest challenge facing this airline right now, and why do you still want to join?",
+    hints: ["Shows you research beyond the careers page", "Honest, balanced view — not naive cheerleading", "Connect the challenge to where you can contribute"] },
+  { cat: "Decision making", q: "You're offered a shortcut that saves time but bends a minor procedure. What do you do?",
+    hints: ["Procedures exist for reasons you may not see — comply", "Raise it through the right channel if the rule seems wrong", "Normalisation of deviance is the trap they're probing — name it"] },
+  { cat: "Leadership", q: "Tell me about a time you motivated a reluctant or struggling team member.",
+    hints: ["Empathy first — understand the 'why' before pushing", "Specific actions: support, clarity, a shared goal", "Outcome: both the task and the person improved"] }
 ];
 
 /* ============ GROUP / DECISION SCENARIOS ============ */
@@ -178,5 +198,23 @@ const MCQ = {
     { q: "METAR: 'TEMPO 0800 FG'. This means:", o: ["Fog certain for the whole period", "Temporary fluctuations: visibility 800 m in fog, periods lasting less than an hour, in total less than half the period", "Fog at 0800 UTC", "Forecast invalid"], c: 1, why: "TEMPO = temporary fluctuations <1 h each and <½ of the period in aggregate. (And it's a TAF/trend term — another probe: METARs report, TAFs forecast.)" },
     { q: "Mach number is the ratio of:", o: ["TAS to local speed of sound", "IAS to ground speed", "TAS to ground speed", "EAS to CAS"], c: 0, why: "M = TAS / a, where the local speed of sound depends on temperature only (a ≈ 38.95 √T(K) kt)." },
     { q: "Why do we use a transition altitude/level?", o: ["Fuel calculation", "To separate traffic on a common altimeter datum (1013) above, and local QNH terrain reference below", "Radio frequency changes", "RVSM entry"], c: 1, why: "Below TA: QNH for terrain clearance. Above TL: standard setting so all aircraft share one datum — flight levels." }
+  ]},
+  general: { label: "General knowledge", icon: "🧠", note: "Principles of flight, weather, human factors and air law — the fundamentals every assessment assumes you know.", qs: [
+    { q: "In steady straight-and-level flight:", o: ["Lift exceeds weight", "Thrust exceeds drag", "Lift = weight and thrust = drag", "Weight exceeds lift"], c: 2, why: "Unaccelerated level flight means the four forces are in balance." },
+    { q: "An aerofoil stalls when:", o: ["A fixed airspeed is reached", "The critical angle of attack is exceeded", "Flaps are retracted", "The engine fails"], c: 1, why: "Stall is an angle-of-attack phenomenon — it can occur at any speed or attitude." },
+    { q: "In a level 60° banked turn, the load factor is about:", o: ["1.0 g", "1.5 g", "2.0 g", "3.0 g"], c: 2, why: "Load factor = 1/cos(bank); 1/cos 60° = 2 g, and stall speed rises by √2 (~1.41×)." },
+    { q: "Induced drag is greatest:", o: ["At high speed", "At low speed / high AoA", "In the cruise", "In a descent"], c: 1, why: "Induced drag rises as speed falls; parasite drag does the opposite — total drag is lowest where they cross (best L/D)." },
+    { q: "Lowering flaps for landing:", o: ["Raises the stall speed", "Reduces lift", "Increases lift and drag, lowering the stall speed", "Has no aerodynamic effect"], c: 2, why: "A higher lift coefficient allows a slower, steeper, more controlled approach." },
+    { q: "Transponder code 7700 indicates:", o: ["Radio failure", "Unlawful interference (hijack)", "A general emergency", "VFR squawk"], c: 2, why: "7500 = hijack, 7600 = comms failure, 7700 = emergency — worth knowing cold." },
+    { q: "Wake turbulence is strongest behind an aircraft that is:", o: ["Heavy, slow and clean (gear/flaps up)", "Light and fast", "On the ground", "Descending quickly"], c: 0, why: "Vortex strength grows with weight and falls with speed/span — heavy + slow + clean is worst, hence extra spacing behind a 'Heavy'." },
+    { q: "Under the ICAO semicircular rule, flying east (track 000–179°) you cruise at:", o: ["Even thousands of feet", "Odd thousands of feet", "Any available level", "QNH levels only"], c: 1, why: "East = odd, West (180–359°) = even — keeps opposite-direction traffic vertically separated." },
+    { q: "An ILS provides:", o: ["Lateral guidance only", "Vertical guidance only", "Both lateral (localiser) and vertical (glideslope) guidance", "Distance information only"], c: 2, why: "Localiser gives centreline, glideslope gives the descent path — together a precision approach." },
+    { q: "If you become spatially disorientated in cloud, you should:", o: ["Trust your inner-ear sensations", "Trust and fly the instruments", "Close your eyes briefly", "Increase speed"], c: 1, why: "Vestibular illusions lie; the instruments are the truth in IMC." },
+    { q: "Time of Useful Consciousness after a rapid decompression at FL350 is roughly:", o: ["30–60 minutes", "5–10 minutes", "30–60 seconds", "Effectively unlimited"], c: 2, why: "Hence 'mask on first'. TUC shortens sharply with altitude and with rapid (vs slow) decompression." },
+    { q: "A microburst encountered on short final is dangerous because it produces:", o: ["A steady tailwind only", "A performance-increasing headwind", "A rapid swing from headwind/updraft to downdraft/tailwind, sapping performance", "No significant effect"], c: 2, why: "The shear reverses through it — an initial gain masks the severe loss that follows. Escape with max thrust; don't chase the speed." },
+    { q: "With QNH set, the altimeter reads:", o: ["Height above the airfield", "Altitude above mean sea level", "Flight level", "Height above the terrain"], c: 1, why: "QNH → altitude AMSL (airfield elevation on the ground). QFE → height above the field; 1013 → flight levels." },
+    { q: "VMCA (air minimum control speed) is:", o: ["Best rate-of-climb speed", "The minimum speed to keep directional control with the critical engine inoperative", "Maximum flap speed", "Clean stall speed"], c: 1, why: "Below VMCA, with one engine out and the other at takeoff thrust, the rudder can no longer hold heading." },
+    { q: "On a Mercator chart, the shortest distance between two points is:", o: ["The rhumb line drawn as a straight line", "The great-circle track, which appears curved", "Always due east", "Undefined"], c: 1, why: "A straight line on Mercator is a rhumb line (constant heading, longer); the great circle is shortest but curves on the chart." },
+    { q: "A steady green light-gun signal to an aircraft in flight means:", o: ["Return to land", "Cleared to land", "Give way to other aircraft and continue circling", "Airport unsafe — do not land"], c: 1, why: "In flight: steady green = cleared to land; steady red = give way / keep circling; flashing green = return to land." }
   ]}
 };
