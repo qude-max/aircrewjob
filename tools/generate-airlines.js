@@ -183,6 +183,8 @@ ${jobPostingLd(j, a)}
 
     ${j.applyUrl ? `<a class="btn btn-primary js-apply-out" data-airline="${esc(a.name)}" data-job-id="${esc(String(j.id))}" href="${esc(j.applyUrl)}" target="_blank" rel="noopener">Apply on ${esc(a.name)}'s official site ↗</a>` : ""}
 
+    <p style="margin-top:22px; padding:14px 16px; border:1px solid var(--border-bright); border-radius:var(--radius-sm); background:rgba(56,224,255,0.05); font-size:0.92rem">🎯 Interview at ${esc(a.name)} coming up? <a href="games.html" style="color:var(--accent); font-weight:600">Train for the assessment in the Training Centre →</a></p>
+
     <p style="font-size:0.85rem; color:var(--text-faint); margin-top:22px">
       Listing verified ${VERIFIED_DATE} against ${esc(a.name)}'s official careers portal. AirCrew Jobs is independent and free for job-seekers — we never charge fees or use agents.
       See more <a href="airline/${aSlug}.html" style="color:var(--accent)">${esc(a.name)} openings</a> or browse the full <a href="jobs.html" style="color:var(--accent)">job board</a>.

@@ -1003,7 +1003,7 @@
       var paidMsg = (paid && signedIn) ? '<p style="color:var(--amber); margin-bottom:10px">Payment received — activating. If it doesn\'t unlock shortly, refresh this page.</p>' : '';
       insertAfterApt("tcUnlock", '<div class="card" style="text-align:center; border-color:var(--border-bright); background:rgba(124,140,255,0.07); padding:28px">' + paidMsg +
         '<h2 style="font-size:1.4rem; margin-bottom:8px">🔓 Unlock the full Training Centre</h2>' +
-        '<p style="color:var(--text-dim); max-width:600px; margin:0 auto 16px">You\'re on the free samples. Unlock every aptitude game, the full ' + nHR + '-question interview bank, all decision scenarios and the complete A320 / B737 / ATPL knowledge checks — 60-day pass.</p>' + cta + '</div>');
+        '<p style="color:var(--text-dim); max-width:600px; margin:0 auto 16px">You\'re on the free samples. Unlock all 7 aptitude games, the full ' + nHR + '-question competency-interview bank, every decision scenario and all four knowledge banks (A320 · B737 · ATPL · general) — <b style="color:var(--text)">90+ drills</b>, a 60-day pass for the price of a coffee. Walk into assessment day ready.</p>' + cta + '</div>');
       var buy = document.getElementById("tcBuy");
       if (buy && typeof trackConversion === "function") buy.addEventListener("click", function () { trackConversion("tc_checkout"); });
       document.querySelectorAll("#aptitude .game-card").forEach(function (card) {
