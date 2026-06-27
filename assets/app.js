@@ -211,7 +211,8 @@ const ACJ_CONV = {
   discord_join: "AW-18240351644/FHF9CLng3b8cEJzb1vlD",  // Chill Wings Discord join
   job_alert: "AW-18240351644/7xyDCNLq3b8cEJzb1vlD",     // email job-alert signup
   telegram_join: "",                                    // Telegram channel join  ← create + paste label
-  whatsapp_join: ""                                     // WhatsApp channel follow ← create conversion action in Google Ads + paste label
+  whatsapp_join: "",                                    // WhatsApp channel follow ← create conversion action in Google Ads + paste label
+  school_lead: ""                                       // B2B: student registered interest in a flight school ← create + paste label
 };
 function trackConversion(name, params) {
   if (typeof gtag !== "function") return;

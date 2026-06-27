@@ -103,6 +103,15 @@
         Know a school we should add? Tell us on the <a href="#" id="discordLink" style="color:var(--accent)">Discord</a>.
       </p>
 
+      <!-- B2B: featured-partner sales hook -->
+      <div class="card" style="margin-top:22px; border-color:var(--border-bright); background:rgba(56,224,255,0.04); display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap">
+        <div>
+          <h3 style="font-size:1.05rem">✈️ Run a flight school or aeromedical centre?</h3>
+          <p style="font-size:0.9rem; color:var(--text-dim); margin-top:4px">Get featured on the map and reach aspiring pilots actively choosing where to train.</p>
+        </div>
+        <a class="btn btn-primary btn-sm" href="mailto:aircrewjobcontact@gmail.com?subject=Feature%20our%20school%20on%20AirCrew%20Jobs&body=Hi%20AirCrew%20Jobs%2C%20we%27d%20like%20to%20be%20featured%20on%20the%20training%20map.">Get featured →</a>
+      </div>
+
       <div class="locator-grid">
         <div class="section-head" style="margin-bottom:24px">
           <h2 style="font-size:1.4rem">No pin in your country?</h2>
@@ -112,6 +121,21 @@
       </div>
     </div>
   </section>
+
+  <!-- B2B: student interest / lead capture -->
+  <div id="leadModal" style="display:none; position:fixed; inset:0; background:rgba(3,6,12,0.9); z-index:1300; place-items:center; padding:16px">
+    <div class="card" style="max-width:420px; width:100%; border-color:var(--border-bright)">
+      <button type="button" onclick="document.getElementById('leadModal').style.display='none'" style="float:right; background:none; border:none; color:var(--text-faint); font-size:1.5rem; line-height:1; cursor:pointer" aria-label="Close">×</button>
+      <h3 id="leadTitle" style="margin-bottom:6px; padding-right:24px">Register interest</h3>
+      <p style="font-size:0.86rem; color:var(--text-dim); margin-bottom:14px">Leave your details — we'll pass your interest to the school and keep you posted on training options &amp; openings.</p>
+      <form id="leadForm">
+        <input class="input" id="leadName" type="text" placeholder="Your name" autocomplete="name" style="margin-bottom:10px; width:100%">
+        <input class="input" id="leadEmail" type="email" required placeholder="your@email.com" autocomplete="email" style="margin-bottom:12px; width:100%">
+        <button class="btn btn-primary btn-sm" type="submit" style="width:100%">Register my interest</button>
+        <p id="leadMsg" style="font-size:0.85rem; margin-top:10px; min-height:1.1em"></p>
+      </form>
+    </div>
+  </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -132,7 +156,8 @@
       html: `<div class="pin" style="width:14px;height:14px;background:${color}33;border-color:${color};box-shadow:0 0 12px ${color}99"></div>`,
       iconSize: [14, 14], iconAnchor: [7, 7]
     });
-    const icons = { school: mkIcon("#38e0ff"), medical: mkIcon("#34e8a0") };
+    const icons = { school: mkIcon("#38e0ff"), medical: mkIcon("#34e8a0"), featured: mkIcon("#ffc555") };
+    const escAttr = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 
     const all = [
       ...SCHOOLS.map(s => ({ ...s, kind: "school" })),
@@ -147,11 +172,19 @@
         background:${p.kind === "school" ? "rgba(56,224,255,0.1)" : "rgba(52,232,160,0.1)"};
         border:1px solid ${p.kind === "school" ? "rgba(56,224,255,0.35)" : "rgba(52,232,160,0.35)"}">
         ${p.kind === "school" ? "Trains for: " : ""}${p.auth}</div>` : "";
+      const featBadge = p.featured ? `<div style="display:inline-block; font-size:0.7rem; font-weight:700; letter-spacing:0.04em;
+        padding:3px 10px; border-radius:999px; margin-bottom:8px; margin-right:6px;
+        color:#ffc555; background:rgba(255,197,85,0.12); border:1px solid rgba(255,197,85,0.4)">★ Featured partner</div>` : "";
+      const leadBtn = p.kind === "school" ? `<button type="button" class="pop-lead"
+        data-school="${escAttr(p.name)}" data-region="${escAttr(p.region || "")}" onclick="openLeadForm(this)"
+        style="display:block; width:100%; margin-top:10px; padding:8px; border:1px solid var(--border-bright); border-radius:8px;
+        background:rgba(56,224,255,0.08); color:var(--accent); font-family:var(--font-display); font-weight:600; font-size:0.82rem; cursor:pointer">
+        📩 Register interest</button>` : "";
       return `<div class="pop-name">${p.kind === "school" ? "🎓" : "🩺"} ${p.name}</div>
         <div class="pop-city">${p.city}</div>
-        ${authBadge}
+        ${featBadge}${authBadge}
         <div class="pop-note">${p.note}</div>
-        <a class="pop-link" href="${p.url}" target="_blank" rel="noopener">Official site ↗</a>`;
+        <a class="pop-link" href="${p.url}" target="_blank" rel="noopener">Official site ↗</a>${leadBtn}`;
     }
 
     function render() {
@@ -163,7 +196,7 @@
         (f === "all" || p.kind === f) &&
         (!q || `${p.name} ${p.city} ${p.region} ${p.auth || ""}`.toLowerCase().includes(q)));
       visible.forEach(p => {
-        const m = L.marker([p.lat, p.lng], { icon: icons[p.kind] }).addTo(map).bindPopup(popup(p));
+        const m = L.marker([p.lat, p.lng], { icon: icons[p.kind === "school" && p.featured ? "featured" : p.kind] }).addTo(map).bindPopup(popup(p));
         markers.push(m);
       });
       document.getElementById("pinCount").textContent =
@@ -191,6 +224,43 @@
 
     if (typeof DISCORD_INVITE !== "undefined")
       document.getElementById("discordLink").href = DISCORD_INVITE;
+
+    // ---- B2B lead capture ----
+    let leadCtx = {};
+    window.openLeadForm = function (btn) {
+      leadCtx = { school: btn.dataset.school || "", region: btn.dataset.region || "" };
+      document.getElementById("leadTitle").textContent = "Register interest · " + leadCtx.school;
+      document.getElementById("leadMsg").textContent = "";
+      document.getElementById("leadForm").reset();
+      const m = document.getElementById("leadModal");
+      m.style.display = "grid";
+    };
+    document.getElementById("leadModal").addEventListener("click", e => {
+      if (e.target.id === "leadModal") e.currentTarget.style.display = "none";
+    });
+    document.getElementById("leadForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const email = document.getElementById("leadEmail").value.trim();
+      const name = document.getElementById("leadName").value.trim();
+      const msg = document.getElementById("leadMsg");
+      if (!email) return;
+      msg.style.color = "var(--text-dim)";
+      msg.textContent = "Sending…";
+      try {
+        if (window.Backend && Backend.ready) await Backend.ready;
+        if (window.Backend && Backend.schoolLeads) {
+          await Backend.schoolLeads.log({ school: leadCtx.school, region: leadCtx.region, name, email });
+        }
+        if (typeof trackConversion === "function") trackConversion("school_lead");
+        msg.style.color = "var(--green)";
+        msg.textContent = "✓ Thanks! We've logged your interest in " + leadCtx.school + ".";
+        setTimeout(() => { document.getElementById("leadModal").style.display = "none"; }, 1800);
+      } catch (err) {
+        msg.style.color = "var(--green)";
+        msg.textContent = "✓ Thanks! We've logged your interest.";
+        setTimeout(() => { document.getElementById("leadModal").style.display = "none"; }, 1800);
+      }
+    });
 
     render();
   </script>

@@ -90,7 +90,14 @@
         <div class="rank" id="waPosts"></div>
       </div>
 
-      <p class="muted">Reads live from Supabase each load — no screenshots needed. Subscriber emails are never loaded into this page (count only).</p>
+      <div class="panel">
+        <h2>🎓 Flight-school interest leads (B2B)</h2>
+        <p class="muted" style="margin-bottom:14px">Students who tapped "Register interest" on the training map. Forward these to the school, or use the demand to pitch a featured-partner slot.</p>
+        <div class="rank" id="leadsBySchool" style="margin-bottom:18px"></div>
+        <div id="leadsList"></div>
+      </div>
+
+      <p class="muted">Reads live from Supabase each load — no screenshots needed. Subscriber emails are never loaded into this page (count only). School-lead emails are shown here because they're yours to act on.</p>
     </div>
   </div>
 
@@ -116,10 +123,11 @@
       if (!isAdmin) { $("locked").style.display = "block"; $("dash").style.display = "none"; return; }
       $("locked").style.display = "none"; $("dash").style.display = "block";
 
-      const [clicks, subs, stats] = await Promise.all([
+      const [clicks, subs, stats, leads] = await Promise.all([
         Backend.admin.applyClicks(),
         Backend.admin.subscriberDates(),
-        Backend.admin.stats()
+        Backend.admin.stats(),
+        Backend.admin.schoolLeads().catch(() => [])
       ]);
 
       const now = Date.now(), DAY = 86400000;
@@ -178,6 +186,18 @@
         try { await navigator.clipboard.writeText(msg); const o = btn.textContent; btn.textContent = "✓ Copied"; setTimeout(() => btn.textContent = o, 1500); }
         catch (e) { window.prompt("Copy this message:", msg); }
       }));
+
+      // School-interest leads (B2B)
+      const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const bySchool = {};
+      leads.forEach(l => { const s = l.school || "Unknown"; bySchool[s] = (bySchool[s] || 0) + 1; });
+      const lRank = Object.entries(bySchool).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      const lmax = Math.max(1, ...lRank.map(r => r[1]));
+      $("leadsBySchool").innerHTML = leads.length
+        ? lRank.map(([s, v]) => `<div class="rank-row"><span class="t">${esc(s)}</span><span class="track"><span class="fill" style="width:${Math.round(v / lmax * 100)}%"></span></span><span class="v">${fmt(v)}</span></div>`).join("")
+        : `<p class="muted">No leads yet — they'll appear here once students register interest on the map.</p>`;
+      $("leadsList").innerHTML = leads.slice(0, 50).map(l =>
+        `<div class="rank-row" style="grid-template-columns:1fr 1fr 120px"><span class="t">${esc(l.school)}</span><span class="t"><a href="mailto:${encodeURIComponent(l.email || "")}" style="color:var(--accent)">${esc(l.email)}</a>${l.name ? " · " + esc(l.name) : ""}</span><span class="v" style="font-size:0.78rem; color:var(--text-faint)">${l.created_at ? new Date(l.created_at).toLocaleDateString() : ""}</span></div>`).join("");
 
       $("asof").textContent = "Updated " + new Date().toLocaleString();
     }

@@ -484,6 +484,15 @@ const Backend = (() => {
       return data || [];
     },
 
+    /* dashboard: B2B flight-school interest leads (admin only, RLS-gated) */
+    async schoolLeads() {
+      if (mode !== "supabase") return LS.get("school_leads", []);
+      const { data } = await sb.from("school_leads")
+        .select("school, region, name, email, created_at")
+        .order("created_at", { ascending: false });
+      return data || [];
+    },
+
     async setRecruiterApproval(idOrEmail, approved) {
       if (mode === "supabase") {
         const { error } = await sb.from("profiles").update({ approved }).eq("id", idOrEmail);
@@ -595,7 +604,19 @@ const Backend = (() => {
     }
   };
 
-  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, subscribe: subscribeApi, applyClicks: applyClicksApi, tracker: trackerApi, prep: prepApi, canPost };
+  /* B2B: capture a student's interest in a flight school (the lead you sell/forward) */
+  const schoolLeadsApi = {
+    async log(lead) {
+      lead = lead || {};
+      if (mode === "supabase") {
+        try { await sb.from("school_leads").insert({ school: lead.school || null, region: lead.region || null, name: lead.name || null, email: lead.email || null }); } catch (e) {}
+        return { ok: true };
+      }
+      const l = LS.get("school_leads", []); l.push({ ...lead, ts: Date.now() }); LS.set("school_leads", l); return { ok: true };
+    }
+  };
+
+  return { mode, init, auth, profile: profileApi, jobs: jobsApi, saved: savedApi, apps: appsApi, reports: reportsApi, admin: adminApi, subscribe: subscribeApi, applyClicks: applyClicksApi, tracker: trackerApi, prep: prepApi, schoolLeads: schoolLeadsApi, canPost };
 })();
 
 Backend.ready = Backend.init();
