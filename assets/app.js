@@ -333,6 +333,30 @@ function initCommunity() {
     .catch(() => {});
 }
 
+/* Training-Centre readiness, computed from local bests (mirrors games.html).
+   Returns { hasData, overall, attempted, total, sessions } for homepage/account hooks. */
+function acjReadiness() {
+  var s = {}, sess = 0;
+  try { s = JSON.parse(localStorage.getItem("acj_game_scores")) || {}; } catch (e) {}
+  try { sess = parseInt(localStorage.getItem("acj_sessions") || "0", 10) || 0; } catch (e) {}
+  var norms = {
+    spatial: function (v) { return Math.min(100, v / 2); },
+    sixpack: function (v) { return Math.min(100, v / 4); },
+    grid: function (v) { return Math.min(100, (v - 2) * 14); },
+    reaction: function (v) { return Math.max(0, Math.min(100, (450 - v) / 2.5)); },
+    memory: function (v) { return Math.min(100, (v - 2) * 14); },
+    multitask: function (v) { return Math.min(100, v / 4.5); },
+    tracking: function (v) { return Math.min(100, v / 10); }
+  };
+  var dims = [];
+  Object.keys(norms).forEach(function (k) { if (s[k] !== undefined) dims.push(Math.round(Math.max(4, norms[k](s[k])))); });
+  ["a320", "b737", "atpl", "general"].forEach(function (k) { if (s["mcq_" + k] !== undefined) dims.push(Math.round(s["mcq_" + k] / 10 * 100)); });
+  var total = Object.keys(norms).length + 4;
+  if (!dims.length) return { hasData: false, overall: 0, attempted: 0, total: total, sessions: sess };
+  var overall = Math.round(dims.reduce(function (a, b) { return a + b; }, 0) / dims.length);
+  return { hasData: true, overall: overall, attempted: dims.length, total: total, sessions: sess };
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderNav();
   renderFooter();

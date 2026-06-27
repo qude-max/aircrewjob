@@ -264,7 +264,8 @@
             <span><b>🗣️</b> Interview prep</span>
             <span><b>📚</b> Systems MCQs</span>
           </div>
-          <a href="games.html" class="btn btn-primary" style="margin-top:28px">Start training →</a>
+          <a href="games.html" class="btn btn-primary" style="margin-top:28px" id="acjTrainBtn">Start training →</a>
+          <div id="acjReadyHook" style="display:none; margin-top:18px"></div>
         </div>
         <svg viewBox="0 0 300 300" style="max-width:300px; margin:0 auto; filter:drop-shadow(0 0 24px rgba(56,224,255,0.3))">
           <polygon points="150,30 254,90 254,210 150,270 46,210 46,90" fill="none" stroke="rgba(56,224,255,0.3)"/>
@@ -326,6 +327,26 @@
         if (p < 1) requestAnimationFrame(tick);
       })(t0);
     }
+
+    // Returning trainees: show their readiness right on the homepage band
+    (function () {
+      try {
+        if (typeof acjReadiness !== "function") return;
+        var r = acjReadiness();
+        if (!r.hasData) return;
+        var hook = document.getElementById("acjReadyHook");
+        var btn = document.getElementById("acjTrainBtn");
+        if (!hook) return;
+        var col = r.overall >= 60 ? "var(--green)" : "#ffc555";
+        hook.innerHTML =
+          '<div style="display:flex; align-items:center; gap:14px; padding:12px 16px; border:1px solid var(--border-bright); border-radius:14px; background:rgba(56,224,255,0.05); max-width:420px">' +
+            '<div style="font-family:var(--font-display); font-weight:700; font-size:1.5rem; line-height:1; color:' + col + '">' + r.overall + '%</div>' +
+            '<div style="font-size:0.86rem; color:var(--text-dim)">Your readiness so far · ' + r.attempted + '/' + r.total + ' areas trained.<br><a href="games.html" style="color:var(--accent); font-weight:600">Resume training →</a></div>' +
+          '</div>';
+        hook.style.display = "block";
+        if (btn) btn.textContent = "Resume training →";
+      } catch (e) {}
+    })();
 
     document.addEventListener("DOMContentLoaded", async () => {
       await Backend.ready;

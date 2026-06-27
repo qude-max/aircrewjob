@@ -182,11 +182,24 @@
       if (!el) return;
       let st = { active: false, daysLeft: 0 };
       try { st = await Backend.prep.status(); } catch (e) {}
-      el.innerHTML = st.active
+      let ready = "";
+      try {
+        if (typeof acjReadiness === "function") {
+          const r = acjReadiness();
+          if (r.hasData) {
+            const col = r.overall >= 60 ? "var(--green)" : "#ffc555";
+            ready = `<div style="display:flex; align-items:center; gap:12px; margin-bottom:14px; padding:10px 14px; border:1px solid var(--border-bright); border-radius:12px; background:rgba(56,224,255,0.04)">
+                <span style="font-family:var(--font-display); font-weight:700; font-size:1.35rem; color:${col}">${r.overall}%</span>
+                <span style="font-size:0.85rem; color:var(--text-dim)">Readiness · ${r.attempted}/${r.total} areas trained · ${r.sessions} session${r.sessions === 1 ? "" : "s"}</span>
+              </div>`;
+          }
+        }
+      } catch (e) {}
+      el.innerHTML = ready + (st.active
         ? `<p style="font-size:0.95rem">✅ <b style="color:var(--green)">Active pass</b> — <b>${st.daysLeft}</b> day${st.daysLeft === 1 ? "" : "s"} left.</p>
            <p style="margin-top:12px"><a class="btn btn-ghost btn-sm" href="games.html">Open the Training Centre →</a></p>`
         : `<p class="empty">No active pass. Unlock the full interview bank, scenarios, knowledge checks and all aptitude games for 2 months.</p>
-           <p style="margin-top:12px"><a class="btn btn-primary btn-sm" href="games.html">Unlock the Training Centre →</a></p>`;
+           <p style="margin-top:12px"><a class="btn btn-primary btn-sm" href="games.html">Unlock the Training Centre →</a></p>`);
     }
 
     async function renderSaved() {
