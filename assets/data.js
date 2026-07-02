@@ -77,7 +77,11 @@ const DOMAINS = {
   "EVA Air": "evaair.com",
   "Scoot": "flyscoot.com",
   "NetJets": "netjets.com",
-  "Flexjet": "flexjet.com"
+  "Flexjet": "flexjet.com",
+  "FedEx Express": "fedex.com",
+  "Peach Aviation": "flypeach.com",
+  "CommuteAir": "commuteair.com",
+  "Virgin Atlantic": "virginatlantic.com"
 };
 
 /* Base coordinates for the job map — keyed by the exact `location` strings used in JOBS.
@@ -112,6 +116,12 @@ const BASES = {
   "Indian bases":                     [28.56, 77.10],   // IndiGo — Delhi hub
   "India + CAE academies":            [28.56, 77.10],
   "US bases (DEN, ORD, IAH, EWR…)":   [39.86, -104.67], // United — Denver
+  "US bases (DFW, CLT, MIA, PHX, ORD…)": [32.90, -97.04], // American — DFW hub
+  "US hubs (Memphis + 13 worldwide)": [35.04, -89.98],  // FedEx — Memphis superhub
+  "Osaka Kansai (KIX) + Japan bases": [34.43, 135.23],
+  "Houston (IAH) · Washington (IAD)": [29.98, -95.34],  // CommuteAir — IAH
+  "London Heathrow (LHR)":            [51.47, -0.45],
+  "95+ bases EU & UK":                [53.43, -6.25],   // Ryanair Group — Dublin
   "Addis Ababa (ADD)":                [8.98, 38.80],
   "Leipzig (LEJ)":                    [51.42, 12.24],
   "East Midlands (EMA)":              [52.83, -1.33],
@@ -419,10 +429,6 @@ const JOBS = [
     salary: "See official listing",
     reqs: "CPL holders and B737 type-rated pilots — India's fastest-growing fleet (226 MAX on order). Captains also recruited; criteria per role on the portal.",
     applyUrl: "https://www.akasaair.com/careers-at-akasa-air/pilots-careers-at-akasa-air" },
-  { id: 255, airline: "Akasa Air", role: "Cadet Pilot", aircraft: "SkyCadet Programme", region: "Asia-Pacific", location: "Mumbai (BOM)", type: "Cadet", minHours: 0, rated: false, posted: 0, added: "2026-06-12", verified: true,
-    salary: "Structured pathway to the B737 MAX",
-    reqs: "⏰ Applications close 24 Jun 2026. Ab initio pathway into Akasa's flight deck — criteria on the official programme page.",
-    applyUrl: "https://www.akasaair.com/akasa-air-skycadet-programme" },
 
   /* ---- Gulf Air (gulfair.com) — verified 12 Jun 2026 ---- */
   { id: 256, airline: "Gulf Air", role: "Captain", aircraft: "B787", region: "Middle East", location: "Bahrain (BAH)", type: "Rated", minHours: 4000, rated: true, posted: 0, added: "2026-06-12", verified: true,
@@ -503,6 +509,36 @@ const JOBS = [
     salary: "Level 1 First Officer — CAD $80,408 + benefits & pension match",
     reqs: "Direct-entry First Officer (req FIRST004433) · ATPL, or CPL with IATRA or SAMRA & SARON exams passed · 1,000 hrs total incl. 250 hrs multi-turbine · type training provided (B757/B767 preferred) · must be eligible to work in Canada & travel network-wide (incl. US crew visa) · RAIC · ICAO English Level 4 · no training bonds. Hamilton (CYHM) base. Canada's leading overnight all-cargo airline. Posted 9 Jun 2026.",
     applyUrl: "https://recruiting.ultipro.ca/CAR5000CJT/JobBoard/3bdb0a52-04dc-4fa4-91cd-d80afd88843d/OpportunityDetail?opportunityId=05e02cee-656c-4ff1-a4a0-2d1b56e231ee" },
+
+  /* ---- Batch verified 2 Jul 2026 (all checked at official source) ---- */
+  { id: 365, airline: "American Airlines", role: "First Officer", aircraft: "B737 / A320 family / B787 / B777", region: "Americas", location: "US bases (DFW, CLT, MIA, PHX, ORD…)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-07-02T12:00:00Z", verified: true,
+    salary: "Industry-leading mainline pay scale + profit sharing",
+    reqs: "Flight Deck pilot application open — American plans ~2,100 pilot hires in 2026. FAA ATP (or eligible) · FAA first-class medical · FCC permit · US work authorisation · bachelor's preferred. Apply by creating a profile on the official pilot portal (pilots.aa.com).",
+    applyUrl: "https://pilots.aa.com/" },
+  { id: 366, airline: "FedEx Express", role: "First Officer", aircraft: "B767 / B777 / MD-11 / A300 (cargo)", region: "Americas", location: "US hubs (Memphis + 13 worldwide)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-07-02T12:00:00Z", verified: true,
+    salary: "Top-tier cargo pay + benefits (world's largest cargo airline)",
+    reqs: "Active pilot recruitment via profile pool — create/update a profile and selected candidates are invited to apply. FAA ATP · first-class medical · 1,500 hrs fixed-wing TT · 500+ hrs PIC jet/heavy turboprop (1,000 preferred) · US citizenship or Permanent Resident Card (no visa sponsorship) · bachelor's preferred.",
+    applyUrl: "https://careers.fedex.com/career-areas/pilot/" },
+  { id: 367, airline: "Peach Aviation", role: "Captain", aircraft: "A320 (TR & non-TR)", region: "Asia-Pacific", location: "Osaka Kansai (KIX) + Japan bases", type: "Rated", minHours: 4000, rated: false, posted: 0, added: "2026-07-02T12:00:00Z", verified: true,
+    salary: "Permanent contract · no training bond · joining bonus",
+    reqs: "Two live tracks on the official portal: non-JCAB — ICAO ATPL with A320 or other jet rating, 4,000 hrs TT airline, 1,500 hrs PIC commercial jet, ICAO Class 1, English Level 4+; JCAB — JCAB ATPL, 500 hrs PIC at a Japan-based carrier. Japan's leading LCC (ANA Group).",
+    applyUrl: "https://www.flypeach.com/en/fm/recruting/how_to_apply_for_a_position" },
+  { id: 368, airline: "CommuteAir", role: "First Officer", aircraft: "Embraer E145", region: "Americas", location: "Houston (IAH) · Washington (IAD)", type: "Direct Entry", minHours: 1500, rated: false, posted: 0, added: "2026-07-02T12:00:00Z", verified: true,
+    salary: "$79.57/hr year 1 ($93.36 year 2) + $20,000 FO bonus",
+    reqs: "FAA ATP or R-ATP minimums · FCC permit · first-class medical · valid passport · US work authorisation. United Express carrier — preferential interviews for United Aviate participants, direct path to a United flight deck at 1,600 PIC. 76-hr monthly guarantee, no airport reserve.",
+    applyUrl: "https://www.commuteair.com/careers/pilots/" },
+  { id: 369, airline: "CommuteAir", role: "Captain", aircraft: "Embraer E145 (Direct-Entry)", region: "Americas", location: "Houston (IAH) · Washington (IAD)", type: "Direct Entry", minHours: 1000, rated: false, posted: 0, added: "2026-07-02T12:00:00Z", verified: true,
+    salary: "$152.25/hr starting + 1:1 longevity credit (up to 20 yrs FAR 121)",
+    reqs: "Direct-Entry Captain (Accelerated Program) · 1,000+ qualified FAR hours to start in the left seat · FAA ATP · first-class medical · US work authorisation. 1:1 pay scale credit for up to 20 years of prior FAR 121 experience. United Express (E145) — IAH & IAD bases.",
+    applyUrl: "https://www.airlineapps.com/jobs/details.aspx?emp=CommuteAir&job=Captain-Accelerated-Program" },
+  { id: 370, airline: "Virgin Atlantic", category: "crew", role: "Cabin Crew", aircraft: "A330neo / A350 / B787 cabins", region: "Europe", location: "London Heathrow (LHR)", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-07-02T12:00:00Z", verified: true,
+    salary: "Competitive basic + trip pay + downroute allowances · 28 days leave",
+    reqs: "No previous cabin crew experience required · 18+ · right to live & work in the UK · passport valid for all VS destinations · CAA safety/medical standards. Long-haul only (New York, LA, Caribbean, Asia), Vivienne Westwood uniform, 4½-week training in Crawley. Apply via Search & Apply on the official careers site.",
+    applyUrl: "https://careers.virginatlantic.com/cabin-crew-jobs" },
+  { id: 371, airline: "Ryanair", category: "crew", role: "Cabin Crew", aircraft: "B737 cabins", region: "Europe", location: "95+ bases EU & UK", type: "Direct Entry", minHours: 0, rated: false, posted: 0, added: "2026-07-02T12:00:00Z", verified: true,
+    salary: "Competitive package + incentives · free training · unlimited staff travel",
+    reqs: "Live postings right now incl. Belfast, Luton and Tirana base, plus July assessment days in Palermo, Sofia, Gdańsk, Warsaw and Milan MXP. 16,000+ crew across 95+ bases · free internationally recognised training · supervisor eligibility after 1 year · fixed roster patterns (5/3).",
+    applyUrl: "https://careers.ryanair.com/jobs/?ryanair-jobs-department=21158%2C22084&page=1" },
 
   /* ---- Saudia (careers.saudia.com) — verified 14 Jun 2026 ---- */
   { id: 262, airline: "Saudia", role: "Cadet Pilot", aircraft: "Cadet Programme", region: "Middle East", location: "Jeddah (JED)", type: "Cadet", minHours: 240, rated: false, posted: 0, added: "2026-06-14T06:28:00Z", verified: true,
@@ -779,6 +815,11 @@ const AIRLINES = [
   { name: "National Airlines",  code: "N8", domain: "nationalairlines.com",  country: "USA",          fleet: "B747-400F, B777, A330",   pilots: 300,  bases: "Orlando (MCO)",              status: "hiring", note: "✓ Verified 24 Jun 2026: live B747 First Officer (US applicants) and B777 Captain vacancies. US cargo & charter operator (military + commercial). FAA ATP required; FO needs US work authorisation, Captain open to foreign nationals who can obtain US visas." },
   { name: "Cargojet",           code: "W8", domain: "cargojet.com",          country: "Canada",       fleet: "Boeing 757F, 767F",       pilots: 600,  bases: "Hamilton (YHM)",             status: "hiring", note: "✓ Verified 27 Jun 2026: live direct-entry First Officer (req FIRST004433, posted 9 Jun 2026) on the B757/767 freighter. 1,000 hrs incl. 250 multi-turbine; type training provided; no training bonds. Canada's leading overnight all-cargo airline. Must be eligible to work in Canada." },
   { name: "QantasLink",         code: "QF", domain: "qantas.com",            country: "Australia",    fleet: "Dash 8 Q400, A220, E190", pilots: 1000, bases: "CNS, BNE, SYD, MEL, ADL",     status: "hiring", note: "✓ Verified 26 Jun 2026: Direct Entry First Officer (CASA ATPL/CPL, 500 hrs, AU/NZ work rights, no sponsorship). Australia's largest regional airline and an entry point into the Qantas Group." },
+  { name: "American Airlines",  code: "AA", domain: "aa.com",                country: "USA",          fleet: "B737, A320 fam, B787, B777", pilots: 16000, bases: "DFW, CLT, MIA, PHX, ORD",  status: "hiring", note: "✓ Verified 2 Jul 2026: Flight Deck pilot application open on the official portal (pilots.aa.com) — ~2,100 pilot hires planned for 2026. ATP + first-class medical; profile-based application." },
+  { name: "FedEx Express",      code: "FX", domain: "fedex.com",             country: "USA",          fleet: "B767F, B777F, MD-11F, A300F", pilots: 5800, bases: "Memphis (MEM) + 13 hubs",  status: "hiring", note: "✓ Verified 2 Jul 2026: pilot recruitment active via official profile pool. 1,500 hrs TT, 500+ PIC jet, US citizenship or green card (no sponsorship). World's largest cargo airline — 400+ jets." },
+  { name: "Peach Aviation",     code: "MM", domain: "flypeach.com",          country: "Japan",        fleet: "A320, A320neo, A321LR",   pilots: 500,  bases: "Osaka Kansai (KIX)",          status: "hiring", note: "✓ Verified 2 Jul 2026: A320 Captains (type-rated & non-rated) — two live tracks for non-JCAB and JCAB licence holders. Permanent contract, no training bond. Japan's leading LCC (ANA Group)." },
+  { name: "CommuteAir",         code: "C5", domain: "commuteair.com",        country: "USA",          fleet: "Embraer E145",            pilots: 900,  bases: "Houston (IAH), Washington (IAD)", status: "hiring", note: "✓ Verified 2 Jul 2026: E145 First Officers ($79.57/hr + $20k bonus) and Direct-Entry Captains ($152.25/hr, 1:1 longevity credit). United Express — Aviate flow to United at 1,600 PIC." },
+  { name: "Virgin Atlantic",    code: "VS", domain: "virginatlantic.com",    country: "UK",           fleet: "A330neo, A350, B787",     pilots: 900,  bases: "London Heathrow (LHR)",       status: "hiring", note: "✓ Verified 2 Jul 2026: Cabin Crew recruitment channel live on the official careers site — no experience required, LHR base, long-haul network. Pilot vacancies open periodically on the same portal." },
   { name: "Etihad Airways",     code: "EY", domain: "etihad.com",            country: "UAE",          fleet: "B787, A350, B777, A380",  pilots: 1800, bases: "Abu Dhabi",                   status: "hiring", note: "✓ Verified 10 Jun 2026: 7 live flight-deck vacancies — A320 & widebody Captains and FOs, rated and non-rated. 'Journey 2030' plan to double the fleet." },
   { name: "Qatar Airways",      code: "QR", domain: "qatarairways.com",      country: "Qatar",        fleet: "B787, B777, A350, A380",  pilots: 3800, bases: "Doha",                        status: "paused", note: "✓ Verified 10 Jun 2026: only the MPL Cadet Programme (Qatari nationals) is open on the careers portal. Direct-entry windows open periodically — check back." },
   { name: "flydubai",           code: "FZ", domain: "flydubai.com",          country: "UAE",          fleet: "B737 NG, B737 MAX",       pilots: 1300, bases: "Dubai",                       status: "hiring", note: "✓ Verified 10 Jun 2026: recruiting Captains, FOs (rated & non-rated), Second Officers and ab initio cadets." },
