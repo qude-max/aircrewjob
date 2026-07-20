@@ -4,7 +4,7 @@ The flight deck careers platform — verified pilot jobs from official airline p
 
 ## Features
 
-- **Job board** — 65 verified vacancies from 35 airlines across 5 continents, every listing sourced from the airline's official careers portal with a direct apply link
+- **Job board** — 140 verified vacancies from 68 airlines across 5 continents, every listing sourced from the airline's official careers portal with a direct apply link
 - **Accounts & roles** — pilots/cabin crew (save jobs, apply, track status) and recruiters (post listings, review applicants) with admin approval gate
 - **Airline directory** — live hiring status and recruitment notes
 - **Schools & Class 1 map** — interactive world map of flight academies and aeromedical centres
@@ -35,4 +35,4 @@ idempotent (safe to run repeatedly); recruiter posts are never touched.
 
 ---
 
-Job listings verified 10 Jun 2026. Always confirm requirements on the airline's official site before applying.
+Job listings verified 20 Jul 2026. Always confirm requirements on the airline's official site before applying.
