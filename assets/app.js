@@ -171,6 +171,22 @@ function timeAgo(ms) {
   return `${Math.floor(d / 30)}mo ago`;
 }
 
+/* Deadline badge for job cards. Expired listings are filtered out before
+   rendering; this covers the "still open" states:
+   ≤3 days  → red "Closes …" urgency badge
+   ≤14 days → amber "Closes in Nd"
+   else     → quiet "Deadline D Mon" pill                                   */
+function deadlineBadge(j) {
+  if (!j || !j.deadline) return "";
+  const end = new Date(j.deadline + "T23:59:59Z");
+  const days = Math.ceil((end - Date.now()) / 86400000);
+  if (days < 0) return "";
+  const nice = end.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+  if (days <= 3)  return `<span class="badge" style="background:#e5484d22; color:#ff8589; border-color:#e5484d55">⏳ ${days <= 0 ? "Closes today" : days === 1 ? "Closes tomorrow" : `Closes in ${days} days`}</span>`;
+  if (days <= 14) return `<span class="badge" style="background:#f5a52322; color:#ffc963; border-color:#f5a52355">⏳ Closes in ${days}d</span>`;
+  return `<span class="badge" title="Application deadline">Deadline ${nice}</span>`;
+}
+
 /* HTML-escape user-generated content before inserting into innerHTML.
    Prevents stored XSS from recruiter posts, applicant notes, names, etc. */
 function esc(s) {

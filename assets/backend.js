@@ -164,6 +164,7 @@ const Backend = (() => {
       minHours: r.min_hours, rated: r.rated, salary: r.salary,
       category: r.category || "pilot",
       verified: r.verified || false, applyUrl: r.apply_url || null, reqs: r.reqs || null,
+      deadline: r.deadline || null,
       owner: r.posted_by || null,
       posted: Math.max(0, Math.floor((Date.now() - new Date(r.posted_at)) / 86400000)),
       postedAt: new Date(r.posted_at).getTime()

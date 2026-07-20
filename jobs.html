@@ -272,17 +272,17 @@
       <h3>Browse by role, region &amp; country</h3>
       <ul>
         <li><a href="cabin-crew-jobs.html">Cabin Crew Jobs</a> — 21 verified</li>
-        <li><a href="first-officer-jobs.html">First Officer Jobs</a> — 80 verified</li>
+        <li><a href="first-officer-jobs.html">First Officer Jobs</a> — 82 verified</li>
         <li><a href="captain-jobs.html">Airline Captain Jobs</a> — 37 verified</li>
         <li><a href="cadet-pilot-jobs.html">Cadet Pilot Programmes</a> — 17 verified</li>
         <li><a href="aviation-jobs-middle-east.html">Aviation Jobs in Middle East</a> — 27 verified</li>
-        <li><a href="aviation-jobs-europe.html">Aviation Jobs in Europe</a> — 53 verified</li>
+        <li><a href="aviation-jobs-europe.html">Aviation Jobs in Europe</a> — 55 verified</li>
         <li><a href="aviation-jobs-asia-pacific.html">Aviation Jobs in Asia-Pacific</a> — 33 verified</li>
         <li><a href="aviation-jobs-americas.html">Aviation Jobs in Americas</a> — 39 verified</li>
         <li><a href="aviation-jobs-usa.html">Aviation Jobs in USA</a> — 35 verified</li>
         <li><a href="aviation-jobs-uae.html">Aviation Jobs in UAE</a> — 18 verified</li>
+        <li><a href="aviation-jobs-germany.html">Aviation Jobs in Germany</a> — 15 verified</li>
         <li><a href="aviation-jobs-uk.html">Aviation Jobs in UK</a> — 13 verified</li>
-        <li><a href="aviation-jobs-germany.html">Aviation Jobs in Germany</a> — 13 verified</li>
         <li><a href="aviation-jobs-india.html">Aviation Jobs in India</a> — 9 verified</li>
         <li><a href="aviation-jobs-singapore.html">Aviation Jobs in Singapore</a> — 9 verified</li>
         <li><a href="aviation-jobs-saudi-arabia.html">Aviation Jobs in Saudi Arabia</a> — 5 verified</li>
@@ -429,6 +429,8 @@
         <li><a href="airline/eurowings.html">Eurowings — Captain, A320 family</a> — Prague · Poland · Spain (EWL) · Direct Entry · min 5,000 hrs · Contract + pay from day 1 of training · LH Group benefits. <a href="https://www.career.aero/eurowings/en/job/apply-eurowings/id/3506" target="_blank" rel="noopener">Apply on airline site</a></li>
         <li><a href="airline/eurowings.html">Eurowings — First Officer, A320 family</a> — Prague · Poland · Spain (EWL) · Direct Entry · min 4,000 hrs · Fast-track upgrade to Captain · pay from day 1 of training. <a href="https://www.career.aero/eurowings/en/job/apply-basic/id/3996" target="_blank" rel="noopener">Apply on airline site</a></li>
         <li><a href="airline/eurowings.html">Eurowings — First Officer, A320 family</a> — Prague · Poland · Spain (EWL) · Direct Entry · Upgrade to Captain from 3,000 blh (demand-based) · pay from day 1 of training. <a href="https://www.career.aero/eurowings/en/job/apply-eurowings/id/3505" target="_blank" rel="noopener">Apply on airline site</a></li>
+        <li><a href="airline/aerologic.html">AeroLogic — First Officer, B777F (cargo)</a> — Leipzig (LEJ) · Direct Entry · min 500 hrs · Collective agreement · 15 duty days/mo (~3 long-hauls) · pension + loss-of-licence cover. <a href="https://www.career.aero/site/en/job/show/id/3690" target="_blank" rel="noopener">Apply on airline site</a></li>
+        <li><a href="airline/lufthansa-city-airlines.html">Lufthansa City Airlines — First Officer, A220 (permanent)</a> — Munich · Frankfurt (LH City) · Direct Entry · min 500 hrs · Permanent contract · LH Group benefits &amp; flight privileges. <a href="https://www.career.aero/site/en/job/show/id/4434" target="_blank" rel="noopener">Apply on airline site</a></li>
         <li><a href="airline/lufthansa-city-airlines.html">Lufthansa City Airlines — Captain, A220 / A320</a> — Munich · Frankfurt (LH City) · Direct Entry · min 5,000 hrs · Permanent · type rating for non-rated · LH Group benefits. <a href="https://www.career.aero/site/de/job/apply-basic/id/4152" target="_blank" rel="noopener">Apply on airline site</a></li>
         <li><a href="airline/lufthansa-city-airlines.html">Lufthansa City Airlines — First Officer, A320 (fast-track to command)</a> — Munich · Frankfurt (LH City) · Direct Entry · min 4,500 hrs · Permanent · fast-track upgrade to Captain · part- or full-time. <a href="https://www.career.aero/site/de/job/apply-basic/id/4296" target="_blank" rel="noopener">Apply on airline site</a></li>
         <li><a href="airline/lufthansa-city-airlines.html">Lufthansa City Airlines — Captain, A220 — TRI/TRE (instructor)</a> — Munich · Frankfurt (LH City) · Direct Entry · min 5,000 hrs · Permanent · LH Group benefits. <a href="https://www.career.aero/site/de/job/apply-basic/id/4390" target="_blank" rel="noopener">Apply on airline site</a></li>
@@ -756,8 +758,10 @@
       const maxH = els.fHours.value === "" ? null : parseInt(els.fHours.value, 10);
 
       const prof = Backend.auth.profile();
+      const todayISO = new Date().toISOString().slice(0, 10);
       const filtered = [...allJobs]
         .filter(j =>
+          (!j.deadline || j.deadline >= todayISO) &&
           (j.category || "pilot") === category &&
           (!q || `${j.airline} ${j.aircraft} ${j.location} ${j.role}`.toLowerCase().includes(q)) &&
           (!region || j.region === region) &&
@@ -796,6 +800,7 @@
             <div class="job-sub">${esc(j.airline)} · ${esc(j.location)}</div>
             <div class="job-tags">
               ${j.posted <= 7 ? `<span class="badge new">NEW</span>` : ""}
+              ${deadlineBadge(j)}
               ${j.verified ? `<span class="badge hiring" title="Sourced from the airline's official careers portal, ${typeof VERIFIED_DATE !== "undefined" ? VERIFIED_DATE : ""}">✓ Verified · official</span>` : `<span class="badge">Recruiter post</span>`}
               <span class="badge type">${esc(j.type)}</span>
               <span class="badge">${esc(j.region)}</span>

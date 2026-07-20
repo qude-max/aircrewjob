@@ -573,5 +573,21 @@ ${items}
   console.log(`✓ jobs.html noscript fallback (${JOBS.length} listings, invisible to JS users)`);
 })();
 
+/* keep README stats in lockstep with the catalog — no more count drift */
+(() => {
+  const file = path.join(ROOT, "README.md");
+  if (!fs.existsSync(file)) return;
+  let md = fs.readFileSync(file, "utf8");
+  const nJobs = JOBS.length;
+  const nAirlines = new Set(JOBS.map(j => j.airline)).size;
+  md = md.replace(/\d+ verified vacancies from \d+ airlines/,
+    `${nJobs} verified vacancies from ${nAirlines} airlines`);
+  if (typeof VERIFIED_DATE !== "undefined" && VERIFIED_DATE) {
+    md = md.replace(/Job listings verified [^.]+\./, `Job listings verified ${VERIFIED_DATE}.`);
+  }
+  fs.writeFileSync(file, md);
+  console.log(`✓ README stats — ${nJobs} jobs / ${nAirlines} airlines / verified ${typeof VERIFIED_DATE !== "undefined" ? VERIFIED_DATE : "n/a"}`);
+})();
+
 /* also regenerate the database sync file — one command does everything */
 require("./sync-jobs.js");
